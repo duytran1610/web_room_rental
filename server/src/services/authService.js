@@ -7,6 +7,16 @@ require('dotenv').config();
 // generate a salt for hash password
 const saltRounds = 10;
 
+// To hash a password:
+const hashPassword = (pwd) => new Promise((resolve, reject) => {
+    try {
+        let hashPwd = bcrypt.hash(pwd, saltRounds);
+        resolve(hashPwd);
+    } catch (err) {
+        register('Hash password errol: ' + err);
+    }   
+});
+
 // register a new user
 const register = (data) => new Promise(async (resolve, reject) => {
     try {
@@ -40,16 +50,6 @@ const register = (data) => new Promise(async (resolve, reject) => {
     } catch (err) {
         reject(err);
     }
-});
-
-// To hash a password:
-const hashPassword = (pwd) => new Promise((resolve, reject) => {
-    try {
-        let hashPwd = bcrypt.hash(pwd, saltRounds);
-        resolve(hashPwd);
-    } catch (err) {
-        register('Hash password errol: ' + err);
-    }   
 });
 
 // login

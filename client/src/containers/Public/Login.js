@@ -1,36 +1,59 @@
 import { useState, useEffect } from "react";
 import { InputForm, Button } from "../../components";
 import { useLocation } from "react-router-dom";
+import { useDispatch} from 'react-redux';
+import * as actions from '../../store/actions';
+
 
 
 const Login = () => {
     // location
     const location = useLocation();
-    // state
-    const [isRegister, setIsRegister] = useState(location.state?.status);
 
-    // called whenever render
+    // dispatch
+    const dispatch = useDispatch();
+
+    // state
+    // control form 
+    const [isRegister, setIsRegister] = useState(location.state?.status);
+    // control data user input
+    const [payload, setPayload] = useState({
+        name: '',
+        phone: '',
+        password: ''
+    });
+
+    // update data from outside component, useEffect runs on every render
+    // No dependency passed: Runs on every render
+    // else Runs only on the first render
     useEffect(() => {
         setIsRegister(location.state?.status);
     }, [location.state?.status])
 
-    // Signup <-> Login
+    // Register <-> Login
     const setStatus = () => {
         setIsRegister(!isRegister);
     }
 
+    // click button submit
+    const handleSubmit = async () => {
+        console.log(payload);
+        dispatch(actions.register(payload));
+    }
+
     return (
         <div className="bg-white w-[600px] p-[30px] pb-[100px] rounded-md shadow-sm">
-            <h3 className="font-semibold text-2xl">{isRegister ? 'Sign up' : 'Login'}</h3>
+            <h3 className="font-semibold text-2xl">{isRegister ? 'Register' : 'Login'}</h3>
             <div className="w-full flex flex-col gap-3">
-                {isRegister && <InputForm label="Name"/>}
-                <InputForm label="PhoneNumber"/>
-                <InputForm label="Password"/>
+                {isRegister && <InputForm label="Name" value={payload.name} setValue={setPayload} type='name'/>}
+                <InputForm label="PhoneNumber" value={payload.phone} setValue={setPayload} type='phone'/>
+                <InputForm label="Password" value={payload.password} setValue={setPayload} type='password'/>
                 <Button
-                text={isRegister ? 'SIGN UP' : 'LOGIN'}
+                text={isRegister ? 'REGISTER' : 'LOGIN'}
                 bgColor="bg-secondary1"
                 textColor="text-white"
                 fullWidth
+                onClick={handleSubmit}
                 />
             </div>
             <div className="mt-7 flex justify-between">

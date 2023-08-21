@@ -10,8 +10,8 @@ const {AiOutlinePlusCircle} = icons;
 const Header = () => {
     const navigate = useNavigate();
 
-    // status -> Login or Signup
-    const goSignup = (status) => {
+    // status -> Login or Register
+    const goRegister = (status) => {
         navigate(path.LOGIN, {state: {status}});
     }
 
@@ -27,16 +27,16 @@ const Header = () => {
             <div className="flex items-center gap-1">
                 <small>Phongtro123.com Hello!</small>
                 <Button 
-                    text={'Sign Up'} 
+                    text={'Register'} 
                     textColor={'text-white'} 
                     bgColor={'bg-[#3961fb]'}
-                    onClick={() => goSignup(true)}
+                    onClick={() => goRegister(true)}
                 />
                 <Button 
                     text={'Log In'} 
                     textColor={'text-white'} 
                     bgColor={'bg-[#3961fb]'}
-                    onClick={() => goSignup(false)}
+                    onClick={() => goRegister(false)}
                 />
                 <Button 
                     text={'Post New News'} 
