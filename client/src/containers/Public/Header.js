@@ -4,11 +4,15 @@ import icons from "../../utils/icons";
 import { useNavigate } from "react-router-dom";
 import { path } from "../../utils/constant";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../../store/actions";
 
 const {AiOutlinePlusCircle} = icons;
 
 const Header = () => {
     const navigate = useNavigate();
+    const {isLoggedIn} = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     // status -> Login or Register
     const goRegister = (status) => {
@@ -25,19 +29,33 @@ const Header = () => {
             />
             </Link>
             <div className="flex items-center gap-1">
-                <small>Phongtro123.com Hello!</small>
-                <Button 
-                    text={'Register'} 
-                    textColor={'text-white'} 
-                    bgColor={'bg-[#3961fb]'}
-                    onClick={() => goRegister(true)}
-                />
-                <Button 
-                    text={'Log In'} 
-                    textColor={'text-white'} 
-                    bgColor={'bg-[#3961fb]'}
-                    onClick={() => goRegister(false)}
-                />
+                {!isLoggedIn ? 
+                <>
+                    <small>Phongtro123.com Hello!</small>
+                    <Button 
+                        text={'Register'} 
+                        textColor={'text-white'} 
+                        bgColor={'bg-[#3961fb]'}
+                        onClick={() => goRegister(true)}
+                    />
+                    <Button 
+                        text={'Log In'} 
+                        textColor={'text-white'} 
+                        bgColor={'bg-[#3961fb]'}
+                        onClick={() => goRegister(false)}
+                    />
+                </>
+                :
+                <>
+                    <small>Name!</small>
+                    <Button 
+                        text={'Log Out'} 
+                        textColor={'text-white'} 
+                        bgColor={'bg-red-700'}
+                        onClick={() => dispatch(actions.logout())}
+                    />
+                </>
+                }
                 <Button 
                     text={'Post New News'} 
                     textColor={'text-white'} 

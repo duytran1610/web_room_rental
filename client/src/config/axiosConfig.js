@@ -8,8 +8,8 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent
-    const token = localStorage.getItem('persist:auth');
-    console.log(token);
+
+    // put token into header
 
     return config;
   }, function (err) {
@@ -19,15 +19,17 @@ instance.interceptors.request.use(function (config) {
     return Promise.reject(err);
   });
 
-// // Add a response interceptor
-// axios.interceptors.response.use(function (response) {
-//     // Any status code that lie within the range of 2xx cause this function to trigger
-//     // Do something with response data
-//     return response;
-//   }, function (error) {
-//     // Any status codes that falls outside the range of 2xx cause this function to trigger
-//     // Do something with response error
-//     return Promise.reject(error);
-//   });
+// Add a response interceptor
+instance.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+
+    // refresh token
+    return response;
+  }, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  });
 
 export default instance;

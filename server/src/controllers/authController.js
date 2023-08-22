@@ -9,8 +9,8 @@ const register = async (req, res) => {
             err: -1,
             msg: 'Missing inputs!'
         });
-        const message = await authService.register(req.body);
-        return res.status(200).json(message);
+        const response = await authService.register(req.body);
+        return res.status(200).json(response);
     } catch (err) {
         return res.status(500).json({
             err: -1,
@@ -28,8 +28,8 @@ const login = async (req, res) => {
             err: -1,
             msg: 'Missing inputs!'
         });
-        const message = await authService.login(req.body);
-        return res.status(200).json(message);
+        const response = await authService.login(req.body);
+        return res.status(200).json(response);
     } catch (err) {
         return res.status(500).json({
             err: -1,
