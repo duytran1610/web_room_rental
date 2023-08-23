@@ -62,7 +62,7 @@ const Login = () => {
 
         let invalids = validate(finalPayload);
 
-        if (!invalids) isRegister? dispatch(actions.register(payload)) : dispatch(actions.login(payload));
+        if (!invalids) isRegister? dispatch(actions.register(finalPayload)) : dispatch(actions.login(finalPayload));
     }
 
     // check valid data input

@@ -11,7 +11,11 @@ const {AiOutlinePlusCircle} = icons;
 
 const Header = () => {
     const navigate = useNavigate();
+
+    // get status isLoggedIn from authReducer in redux store
     const {isLoggedIn} = useSelector(state => state.auth);
+
+    // dispatch
     const dispatch = useDispatch();
 
     // status -> Login or Register

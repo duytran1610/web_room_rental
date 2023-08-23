@@ -26,10 +26,12 @@ instance.interceptors.response.use(function (response) {
 
     // refresh token
     return response;
-  }, function (error) {
+  }, function (err) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    return Promise.reject(error);
+    console.log('Errol in response interceptor instance: ', err);
+
+    return Promise.reject(err);
   });
 
 export default instance;

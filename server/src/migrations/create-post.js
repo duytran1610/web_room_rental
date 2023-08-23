@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       attributeID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       categoryCode: {
         type: Sequelize.STRING
@@ -31,13 +31,13 @@ module.exports = {
         type: Sequelize.TEXT
       },
       userID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       overviewID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       imageID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
     star: DataTypes.STRING,
     labelCode: DataTypes.STRING,
     address: DataTypes.STRING,
-    attributeID: DataTypes.INTEGER,
+    attributeID: DataTypes.STRING,
     categoryCode: DataTypes.STRING,
     description: DataTypes.TEXT,
-    userID: DataTypes.INTEGER,
-    overviewID: DataTypes.INTEGER,
-    imageID: DataTypes.INTEGER
+    userID: DataTypes.STRING,
+    overviewID: DataTypes.STRING,
+    imageID: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Post',
