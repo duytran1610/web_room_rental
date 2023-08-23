@@ -3,7 +3,7 @@ import { InputForm, Button } from "../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector} from 'react-redux';
 import * as actions from '../../store/actions';
-
+import Swal from 'sweetalert2';        // A beautiful, responsive, highly customizable and accessible (WAI-ARIA) replacement for JavaScript's popup boxes. 
 
 
 const Login = () => {
@@ -13,8 +13,8 @@ const Login = () => {
     // dispatch
     const dispatch = useDispatch();
 
-    // get status isLoggedIn from authReducer in redux store
-    const {isLoggedIn} = useSelector(state => state.auth);
+    // get status isLoggedIn, msg from authReducer in redux store
+    const {isLoggedIn, msg, update} = useSelector(state => state.auth);
 
     // navigate
     const navigate = useNavigate();
@@ -41,6 +41,11 @@ const Login = () => {
     useEffect(() => {
         isLoggedIn && navigate('/');                    // when log in succeed
     }, [isLoggedIn, navigate]);
+
+    useEffect(() => {
+        // A message signaling an error:    // when loggedIn is wrong
+        msg && Swal.fire('Oops...', msg, 'error');
+    }, [msg, update]);
 
     // Register <-> Login
     const setStatus = () => {
@@ -117,15 +122,37 @@ const Login = () => {
         <div className="bg-white w-[600px] p-[30px] pb-[100px] rounded-md shadow-sm">
             <h3 className="font-semibold text-2xl">{isRegister ? 'Register' : 'Login'}</h3>
             <div className="w-full flex flex-col gap-3">
-                {isRegister && <InputForm setInvalidFields={setInvalidFields} invalidFields={invalidFields} label="Name" value={payload.name} setValue={setPayload} type='name'/>}
-                <InputForm setInvalidFields={setInvalidFields} invalidFields={invalidFields} label="PhoneNumber" value={payload.phone} setValue={setPayload} type='phone'/>
-                <InputForm setInvalidFields={setInvalidFields} invalidFields={invalidFields} label="Password" value={payload.password} setValue={setPayload} type='password'/>
+                {isRegister && <InputForm 
+                    setInvalidFields={setInvalidFields} 
+                    invalidFields={invalidFields} 
+                    label="Name" 
+                    value={payload.name} 
+                    setValue={setPayload} 
+                    keyPayload={'name'}
+                />}
+                <InputForm 
+                    setInvalidFields={setInvalidFields} 
+                    invalidFields={invalidFields} 
+                    label="Phone" 
+                    value={payload.phone} 
+                    setValue={setPayload} 
+                    keyPayload={'phone'}
+                />
+                <InputForm 
+                    setInvalidFields={setInvalidFields} 
+                    invalidFields={invalidFields} 
+                    label="Password" 
+                    value={payload.password} 
+                    setValue={setPayload} 
+                    keyPayload={'password'}
+                    type={'password'}
+                />
                 <Button
-                text={isRegister ? 'REGISTER' : 'LOGIN'}
-                bgColor="bg-secondary1"
-                textColor="text-white"
-                fullWidth
-                onClick={handleSubmit}
+                    text={isRegister ? 'REGISTER' : 'LOGIN'}
+                    bgColor="bg-secondary1"
+                    textColor="text-white"
+                    fullWidth
+                    onClick={handleSubmit}
                 />
             </div>
             <div className="mt-7 flex justify-between">
