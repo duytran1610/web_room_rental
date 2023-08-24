@@ -2,7 +2,7 @@ import db from '../models';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import generateCode from "../utils/generateCode";
-import chothuephongtro from "../../data/chothuephongtro.json";
+import nhachothue from "../../data/nhachothue.json";
 require('dotenv').config();
 
 
@@ -20,14 +20,14 @@ const hashPassword = (pwd) => new Promise((resolve, reject) => {
 });
 
 // get data body
-const dataBody = chothuephongtro.body;
+const dataBody = nhachothue.body;
 
 // get data from directory data and insert into tables in db
 export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
     try {        
         dataBody.forEach(async item => {
             let postID = uuidv4();
-            let labelCode = generateCode(4);
+            let labelCode = generateCode(item.header?.class?.classType);
             let attributeID = uuidv4();
             let userID = uuidv4();
             let overviewID = uuidv4();
@@ -42,7 +42,7 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
                 labelCode,
                 address: item.header?.address,
                 attributeID,
-                categoryCode: 'CTPT',
+                categoryCode: 'NCT',
                 description: JSON.stringify(item.mainContent?.content),
                 userID,
                 overviewID,
@@ -65,9 +65,12 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
             });
 
             // insert data in table Labels
-            await db.Label.create({
-                code: labelCode,
-                value: item.header?.class?.classType
+            await db.Label.findOrCreate({
+                where: {code: labelCode},
+                defaults: {
+                    code: labelCode,
+                    value: item.header?.class?.classType
+                }
             });
 
             // insert data in table Overviews

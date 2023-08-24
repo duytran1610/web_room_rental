@@ -1,18 +1,23 @@
-// create code random string/characters
-const generateCode = (length) => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const numbers = '123456789';  
-    const charactersLength = characters.length;
-    const numbersLength = numbers.length;
-    let code = '';  
+require('dotenv').config();
 
-    for (let i = 0; i < length - 1; i++) {
-        code += characters.charAt(Math.floor(Math.random() * charactersLength));
+// create code random string/characters
+const generateCode = (value) => {
+    let output = '';
+    value = value
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .split(' ')
+                .join('')
+    let merge = value + process.env.SECRET_KEY; 
+    let length = merge.length;
+
+    for (let i = 0; i < 6; i++) {
+        let index = Math.floor(length / 2);
+        output += merge[index];
+        length = index;
     }
 
-    code += numbers.charAt(Math.floor(Math.random() * numbersLength));
-
-    return code;
+    return `${output}${merge.length}`.toUpperCase();
 }
 
 export default generateCode;
