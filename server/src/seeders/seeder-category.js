@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('Categorys', [{
+    return queryInterface.bulkInsert('Categories', [{
       code: 'CTCH',
       value: 'Cho thuê căn hộ',
       header: 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, Mới Nhất 2023',
@@ -35,6 +35,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Categorys', null, {});
+    return queryInterface.bulkDelete('Categories', null, {});
   }
 };

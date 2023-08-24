@@ -1,27 +1,44 @@
+import { useEffect, useState } from 'react';
 import {NavLink} from 'react-router-dom';
+import { apiGetAllCatgorries } from '../../services/categoryService';
+import { formatVietnameseToString } from '../../utils/constant';
 
-const nav = [
-    {name: 'Home', path: 'home'}, 
-    {name: 'Cho thuê phòng trọ', path: 'cho-thue-phong-tro'}, 
-    {name: 'Nhà cho thuê', path: 'nha-cho-thue'}, 
-    {name: 'Cho thuê căn hộ', path: 'cho-thue-can-ho'}, 
-    {name: 'Cho thuê mặt bằng', path: 'cho-thue-mat-bang'}
-];
+
 
 const Active = 'bg-secondary2 px-4 flex items-center';
 const noActive = 'hover:bg-secondary2 px-4 flex items-center';
 
 const Navigation = () => {
+    // state
+    // categories
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const response = await apiGetAllCatgorries();
+            
+            if (response?.data.err === 0) {
+                setCategories(response.data.data);
+            }
+        }
+        fetchCategories();
+    }, []);
     return (
         <div className="w-screen flex justify-center items-stretch h-[40px] bg-secondary1 text-white">
             <div className='w-1100 flex items-stretch text-sm font-medium'>
-                {nav?.length > 0 && nav.map((item, index) => 
-                    <div key={index} className='flex'>
+                <NavLink
+                    to={'/'}
+                    className={({isActive}) => isActive ? Active : noActive}
+                >
+                    Home
+                </NavLink>
+                {categories?.length > 0 && categories.map(item => 
+                    <div key={item.code} className='flex'>
                         <NavLink
-                            to={item.path}
+                            to={`${formatVietnameseToString(item.value)}`}
                             className={({isActive}) => isActive ? Active : noActive}
                         >
-                            {item.name}
+                            {item.value}
                         </NavLink>
                     </div>
                 )}
