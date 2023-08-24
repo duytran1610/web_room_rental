@@ -4,7 +4,8 @@
     "password": "16102001",
     "database": "rentalroom",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "test": {
     "username": "root",
