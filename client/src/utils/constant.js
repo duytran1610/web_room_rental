@@ -13,11 +13,20 @@ export const text = {
     HOMEPAGE_DESCRIPTION: 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2023. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
 }
 
-export const formatVietnameseToString = (keyword) => {
-    return keyword
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .split(' ')
-        .join('-')
-}
+export const location = [
+    {
+        id: 'HCM',
+        name: 'Phòng trọ Hồ Chí Minh',
+        img: 'https://phongtro123.com/images/location_hcm.jpg'
+    },
+    {
+        id: 'HN',
+        name: 'Phòng trọ Hà Nội',
+        img: 'https://phongtro123.com/images/location_hn.jpg'
+    },
+    {
+        id: 'DN',
+        name: 'Phòng trọ Đà Nẵng',
+        img: 'https://phongtro123.com/images/location_dn.jpg'
+    }
+]

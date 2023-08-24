@@ -5,7 +5,7 @@ const {BsChevronRight, CiLocationOn, TbReportMoney, RiCrop2Line, GiFamilyHouse, 
 
 const Search = () => {
   return (
-    <div className='p-[10px] bg-[#febb02] rounded-lg flex lg:flex-row flex-col items-center justify-around gap-2'>
+    <div className='w-4/5 lg:w-3/5 my-3 p-[10px] bg-[#febb02] rounded-lg flex lg:flex-row flex-col items-center justify-around gap-2'>
         <SearchItem IcStart={<GiFamilyHouse />} IcEnd={<BsChevronRight />} fontWeight text='Phòng trọ, nhà trọ' />
         <SearchItem IcStart={<CiLocationOn />} IcEnd={<BsChevronRight />} text='Toàn quốc' />
         <SearchItem IcStart={<TbReportMoney />} IcEnd={<BsChevronRight />} text='Chọn giá' />

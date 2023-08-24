@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {NavLink} from 'react-router-dom';
 import { apiGetAllCatgorries } from '../../services/categoryService';
-import { formatVietnameseToString } from '../../utils/constant';
+import { formatVietnameseToString } from '../../utils/Common/formatVietnameseToString';
 
 
 
