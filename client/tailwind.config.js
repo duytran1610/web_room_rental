@@ -13,7 +13,9 @@ module.exports = {
       backgroundColor: {
         primary: "#F5F5F5",
         secondary1: "#1266dd",
-        secondary2: "#f73859"
+        secondary2: "#f73859",
+        overlay30: "rgba(0,0,0,0.3)",
+        overlay70: "rgba(0,0,0,0.7)"
       },
       maxWidth: {
         "600": "600px",
