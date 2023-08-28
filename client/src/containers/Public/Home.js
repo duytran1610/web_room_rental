@@ -8,7 +8,7 @@ const Home = () => {
             <Header />
             <Navigation />
             <Search />
-            <div className="w-4/5 lg:w-3/5 flex flex-col items-start justify-center mt-3">
+            <div className="w-4/5 lg:w-1100 flex flex-col items-start justify-center mt-3">
                 <Outlet />
             </div>
         </div>

@@ -24,7 +24,7 @@ const Header = () => {
     }
 
     return (
-        <div className="w-4/5 lg:w-3/5 flex items-center justify-between bg-primary">
+        <div className="w-4/5 lg:w-1100 flex items-center justify-between bg-primary">
             <Link to={'/'}>
             <img 
                 src={logo}
