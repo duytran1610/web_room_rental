@@ -1,8 +1,6 @@
 import {memo, useState} from 'react';
 import icons from '../utils/icons';
 
-const indexs = [0, 1, 2, 3];
-
 const {BsStarFill, AiFillHeart, AiOutlineHeart, BsBookmarkStarFill} = icons;
 
 const Item = ({address, attrs, description, imgs, star, title, user}) => {
@@ -11,7 +9,7 @@ const Item = ({address, attrs, description, imgs, star, title, user}) => {
     return (
         <div className='w-full flex border-t border-orange-600 py-4'>
             <div className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
-                {imgs.length > 0 && imgs.filter((i, index) => indexs.some(i => i === index))?.map((item, index) => 
+                {imgs.length > 0 && imgs.filter((i, index) => index < 4)?.map((item, index) => 
                     <img key={index} src={item} alt="preview" className="w-[130px] h-[120px] object-cover" />                   
                 )}
                 <span className='bg-overlay70 text-white px-2 rounded-md absolute left-1 bottom-4'>{`${imgs.length} imgs`}</span>
@@ -37,10 +35,10 @@ const Item = ({address, attrs, description, imgs, star, title, user}) => {
                         <BsBookmarkStarFill size={24} color='orange' />
                     </div>               
                 </div>
-                <div className='my-2 flex justify-between'>
-                    <span className='font-bold text-green-600'>{attrs?.price}</span>
-                    <span>{attrs.acreage}</span>
-                    <span>{address}</span>
+                <div className='my-2 flex items-center gap-2'>
+                    <span className='font-bold flex-3 text-green-600 whitespace-nowrap text-ellipsis overflow-hidden'>{attrs?.price}</span>
+                    <span className='flex-1'>{attrs.acreage}</span>
+                    <span className='flex-3 whitespace-nowrap text-ellipsis overflow-hidden'>{`${address.split(',')[address.split(',').length-2]}, ${address.split(',')[address.split(',').length - 1]}`}</span>
                 </div>
                 <p className='text-gray-500 w-full h-[50px] text-ellipsis overflow-hidden'>
                     {description}

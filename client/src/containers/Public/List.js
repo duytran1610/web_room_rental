@@ -8,13 +8,13 @@ const List = () => {
   const dispatch = useDispatch();
 
   // get posts from postReudcer in redux store
-  const {posts} = useSelector(state => state.post);
+  const {posts, count} = useSelector(state => state.post);
 
   useEffect(() => {
-    dispatch(actionPost.getAllPosts());
+    dispatch(actionPost.getPostsLimit(0));
   }, [dispatch]);
 
-
+  console.log(count);
   return (
     <div className='w-full p-2 bg-white shadow-md rounded-md px-6'>
         <div className='flex justify-between my-3'>

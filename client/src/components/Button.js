@@ -1,4 +1,4 @@
-// import { Component } from "react";
+// import { Component, memo } from "react";
 
 // class Button extends Component {
     
@@ -17,6 +17,7 @@
 //     }
 // }
 
+import {memo} from "react";
 
 const Button = ({text, textColor, bgColor, IcAfter, onClick, fullWidth}) => {
     return (
@@ -30,4 +31,4 @@ const Button = ({text, textColor, bgColor, IcAfter, onClick, fullWidth}) => {
     );
 }
 
-export default Button;
+export default memo(Button);

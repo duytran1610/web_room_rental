@@ -1,4 +1,5 @@
 import db from "../models";
+require('dotenv').config();
 
 // get infor of all post
 export const getAllPosts = () => new Promise(async(resolve, reject) => {
@@ -34,4 +35,42 @@ export const getAllPosts = () => new Promise(async(resolve, reject) => {
     } catch (err) {
         reject(err);
     }
-})
+});
+
+// get limit number posts (to pagination)
+export const getPostsLimit = (offset) => new Promise(async(resolve, reject) => {
+    try {
+        const posts = await db.Post.findAndCountAll({
+            raw: true,
+            nest: true,
+            offset: offset * process.env.LIMIT_PAGINATION || 0,
+            limit: process.env.LIMIT_PAGINATION,
+            include: [
+                {
+                    model: db.Image,
+                    as: 'imgs',
+                    attributes: ['image']
+                },
+                {
+                    model: db.Attribute,
+                    as: 'attrs',
+                    attributes: ['price', 'acreage', 'published', 'hashtag']
+                },
+                {
+                    model: db.User,
+                    as: 'user',
+                    attributes: ['name', 'phone', 'zalo']
+                }
+            ],
+            attributes: ['id', 'title', 'star', 'address', 'description']
+        });
+
+        resolve({
+            err: posts ? 0 : -1,
+            msg: posts ? 'Get posts limit succeed!' : 'Fail get posts!',
+            data: posts
+        });
+    } catch (err) {
+        reject(err);
+    }
+});
