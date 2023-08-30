@@ -1,26 +1,32 @@
 import {memo} from 'react';
 import { createSearchParams, useNavigate } from "react-router-dom";
 
-const PageNumber = ({number}) => {
+const noActive = 'w-[46px] h-[48px] flex items-center justify-center bg-white hover:bg-gray-300 rounded-md cursor-pointer';
+const Active = 'w-[46px] h-[48px] flex items-center justify-center bg-[#f13427] text-white rounded-md';
+
+const PageNumber = ({text, curPage, icon, setCurPage}) => {
     // navigate
     const navigate = useNavigate();
 
     // create query parameters (by using createSearchParams) in URL
     const handleChangePage = () => {
-        navigate({
-            pathname: "/",
-            search: `?${createSearchParams({
-                page: number
-            })}`
-        });
+        if (text) {
+            setCurPage(+text);
+            navigate({
+                pathname: "/",
+                search: `?${createSearchParams({
+                    page: text
+                })}`
+            });
+        }
     }
 
     return (
         <div 
-            className='px-[18px] py-[15px] bg-white hover:bg-gray-300 hover:text-white rounded-md cursor-pointer'
+            className={+text === +curPage ? Active : noActive}
             onClick={handleChangePage}
         >
-            {number}
+            {icon || text}
         </div>
     );
 }

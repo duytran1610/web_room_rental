@@ -1,35 +1,54 @@
-import React from 'react';
+import {useEffect, useState} from 'react';
 import { PageNumber } from '../../components';
 import { useSelector } from 'react-redux';
 import icons from '../../utils/icons';
 
-const {GrNext} = icons;
+const {GrNext, GrPrevious} = icons;
 
 const Pagination = ({number}) => {
     // get count, posts from postReudcer in redux store
     const {count, posts} = useSelector(state => state.post);
 
-    const handlePageNumber = () => {
-        let max = Math.floor(count / posts.length);
-        let arrNum = [];
+    // control list pages
+    const [arrPage, setArrPage] = useState([]);
 
-        for (let i = 1; i <= max; i++) {
-            arrNum.push(i);
-        }
+    // page current
+    const [curPage, setCurPage] = useState(+number);
 
-        return arrNum.length > 3 ? arrNum.filter(i => i < 4) : arrNum
-    }
+    const [isHideStart, setIsHideStart] = useState(false);
+    const [isHideEnd, setIsHideEnd] = useState(false);
+
+    useEffect(() => {
+        let maxPage = Math.floor(count / posts.length);
+        let start = curPage - 1 > 1 ? curPage - 1 : 1;
+        let end = curPage + 1 > maxPage ? maxPage : curPage + 1;
+        let temp = [];
+
+        for (let i = start; i <= end; i++) temp.push(i);
+
+        setArrPage(temp);
+
+        start === 1 ? setIsHideStart(true) : setIsHideStart(false);
+        end === maxPage ? setIsHideEnd(true) : setIsHideEnd(false);
+        
+    }, [count, posts, curPage]);
+
+    console.log(arrPage)
 
     return (
         <div className='flex items-center justify-center gap-2 py-5'>
-            {handlePageNumber().length > 0 && handlePageNumber().map(item =>
+            {!isHideStart && <PageNumber icon={<GrPrevious />} text={1} setCurPage={setCurPage} />}
+            {!isHideStart && <PageNumber icon={'...'} />}
+            {arrPage.length > 0 && arrPage.map(item =>
                 <PageNumber 
                     key={item}
-                    number={item}
+                    text={item}
+                    setCurPage={setCurPage}
+                    curPage={curPage}
                 />
             )}
-            <PageNumber number={'...'} />
-            <PageNumber number={<GrNext />} />
+            {!isHideEnd && <PageNumber icon={'...'} />}
+            {!isHideEnd && <PageNumber icon={<GrNext />} text={Math.floor(count / posts.length)} setCurPage={setCurPage} />}
         </div>
     );
 }

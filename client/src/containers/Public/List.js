@@ -8,7 +8,7 @@ const List = () => {
   const dispatch = useDispatch();
 
   // get posts, count from postReudcer in redux store
-  const {posts, count} = useSelector(state => state.post);
+  const {posts} = useSelector(state => state.post);
 
   useEffect(() => {
     dispatch(actionPost.getPostsLimit(0));
