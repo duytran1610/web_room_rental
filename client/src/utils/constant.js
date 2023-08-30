@@ -5,7 +5,8 @@ export const path = {
     CTCN: 'cho-thue-can-ho',
     CTMB: 'cho-thue-mat-bang',
     CTPT: 'cho-thue-phong-tro',
-    NCT: 'nha-cho-thue'
+    NCT: 'nha-cho-thue',
+    HOME__PAGE: ':page'
 }
 
 export const text = {
