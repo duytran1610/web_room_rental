@@ -38,6 +38,7 @@ const List = ({page}) => {
                 star={+item.star}
                 title={item.title}
                 user={item.user}
+                id={item.id}
               />              
             )}
         </div>

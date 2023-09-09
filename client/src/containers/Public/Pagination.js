@@ -13,7 +13,7 @@ const Pagination = ({page}) => {
     const [arrPage, setArrPage] = useState([]);
 
     // page current
-    const [curPage, setCurPage] = useState(+page);
+    const [curPage, setCurPage] = useState(+page || 1);
 
     const [isHideStart, setIsHideStart] = useState(false);
     const [isHideEnd, setIsHideEnd] = useState(false);
