@@ -5,7 +5,7 @@ import icons from '../../utils/icons';
 
 const {GrNext, GrPrevious} = icons;
 
-const Pagination = ({number}) => {
+const Pagination = ({page}) => {
     // get count, posts from postReudcer in redux store
     const {count, posts} = useSelector(state => state.post);
 
@@ -13,7 +13,7 @@ const Pagination = ({number}) => {
     const [arrPage, setArrPage] = useState([]);
 
     // page current
-    const [curPage, setCurPage] = useState(+number);
+    const [curPage, setCurPage] = useState(+page);
 
     const [isHideStart, setIsHideStart] = useState(false);
     const [isHideEnd, setIsHideEnd] = useState(false);
@@ -32,8 +32,6 @@ const Pagination = ({number}) => {
         end === maxPage ? setIsHideEnd(true) : setIsHideEnd(false);
         
     }, [count, posts, curPage]);
-
-    console.log(arrPage)
 
     return (
         <div className='flex items-center justify-center gap-2 py-5'>

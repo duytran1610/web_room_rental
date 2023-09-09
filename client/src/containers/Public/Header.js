@@ -1,7 +1,8 @@
+import { useEffect, useRef } from "react";
 import logo from "../../assets/img/logo.png";
 import { Button } from "../../components";
 import icons from "../../utils/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { path } from "../../utils/constant";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,13 +19,24 @@ const Header = () => {
     // dispatch
     const dispatch = useDispatch();
 
+    // query params
+    const [params] = useSearchParams();
+
+    // Manipulating the DOM with a ref 
+    const headerRef = useRef();
+
     // status -> Login or Register
     const goRegister = (status) => {
         navigate(path.LOGIN, {state: {status}});
     }
 
+    useEffect(() => {
+        // scrolling list item into view
+        headerRef.current.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }, [params.get('page')]);
+
     return (
-        <div className="w-4/5 lg:w-1100 flex items-center justify-between bg-primary">
+        <div ref={headerRef} className="w-4/5 lg:w-1100 flex items-center justify-between bg-primary">
             <Link to={'/'}>
             <img 
                 src={logo}

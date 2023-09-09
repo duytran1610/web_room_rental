@@ -3,7 +3,7 @@ import { Button, Item } from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import { actionPost } from '../../store/actions';
 
-const List = () => {
+const List = ({page}) => {
   // dispatch
   const dispatch = useDispatch();
 
@@ -11,8 +11,10 @@ const List = () => {
   const {posts} = useSelector(state => state.post);
 
   useEffect(() => {
-    dispatch(actionPost.getPostsLimit(0));
-  }, [dispatch]);
+    let offset = page? page - 1 : 0;
+    dispatch(actionPost.getPostsLimit(offset));
+  }, [dispatch, page]);
+
 
   return (
     <div className='w-full p-2 bg-white shadow-md rounded-md px-6'>
