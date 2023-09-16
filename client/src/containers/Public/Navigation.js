@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import {NavLink} from 'react-router-dom';
-import { apiGetAllCatgorries } from '../../services/categoryService';
 import { formatVietnameseToString } from '../../utils/Common/formatVietnameseToString';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionApp } from '../../store/actions';
 
 
 
@@ -9,20 +10,15 @@ const Active = 'bg-secondary2 px-4 flex items-center';
 const noActive = 'hover:bg-secondary2 px-4 flex items-center';
 
 const Navigation = () => {
-    // state
-    // categories
-    const [categories, setCategories] = useState([]);
+    // dispatch
+    const dispatch = useDispatch();
+
+    // get categories from appReducer in redux store
+    const {categories} = useSelector(state => state.app);
 
     useEffect(() => {
-        const fetchCategories = async () => {
-            const response = await apiGetAllCatgorries();
-            
-            if (response?.data.err === 0) {
-                setCategories(response.data.data);
-            }
-        }
-        fetchCategories();
-    }, []);
+        dispatch(actionApp.getAllCategories());
+    }, [dispatch]);
     return (
         <div className="w-full flex justify-center h-[40px] bg-secondary1 text-white">
             <div className='w-4/5 lg:w-1100 flex content-stretch text-sm font-medium'>

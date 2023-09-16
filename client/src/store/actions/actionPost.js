@@ -22,7 +22,7 @@ export const getAllPosts = () => async (dispatch) => {
         dispatch({
             type: actionTypes.GET_POSTS,
             posts: null
-        })
+        });
     }
 }
 
@@ -48,6 +48,6 @@ export const getPostsLimit = (page) => async (dispatch) => {
         dispatch({
             type: actionTypes.GET_POSTS_LIMIT,
             posts: null
-        })
+        });
     }
 }

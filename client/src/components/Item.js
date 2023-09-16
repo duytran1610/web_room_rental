@@ -1,25 +1,16 @@
 import {memo, useState, useEffect} from 'react';
 import icons from '../utils/icons';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {formatVietnameseToString} from '../utils/Common/formatVietnameseToString';
 
 const {BsStarFill, AiFillHeart, AiOutlineHeart, BsBookmarkStarFill} = icons;
 
 const Item = ({address, attrs, description, imgs, star, title, user, id}) => {
-    // navigate
-    const navigate = useNavigate();
-
     // check hover
     const [isHover, setIsHover] = useState(false);
 
     // control star
     const [stars, setStars] = useState([]);
-
-    const handleStar = (star) => {
-        let stars = [];
-        for (let i = 1; i <= star; i++) stars.push(<BsStarFill className='star-item' size={18} color='yellow' />);
-        return stars;
-    }
 
     useEffect(() => {
         let temp = [];
@@ -28,8 +19,6 @@ const Item = ({address, attrs, description, imgs, star, title, user, id}) => {
 
         setStars(temp);
     }, [star]);
-
-    console.log(handleStar(5))
 
     return (
         <div className='w-full flex border-t border-orange-600 py-4'>

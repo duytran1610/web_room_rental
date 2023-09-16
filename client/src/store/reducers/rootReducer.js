@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import userReducer from './userReducer';
 import postReducer from './postReducer';
+import appReducer from './appReducer';
 
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import {persistReducer} from 'redux-persist';
@@ -27,7 +28,8 @@ const authPersistConfig = {
 const rootReducer = combineReducers({
     auth: persistReducer(authPersistConfig, authReducer),
     user: userReducer,
-    post: postReducer
+    post: postReducer,
+    app: appReducer                 // get title data of app
 });
 
 export default rootReducer;
