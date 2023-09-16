@@ -2,6 +2,8 @@ import db from '../models';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import generateCode from "../utils/generateCode";
+import { dataPrices, dataAreas } from '../utils/data';
+import { getNumberFromString } from '../utils/common';
 import nhachothue from "../../data/nhachothue.json";
 require('dotenv').config();
 
@@ -33,6 +35,9 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
             let overviewID = uuidv4();
             let imageID = uuidv4();
             let hashPwd = await hashPassword('123456');
+            let desc = JSON.stringify(item.mainContent?.content);
+            let curArea = getNumberFromString(item.header?.attributes?.acreage);
+            let curPrice = getNumberFromString(item.header?.attributes?.price);
 
             // insert data in table Posts
             await db.Post.create({
@@ -43,12 +48,14 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
                 address: item.header?.address,
                 attributeID,
                 categoryCode: 'NCT',
-                description: JSON.stringify(item.mainContent?.content),
+                description: desc,
                 userID,
                 overviewID,
-                imageID
+                imageID,
+                areaCode: dataAreas.find(area => area.max > curArea && curArea >= area.min)?.code,
+                priceCode: dataPrices.find(price => price.max > curPrice && curPrice >= price.min)?.code
             });
-
+        
             // insert data in table Attributes
             await db.Attribute.create({
                 id: attributeID,
