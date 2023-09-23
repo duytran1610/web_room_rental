@@ -108,3 +108,28 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
         reject(err);
     }
 });
+
+// insert data price and area
+export const createPricesAndAreas = () => new Promise((resolve, reject) => {
+    try {
+        dataPrices.forEach(async(item) => {
+            await db.Price.create({
+                id: uuidv4(),
+                code: item.code,
+                value: item.value
+            })
+        });
+
+        dataAreas.forEach(async(item) => {
+            await db.Area.create({
+                id: uuidv4(),
+                code: item.code,
+                value: item.value
+            })
+        });
+
+        resolve('Insert data into tables prices and areas');
+    } catch (err) {
+        reject(err);
+    }
+});
