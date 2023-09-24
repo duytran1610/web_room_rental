@@ -2,6 +2,8 @@ import authRouter from "./auth";
 import insertRouter from "./insert";
 import categoryRouter from "./category";
 import postRouter from "./post";
+import priceRouter from "./price";
+import areaRouter from "./area";
 
 const Route = (app) => {
     app.use('/api/v1/auth', authRouter);
@@ -12,6 +14,9 @@ const Route = (app) => {
 
     app.use('/api/v1/post', postRouter);
 
+    app.use('/api/v1/price', priceRouter);
+
+    app.use('/api/v1/area', areaRouter);
 
     app.use('/', (req, res) => {
         res.json('start server ...');

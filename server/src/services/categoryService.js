@@ -15,4 +15,4 @@ export const getAllCategories = () => new Promise(async(resolve, reject) => {
     } catch (err) {
         reject(err);
     }
-})
+});

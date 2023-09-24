@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import generateCode from "../utils/generateCode";
 import { dataPrices, dataAreas } from '../utils/data';
 import { getNumberFromString } from '../utils/common';
-import nhachothue from "../../data/nhachothue.json";
+import chothuematbang from "../../data/chothuematbang.json";
 require('dotenv').config();
 
 
@@ -22,7 +22,7 @@ const hashPassword = (pwd) => new Promise((resolve, reject) => {
 });
 
 // get data body
-const dataBody = nhachothue.body;
+const dataBody = chothuematbang.body;
 
 // get data from directory data and insert into tables in db
 export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
@@ -47,7 +47,7 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
                 labelCode,
                 address: item.header?.address,
                 attributeID,
-                categoryCode: 'NCT',
+                categoryCode: 'CTMB',
                 description: desc,
                 userID,
                 overviewID,
@@ -112,19 +112,19 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
 // insert data price and area
 export const createPricesAndAreas = () => new Promise((resolve, reject) => {
     try {
-        dataPrices.forEach(async(item) => {
+        dataPrices.forEach(async(item, index) => {
             await db.Price.create({
-                id: uuidv4(),
                 code: item.code,
-                value: item.value
+                value: item.value,
+                order: index + 1
             })
         });
 
-        dataAreas.forEach(async(item) => {
+        dataAreas.forEach(async(item, index) => {
             await db.Area.create({
-                id: uuidv4(),
                 code: item.code,
-                value: item.value
+                value: item.value,
+                order: index + 1
             })
         });
 
