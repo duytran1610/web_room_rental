@@ -27,9 +27,9 @@ export const getAllPosts = () => async (dispatch) => {
 }
 
 // get to pagination
-export const getPostsLimit = (page) => async (dispatch) => {
+export const getPostsLimit = (page, query) => async (dispatch) => {
     try {
-        const response = await apiGetPostsLimit(page);
+        const response = await apiGetPostsLimit(page, query);
 
         if (response?.data.err === 0) {
             dispatch({

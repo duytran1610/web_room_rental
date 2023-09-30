@@ -19,7 +19,7 @@ const Pagination = ({page}) => {
     const [isHideEnd, setIsHideEnd] = useState(false);
 
     useEffect(() => {
-        let maxPage = Math.floor(count / posts.length);
+        let maxPage = Math.ceil(count / posts.length);
         let start = curPage - 1 > 1 ? curPage - 1 : 1;
         let end = curPage + 1 > maxPage ? maxPage : curPage + 1;
         let temp = [];
@@ -46,7 +46,7 @@ const Pagination = ({page}) => {
                 />
             )}
             {!isHideEnd && <PageNumber icon={'...'} />}
-            {!isHideEnd && <PageNumber icon={<GrNext />} text={Math.floor(count / posts.length)} setCurPage={setCurPage} />}
+            {!isHideEnd && <PageNumber icon={<GrNext />} text={Math.ceil(count / posts.length)} setCurPage={setCurPage} />}
         </div>
     );
 }

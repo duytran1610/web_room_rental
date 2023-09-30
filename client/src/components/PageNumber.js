@@ -14,9 +14,9 @@ const PageNumber = ({text, curPage, icon, setCurPage}) => {
             setCurPage(+text);
             navigate({
                 pathname: "/",
-                search: `?${createSearchParams({
+                search: createSearchParams({
                     page: text
-                })}`
+                }).toString()
             });
         }
     }

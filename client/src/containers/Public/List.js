@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { Button, Item } from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
-import { actionPost } from '../../store/actions';
+import * as actions from '../../store/actions';
 
 const List = ({page}) => {
   // dispatch
@@ -12,7 +12,7 @@ const List = ({page}) => {
 
   useEffect(() => {
     let offset = page? page - 1 : 0;
-    dispatch(actionPost.getPostsLimit(offset));
+    dispatch(actions.getPostsLimit({page: offset}));
   }, [dispatch, page]);
 
 

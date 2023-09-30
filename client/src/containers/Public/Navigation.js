@@ -2,7 +2,7 @@ import { useEffect} from 'react';
 import {NavLink} from 'react-router-dom';
 import { formatVietnameseToString } from '../../utils/Common/formatVietnameseToString';
 import { useDispatch, useSelector } from 'react-redux';
-import { actionApp } from '../../store/actions';
+import * as actions from '../../store/actions';
 
 
 
@@ -17,7 +17,7 @@ const Navigation = () => {
     const {categories} = useSelector(state => state.app);
 
     useEffect(() => {
-        dispatch(actionApp.getAllCategories());
+        dispatch(actions.getAllCategories());
     }, [dispatch]);
     return (
         <div className="w-full flex justify-center h-[40px] bg-secondary1 text-white">
