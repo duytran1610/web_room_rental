@@ -40,11 +40,13 @@ export const getAllPosts = () => new Promise(async(resolve, reject) => {
 // get limit number posts (to pagination) with request (query)
 export const getPostsLimit = (page, query) => new Promise(async(resolve, reject) => {
     try {
+        let offset = (!page || +page <= 1)? 0 : +page - 1;
+
         const posts = await db.Post.findAndCountAll({
             where: query,
             raw: true,
             nest: true,
-            offset: page * process.env.LIMIT_PAGINATION || 0,
+            offset: offset * process.env.LIMIT_PAGINATION,
             limit: process.env.LIMIT_PAGINATION,
             include: [
                 {

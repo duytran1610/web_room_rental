@@ -7,8 +7,7 @@ function App() {
     <div className="App bg-primary">
       <Routes>
         <Route path={path.HOME} element={<Home />} >  
-          <Route index element={<Homepage />} />    
-          <Route path={path.HOME__PAGE} element={<Homepage />} />     
+          <Route index element={<Homepage />} />     
           <Route path={path.LOGIN} element={<Login />} />
           <Route path={path.CTCN} element={<RentalApartment />} />
           <Route path={path.CTMB} element={<RentalSpace />} />

@@ -1,11 +1,15 @@
 import {useEffect, useState} from 'react';
 import { PageNumber } from '../../components';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import icons from '../../utils/icons';
 
 const {GrNext, GrPrevious} = icons;
 
-const Pagination = ({page}) => {
+const Pagination = () => {
+    // query parameters
+    const [params] = useSearchParams();
+
     // get count, posts from postReudcer in redux store
     const {count, posts} = useSelector(state => state.post);
 
@@ -13,13 +17,20 @@ const Pagination = ({page}) => {
     const [arrPage, setArrPage] = useState([]);
 
     // page current
-    const [curPage, setCurPage] = useState(+page || 1);
+    const [curPage, setCurPage] = useState(1);
 
     const [isHideStart, setIsHideStart] = useState(false);
     const [isHideEnd, setIsHideEnd] = useState(false);
 
+    // Update value for page
     useEffect(() => {
-        let maxPage = Math.ceil(count / posts.length);
+        let page = params.get('page');
+        page && +page !== curPage && setCurPage(+page);
+    }, [params, curPage]);
+    
+    // set value for list pages
+    useEffect(() => {
+        let maxPage = Math.ceil(count / process.env.REACT_APP_LIMIT_POSTS);
         let start = curPage - 1 > 1 ? curPage - 1 : 1;
         let end = curPage + 1 > maxPage ? maxPage : curPage + 1;
         let temp = [];
@@ -46,7 +57,7 @@ const Pagination = ({page}) => {
                 />
             )}
             {!isHideEnd && <PageNumber icon={'...'} />}
-            {!isHideEnd && <PageNumber icon={<GrNext />} text={Math.ceil(count / posts.length)} setCurPage={setCurPage} />}
+            {!isHideEnd && <PageNumber icon={<GrNext />} text={Math.ceil(count / process.env.REACT_APP_LIMIT_POSTS)} setCurPage={setCurPage} />}
         </div>
     );
 }
