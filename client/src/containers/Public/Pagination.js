@@ -26,6 +26,7 @@ const Pagination = () => {
     useEffect(() => {
         let page = params.get('page');
         page && +page !== curPage && setCurPage(+page);
+        !page && setCurPage(1);
     }, [params, curPage]);
     
     // set value for list pages

@@ -3,6 +3,9 @@ require('dotenv').config();
 import cors from 'cors';
 import connectDB from './config/connectDB';
 import Route from './routes';
+import { getNumberFromString } from './utils/common';
+
+console.log(getNumberFromString('600.000'))
 
 // init app
 const app = express();
