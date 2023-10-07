@@ -2,8 +2,6 @@ import React, {memo} from 'react';
 import icons from '../utils/icons';
 import { formatVietnameseToString } from '../utils/Common/formatVietnameseToString';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import * as actions from '../store/actions';
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
 
@@ -11,9 +9,6 @@ const {GrNext} = icons;
 
 // isDouble (user create name) - thuộc tính đế biết rằng cần hiện thị chia làm 2 cột
 const ItemSidebar = ({content, title, isDouble, type}) => {
-    // dispatch
-    const dispatch = useDispatch();
-
     // navigate
     const navigate = useNavigate();
 

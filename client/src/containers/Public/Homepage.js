@@ -19,7 +19,7 @@ const Homepage = () => {
 
 
     return (
-        <div className='border border-red-500 w-full flex flex-col gap-3'>
+        <div className='w-full flex flex-col gap-3'>
             <div>
                 <h1 className='text-[28px] font-bold'>{text.HOMEPAGE_TITLE}</h1>
                 <p className='text-base text-gray-700'>{text.HOMEPAGE_DESCRIPTION}</p>
@@ -30,7 +30,7 @@ const Homepage = () => {
                     <List />
                     <Pagination />
                 </div>
-                <div className='w-[30%] border border-green-500 flex flex-col justify-start gap-4'>
+                <div className='w-[30%] flex flex-col justify-start gap-4'>
                     <ItemSidebar content={categories} title={'List rental'}/>
                     <ItemSidebar isDouble={true} type={'priceCode'} content={prices} title={'Xem theo gia'}/>
                     <ItemSidebar isDouble={true} type={'areaCode'} content={areas} title={'Xem theo dien tich'}/>

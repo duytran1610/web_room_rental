@@ -38,12 +38,12 @@ const PageNumber = ({text, curPage, icon, setCurPage}) => {
     }
 
     return (
-        <div 
+        <button 
             className={+text === +curPage ? Active : `${noActive} ${text? 'cursor-pointer' : 'cursor-text'}`}
             onClick={handleChangePage}
         >
             {icon || text}
-        </div>
+        </button>
     );
 }
 
