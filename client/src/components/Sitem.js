@@ -1,4 +1,5 @@
 import React,{memo} from 'react';
+import moment from 'moment';           // format time 
 
 const Sitem = ({title, price, img, createdAt}) => {
     return (
@@ -12,7 +13,7 @@ const Sitem = ({title, price, img, createdAt}) => {
                 <h4 className='text-blue-600 text-[15px]'>{`${title?.slice(0,45)}...`}</h4>
                 <div className='flex justify-between'>
                     <span className='text-sm font-medium text-green-500'>{price}</span>
-                    <span className='text-sm text-gray-300'>{createdAt}</span>
+                    <span className='text-sm text-gray-300'>{moment(createdAt).fromNow()}</span>
                 </div>
             </div>
         </div>
