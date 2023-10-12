@@ -28,3 +28,17 @@ export const getPostsLimit = async (req, res) => {
         })
     }
 }
+
+// get new posts at time
+export const getNewPosts = async (req, res) => {
+    try {
+        const response = await postService.getNewPostsService();
+
+        return res.status(200).json(response);
+    } catch (err) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at post controller: ' + err
+        })
+    }
+}

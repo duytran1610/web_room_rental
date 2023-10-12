@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import {text} from '../../utils/constant';
-import { Province, ItemSidebar } from '../../components';
+import { Province, ItemSidebar, RelatedPost } from '../../components';
 import {List, Pagination} from '../Public';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
@@ -34,6 +34,7 @@ const Homepage = () => {
                     <ItemSidebar content={categories} title={'List rental'}/>
                     <ItemSidebar isDouble={true} type={'priceCode'} content={prices} title={'Xem theo gia'}/>
                     <ItemSidebar isDouble={true} type={'areaCode'} content={areas} title={'Xem theo dien tich'}/>
+                    <RelatedPost />
                 </div>
             </div>
         </div>

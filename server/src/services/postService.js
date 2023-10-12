@@ -77,3 +77,37 @@ export const getPostsLimit = (page, query) => new Promise(async(resolve, reject)
         reject(err);
     }
 });
+
+// get new posts at time
+export const getNewPostsService = () => new Promise(async(resolve, reject) => {
+    try {
+        const posts = await db.Post.findAll({
+            raw: true,
+            nest: true,
+            offset: 0,
+            order: [['createdAt', 'DESC']],
+            limit: process.env.LIMIT_PAGINATION,
+            include: [
+                {
+                    model: db.Image,
+                    as: 'imgs',
+                    attributes: ['image']
+                },
+                {
+                    model: db.Attribute,
+                    as: 'attrs',
+                    attributes: ['price', 'acreage', 'published', 'hashtag']
+                }
+            ],
+            attributes: ['id', 'title', 'star', 'createdAt']
+        });
+
+        resolve({
+            err: posts ? 0 : -1,
+            msg: posts ? 'Get new posts succeed!' : 'Fail get posts!',
+            data: posts
+        });
+    } catch (err) {
+        reject(err);
+    }
+});

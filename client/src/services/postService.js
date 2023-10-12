@@ -28,3 +28,17 @@ export const apiGetPostsLimit = (query) => new Promise(async(resolve, reject) =>
         reject(err);
     }
 });
+
+// get new posts
+export const apiGetNewPosts = () => new Promise(async(resolve, reject) => {
+    try {
+        const response = instance({
+            method: 'get',
+            url: `/api/v1/post/new-post`,
+        });
+
+        resolve(response);
+    } catch (err) {
+        reject(err);
+    }
+});
