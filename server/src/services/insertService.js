@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import generateCode from "../utils/generateCode";
 import { dataPrices, dataAreas } from '../utils/data';
 import { getNumberFromString } from '../utils/common';
-import chothuematbang from "../../data/chothuematbang.json";
+import nhachothue from "../../data/nhachothue.json";
 require('dotenv').config();
 
 
@@ -22,7 +22,7 @@ const hashPassword = (pwd) => new Promise((resolve, reject) => {
 });
 
 // get data body
-const dataBody = chothuematbang.body;
+const dataBody = nhachothue.body;
 
 // get data from directory data and insert into tables in db
 export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
@@ -47,7 +47,7 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
                 labelCode,
                 address: item.header?.address,
                 attributeID,
-                categoryCode: 'CTMB',
+                categoryCode: 'NCT',
                 description: desc,
                 userID,
                 overviewID,

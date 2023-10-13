@@ -4,8 +4,7 @@ import db from "../models";
 export const getAllCategories = () => new Promise(async(resolve, reject) => {
     try {
         const categories = await db.Category.findAll({ 
-            raw: true,
-            attributes: ['code', 'value']
+            raw: true
         });
         resolve({
             err: categories ? 0 : -1,

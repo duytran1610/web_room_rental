@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions';
 import { useSearchParams } from 'react-router-dom';
 
-const List = () => {
+const List = ({categoryCode}) => {
   // dispatch
   const dispatch = useDispatch();
 
@@ -23,8 +23,11 @@ const List = () => {
     // convert arr to obj
     let paramsSearchObj = paramsSearch.reduce((obj, i) => ({...obj, [i[0]]: i[1]}), {});
 
+    // get posts by categoryCode
+    if (categoryCode) paramsSearchObj.categoryCode = categoryCode;
+
     dispatch(actions.getPostsLimit(paramsSearchObj));
-  }, [dispatch, params]);
+  }, [dispatch, params, categoryCode]);
 
 
   return (

@@ -1,5 +1,6 @@
 import React,{memo} from 'react';
 import moment from 'moment';           // format time 
+import 'moment/locale/vi';             // format time with lang vi
 
 const Sitem = ({title, price, img, createdAt}) => {
     return (

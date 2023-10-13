@@ -1,22 +1,12 @@
-import { useEffect } from 'react';
+
 import {text} from '../../utils/constant';
 import { Province, ItemSidebar, RelatedPost } from '../../components';
 import {List, Pagination} from '../Public';
-import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../store/actions';
+import { useSelector } from 'react-redux';
 
 const Homepage = () => {
-    // get categories, prices from appReducer in redux store
+    // get categories, prices, areas from appReducer in redux store
     const {categories, prices, areas} = useSelector(state => state.app);
-
-    // dispatch
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(actions.getAllPrices());
-        dispatch(actions.getAllAreas());
-    },[dispatch]);
-
 
     return (
         <div className='w-full flex flex-col gap-3'>
