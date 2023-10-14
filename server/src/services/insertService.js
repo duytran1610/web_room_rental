@@ -4,7 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 import generateCode from "../utils/generateCode";
 import { dataPrices, dataAreas } from '../utils/data';
 import { getNumberFromString } from '../utils/common';
-import nhachothue from "../../data/nhachothue.json";
+import chothuecanho from "../../data/chothuecanho.json";
+import chothuematbang from "../../data/chothuematbang.json";
+import chothuephongtro from "../../data/chothuephongtro.json";
+import nhachothue from "../../data/chothuecanho.json";
 require('dotenv').config();
 
 
@@ -22,84 +25,108 @@ const hashPassword = (pwd) => new Promise((resolve, reject) => {
 });
 
 // get data body
-const dataBody = nhachothue.body;
+const dataBody = [chothuecanho.body, chothuematbang.body, chothuephongtro.body, nhachothue.body];
+
+// get categoryCode
+const categoryCodes = ['CTCH', 'CTMB', 'CTPT', 'NCT'];
 
 // get data from directory data and insert into tables in db
 export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
-    try {        
-        dataBody.forEach(async item => {
-            let postID = uuidv4();
-            let labelCode = generateCode(item.header?.class?.classType);
-            let attributeID = uuidv4();
-            let userID = uuidv4();
-            let overviewID = uuidv4();
-            let imageID = uuidv4();
-            let hashPwd = await hashPassword('123456');
-            let desc = JSON.stringify(item.mainContent?.content);
-            let curArea = getNumberFromString(item.header?.attributes?.acreage);
-            let curPrice = getNumberFromString(item.header?.attributes?.price);
+    try {
+        const labelCodes = [];
+        const provinceCodes = [];
 
-            // insert data in table Posts
-            await db.Post.create({
-                id: postID,
-                title: item.header?.title,
-                star: item.header?.star,
-                labelCode,
-                address: item.header?.address,
-                attributeID,
-                categoryCode: 'NCT',
-                description: desc,
-                userID,
-                overviewID,
-                imageID,
-                areaCode: dataAreas.find(area => area.max > curArea && curArea >= area.min)?.code,
-                priceCode: dataPrices.find(price => price.max > curPrice && curPrice >= price.min)?.code
-            });
-        
-            // insert data in table Attributes
-            await db.Attribute.create({
-                id: attributeID,
-                price: item.header?.attributes?.price,
-                acreage: item.header?.attributes?.acreage,
-                published: item.header?.attributes?.published,
-                hashtag: item.header?.attributes?.hashtag
-            });
+        dataBody.forEach((data, i) => {
+            data.forEach(async item => {
+                let postID = uuidv4();
 
-            // insert data in table Images
-            await db.Image.create({
-                id: imageID,
-                image: JSON.stringify(item.imgs)
-            });
-
-            // insert data in table Labels
-            await db.Label.findOrCreate({
-                where: {code: labelCode},
-                defaults: {
+                let labelCode = generateCode(item.header?.class?.classType);
+                // check unique labelCode
+                !labelCodes.some(item => item.code === labelCode) && labelCodes.push({
                     code: labelCode,
                     value: item.header?.class?.classType
-                }
-            });
+                });    
 
-            // insert data in table Overviews
-            await db.Overview.create({
-                id: overviewID,
-                code: item.overview?.content?.find(i => i.name === "Mã tin:")?.content,
-                area: item.overview?.content?.find(i => i.name === "Khu vực")?.content,
-                type: item.overview?.content?.find(i => i.name === "Loại tin rao:")?.content,
-                target: item.overview?.content?.find(i => i.name === "Đối tượng thuê:")?.content,
-                bonus: item.overview?.content?.find(i => i.name === "Gói tin:")?.content,
-                created: item.overview?.content?.find(i => i.name === "Ngày đăng:")?.content,
-                expire: item.overview?.content?.find(i => i.name === "Ngày hết hạn:")?.content,
-            });
+                let provinceCode = generateCode(item?.header?.address?.split(',')?.slice(-1)[0]);
+                // check unique provinceCode
+                !provinceCodes.some(item => item.code === provinceCode) && provinceCodes.push({
+                    code: provinceCode,
+                    value: item?.header?.address?.split(',')?.slice(-1)[0]
+                });  
 
-            // insert data in table Users
-            await db.User.create({
-                id: userID,
-                name: item.contact?.content?.find(i => i.name === "Liên hệ:")?.content,
-                password: hashPwd,
-                phone: item.contact?.content?.find(i => i.name === "Điện thoại:")?.content,
-                zalo: item.contact?.content?.find(i => i.name === "Zalo")?.content,
-            })
+                let attributeID = uuidv4();
+                let userID = uuidv4();
+                let overviewID = uuidv4();
+                let imageID = uuidv4();
+                let hashPwd = await hashPassword('123456');
+                let desc = JSON.stringify(item.mainContent?.content);
+                let curArea = getNumberFromString(item.header?.attributes?.acreage);
+                let curPrice = getNumberFromString(item.header?.attributes?.price);
+
+                // insert data in table Posts
+                await db.Post.create({
+                    id: postID,
+                    title: item.header?.title,
+                    star: item.header?.star,
+                    labelCode,
+                    address: item.header?.address,
+                    attributeID,
+                    categoryCode: categoryCodes[i],
+                    description: desc,
+                    userID,
+                    overviewID,
+                    imageID,
+                    areaCode: dataAreas.find(area => area.max > curArea && curArea >= area.min)?.code,
+                    priceCode: dataPrices.find(price => price.max > curPrice && curPrice >= price.min)?.code,
+                    provinceCode
+                });
+            
+                // insert data in table Attributes
+                await db.Attribute.create({
+                    id: attributeID,
+                    price: item.header?.attributes?.price,
+                    acreage: item.header?.attributes?.acreage,
+                    published: item.header?.attributes?.published,
+                    hashtag: item.header?.attributes?.hashtag
+                });
+    
+                // insert data in table Images
+                await db.Image.create({
+                    id: imageID,
+                    image: JSON.stringify(item.imgs)
+                });
+    
+                // insert data in table Overviews
+                await db.Overview.create({
+                    id: overviewID,
+                    code: item.overview?.content?.find(i => i.name === "Mã tin:")?.content,
+                    area: item.overview?.content?.find(i => i.name === "Khu vực")?.content,
+                    type: item.overview?.content?.find(i => i.name === "Loại tin rao:")?.content,
+                    target: item.overview?.content?.find(i => i.name === "Đối tượng thuê:")?.content,
+                    bonus: item.overview?.content?.find(i => i.name === "Gói tin:")?.content,
+                    created: item.overview?.content?.find(i => i.name === "Ngày đăng:")?.content,
+                    expire: item.overview?.content?.find(i => i.name === "Ngày hết hạn:")?.content,
+                });
+    
+                // insert data in table Users
+                await db.User.create({
+                    id: userID,
+                    name: item.contact?.content?.find(i => i.name === "Liên hệ:")?.content,
+                    password: hashPwd,
+                    phone: item.contact?.content?.find(i => i.name === "Điện thoại:")?.content,
+                    zalo: item.contact?.content?.find(i => i.name === "Zalo")?.content,
+                });
+            });
+        });
+
+        provinceCodes?.forEach(async (item) => {
+            // insert data in table Provinces
+            await db.Province.create(item);
+        });
+
+        labelCodes?.forEach(async (item) => {
+            // insert data in table Labels
+            await db.Label.create(item);
         });
 
         resolve('Done!');
