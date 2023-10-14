@@ -78,3 +78,29 @@ export const getAllAreas = () => async (dispatch) => {
         });
     }
 }
+
+// get all provinces
+export const getAllProvinces = () => async (dispatch) => {
+    try {
+        const response = await apis.apiGetAllProvinces();
+
+        if (response?.data.err === 0) {
+            dispatch({
+                type: actionTypes.GET_PROVINCES,
+                provinces: response.data.data
+            });
+        } 
+        else {
+            dispatch({
+                type: actionTypes.GET_PROVINCES,
+                msg: response.data.msg,
+                provinces: null
+            });
+        }
+    } catch (err) {
+        dispatch({
+            type: actionTypes.GET_PROVINCES,
+            provinces: null
+        });
+    }
+}

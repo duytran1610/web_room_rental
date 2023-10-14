@@ -33,7 +33,7 @@ const Header = () => {
     useEffect(() => {
         // scrolling list item into view
         headerRef.current.scrollIntoView({behavior: 'smooth', block: 'start'});
-    }, [params.get('page')]);
+    }, [params]);
 
     return (
         <div ref={headerRef} className="w-4/5 lg:w-1100 flex items-center justify-between bg-primary">

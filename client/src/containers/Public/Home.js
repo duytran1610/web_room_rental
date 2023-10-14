@@ -13,6 +13,7 @@ const Home = () => {
     useEffect(() => {
         dispatch(actions.getAllPrices());
         dispatch(actions.getAllAreas());
+        dispatch(actions.getAllProvinces());
     },[dispatch]);
 
     return (

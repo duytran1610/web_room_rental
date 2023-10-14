@@ -4,7 +4,7 @@ import {CiLocationOn} from 'react-icons/ci';
 import {TbReportMoney} from 'react-icons/tb';
 import {RiCrop2Line} from 'react-icons/ri';
 import {GiFamilyHouse} from 'react-icons/gi';
-import {GrNext, GrPrevious} from 'react-icons/gr';
+import {GrNext, GrPrevious, GrLinkPrevious} from 'react-icons/gr';
 
 const icons = {
     AiOutlinePlusCircle,
@@ -19,7 +19,8 @@ const icons = {
     AiOutlineHeart,
     BsBookmarkStarFill,
     GrNext,
-    GrPrevious
+    GrPrevious,
+    GrLinkPrevious
 }
 
 export default icons;
