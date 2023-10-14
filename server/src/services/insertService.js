@@ -24,11 +24,25 @@ const hashPassword = (pwd) => new Promise((resolve, reject) => {
     }   
 });
 
-// get data body
-const dataBody = [chothuecanho.body, chothuematbang.body, chothuephongtro.body, nhachothue.body];
-
-// get categoryCode
-const categoryCodes = ['CTCH', 'CTMB', 'CTPT', 'NCT'];
+// get dataBody
+const dataBody = [
+    {
+        body: chothuecanho.body,
+        code: 'CTCH'
+    },
+    {
+        body: chothuematbang.body,
+        code: 'CTMB'
+    },
+    {
+        body: chothuephongtro.body,
+        code: 'CTPT'
+    },
+    {
+        body: nhachothue.body,
+        code: 'NCT'
+    }
+];
 
 // get data from directory data and insert into tables in db
 export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
@@ -37,7 +51,7 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
         const provinceCodes = [];
 
         dataBody.forEach((data, i) => {
-            data.forEach(async item => {
+            data.body.forEach(async item => {
                 let postID = uuidv4();
 
                 let labelCode = generateCode(item.header?.class?.classType);
@@ -71,7 +85,7 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
                     labelCode,
                     address: item.header?.address,
                     attributeID,
-                    categoryCode: categoryCodes[i],
+                    categoryCode: data.code,
                     description: desc,
                     userID,
                     overviewID,
