@@ -5,15 +5,22 @@ const {GrLinkPrevious} = icons;
 
 const Modal = ({setIsShowModal, content, name}) => {
     // state
-    const [persentStart, setPersentStart] = useState(0);
-    const [persentEnd, setPersentEnd] = useState(100);
+    // get value two range slider
+    const [persent1, setPersent1] = useState(0);
+    const [persent2, setPersent2] = useState(100);
 
     useEffect(() => {
         const activedTrack = document.getElementById('track-active');
 
-        activedTrack.style.left = `${persentStart}%`;
-        activedTrack.style.right = `${100-persentEnd}%`;
-    }, [persentStart, persentEnd])
+        if (persent1 <= persent2) {
+            activedTrack.style.left = `${persent1}%`;
+            activedTrack.style.right = `${100-persent2}%`;
+        }
+        else {
+            activedTrack.style.left = `${persent2}%`;
+            activedTrack.style.right = `${100-persent1}%`;
+        }
+    }, [persent1, persent2])
 
     return (
         <div 
@@ -55,8 +62,8 @@ const Modal = ({setIsShowModal, content, name}) => {
                                 min='0'
                                 step='5'
                                 type='range'
-                                value={persentStart}
-                                onChange={(e) => setPersentStart(e.target.value) }
+                                value={persent1}
+                                onChange={(e) => setPersent1(+e.target.value) }
                                 className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
                                 />
                                 <input 
@@ -64,8 +71,8 @@ const Modal = ({setIsShowModal, content, name}) => {
                                 min='0'
                                 step='5'
                                 type='range'
-                                value={persentEnd}
-                                onChange={(e) => setPersentEnd(e.target.value) }
+                                value={persent2}
+                                onChange={(e) => setPersent2(+e.target.value) }
                                 className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
                                 />
                             </div>
