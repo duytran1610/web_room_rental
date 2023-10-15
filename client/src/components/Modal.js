@@ -9,6 +9,7 @@ const Modal = ({setIsShowModal, content, name}) => {
     const [persent1, setPersent1] = useState(0);
     const [persent2, setPersent2] = useState(100);
 
+    // Update value two range slider
     useEffect(() => {
         const activedTrack = document.getElementById('track-active');
 
@@ -20,7 +21,24 @@ const Modal = ({setIsShowModal, content, name}) => {
             activedTrack.style.left = `${persent2}%`;
             activedTrack.style.right = `${100-persent1}%`;
         }
-    }, [persent1, persent2])
+    }, [persent1, persent2]);
+
+    const handleClickTrack = (e) => {
+        e.stopPropagation();
+        const trackEl = document.getElementById('track');
+
+        // element size and position relative to viewport 
+        const trackRect = trackEl.getBoundingClientRect();
+        
+        let persent = Math.round((e.clientX - trackRect.x) * 100 / trackRect.width);
+
+        if (Math.abs(persent - persent1) <= Math.abs(persent - persent2)) {
+            setPersent1(persent);
+        }
+        else {
+            setPersent2(persent);
+        }
+    }
 
     return (
         <div 
@@ -54,13 +72,21 @@ const Modal = ({setIsShowModal, content, name}) => {
                         <div className='p-4'>
                             <div className='flex flex-col items-center justify-center relative'>
                                 {/* Create thanh độ dài của phạm vi kéo (slider track) */}
-                                <div className='slider-track h-[5px] absolute top-0 bottom-0 bg-gray-300 w-full rounded-md'></div>
-                                <div id="track-active" className='slider-track-active h-[5px] absolute top-0 bottom-0 bg-orange-600 file:rounded-md'></div>
+                                <div 
+                                    id="track" 
+                                    className='slider-track h-[5px] absolute top-0 bottom-0 bg-gray-300 w-full rounded-md'
+                                    onClick={handleClickTrack} 
+                                ></div>
+                                <div 
+                                    id="track-active" 
+                                    className='slider-track-active h-[5px] absolute top-0 bottom-0 bg-orange-600 file:rounded-md'
+                                    onClick={handleClickTrack} 
+                                ></div>
                                 {/* appearance-none: xóa đi những mặc định của element */}
                                 <input 
                                 max='100'
                                 min='0'
-                                step='5'
+                                step='1'
                                 type='range'
                                 value={persent1}
                                 onChange={(e) => setPersent1(+e.target.value) }
@@ -69,7 +95,7 @@ const Modal = ({setIsShowModal, content, name}) => {
                                 <input 
                                 max='100'
                                 min='0'
-                                step='5'
+                                step='1'
                                 type='range'
                                 value={persent2}
                                 onChange={(e) => setPersent2(+e.target.value) }

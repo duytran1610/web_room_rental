@@ -12,16 +12,19 @@
 input[type="range"]::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     height: 5px;
+    margin: 0 -4px;
 }
 
 input[type="range"]::-moz-range-track {
     -moz-appearance: none;
     height: 5px;
+    margin: 0 -4px;
 }
 
 input[type="range"]::-ms-track {
     appearance: none;
     height: 5px;
+    margin: 0 -4px;
 }
 
 /* set CSS for slider thumb (điểm chấm tròn biểu diễn giá trị) */
