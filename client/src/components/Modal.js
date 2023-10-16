@@ -8,6 +8,8 @@ const Modal = ({setIsShowModal, content, name}) => {
     // get value two range slider
     const [persent1, setPersent1] = useState(0);
     const [persent2, setPersent2] = useState(100);
+    // element is clicked
+    const [activeEl, setActiveEl] = useState('');
 
     // Update value two range slider
     useEffect(() => {
@@ -23,14 +25,14 @@ const Modal = ({setIsShowModal, content, name}) => {
         }
     }, [persent1, persent2]);
 
-    const handleClickTrack = (e) => {
+    const handleClickTrack = (e, value) => {
         e.stopPropagation();
         const trackEl = document.getElementById('track');
 
         // element size and position relative to viewport 
         const trackRect = trackEl.getBoundingClientRect();
         
-        let persent = Math.round((e.clientX - trackRect.x) * 100 / trackRect.width);
+        let persent = value? value : Math.round((e.clientX - trackRect.x) * 100 / trackRect.width);
 
         if (Math.abs(persent - persent1) <= Math.abs(persent - persent2)) {
             setPersent1(persent);
@@ -38,10 +40,46 @@ const Modal = ({setIsShowModal, content, name}) => {
         else {
             setPersent2(persent);
         }
+
+        // turn off active element
+        activeEl && setActiveEl('');
     }
 
     // convert 100% to 15 
     const converPersentToPrice = persent => Math.ceil(Math.round(persent * 1.5) / 5) / 2;
+
+    // convert 15 to 100%
+    const convertPriceToPersent = price => Math.floor(price / 15  * 100);
+
+    // get number in value item
+    const getNumbers = string => string.split(' ').map(item => +item).filter(item => item);
+
+    // handle value price
+    const handlePrice = (item) => {
+        setActiveEl(item.code);
+
+        // get numbers in price
+        const arrNum = getNumbers(item.value);
+
+        if (arrNum.length === 1 && arrNum[0] === 1) {
+            setPersent1(0);
+            setPersent2(convertPriceToPersent(1)); 
+        }
+        else if (arrNum.length === 1 && arrNum[0] === 15) {
+            setPersent1(convertPriceToPersent(15));
+            setPersent2(convertPriceToPersent(15)); 
+        }
+        else {
+            setPersent1(convertPriceToPersent(arrNum[0]));
+            setPersent2(convertPriceToPersent(arrNum[1]));
+        }
+    }
+
+    // handle Submit
+    const handleSubmit = (e) => {
+        console.log('start ', converPersentToPrice(persent1));
+        console.log('end ', converPersentToPrice(persent2));
+    }
 
     return (
         <div 
@@ -49,7 +87,7 @@ const Modal = ({setIsShowModal, content, name}) => {
             onClick={() => setIsShowModal(false)}
         >
             <div
-             className='w-1/3 bg-white rounded-md'
+             className='w-2/5 bg-white rounded-md'
              onClick={(e) => e.stopPropagation()}
             >
                 <div className='h-[45px] px-4 flex items-center border-b border-gray-200'>
@@ -73,6 +111,7 @@ const Modal = ({setIsShowModal, content, name}) => {
                         )
                         :
                         <div className='px-12 py-20'>
+                            {/* Two range slider */}
                             <div className='flex flex-col items-center justify-center relative'>
                                 <div className='absolute z-30 top-[-48px] font-bold text-xl text-orange-600'>
                                     {`Tu ${converPersentToPrice(persent1 >= persent2? persent2 : persent1)} - ${converPersentToPrice(persent2 >= persent1? persent2 : persent1)} trieu`}
@@ -95,7 +134,10 @@ const Modal = ({setIsShowModal, content, name}) => {
                                 step='1'
                                 type='range'
                                 value={persent1}
-                                onChange={(e) => setPersent1(+e.target.value) }
+                                onChange={(e) => {
+                                    setPersent1(+e.target.value);
+                                    activeEl && setActiveEl('');
+                                } }
                                 className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
                                 />
                                 <input 
@@ -104,17 +146,52 @@ const Modal = ({setIsShowModal, content, name}) => {
                                 step='1'
                                 type='range'
                                 value={persent2}
-                                onChange={(e) => setPersent2(+e.target.value) }
+                                onChange={(e) => {
+                                    setPersent2(+e.target.value);
+                                    activeEl && setActiveEl('');
+                                } }
                                 className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
                                 />
                                 <div className='absolute top-4 z-10 flex justify-between left-0 right-0'>
-                                    <span className=''>0</span>
-                                    <span className='mr-[-12px]'>15 triệu + </span>
+                                    <span 
+                                        className='cursor-pointer'
+                                        onClick={(e) => handleClickTrack(e, 0)}
+                                    >
+                                        0
+                                    </span>
+                                    <span 
+                                        className='mr-[-12px] cursor-pointer'
+                                        onClick={(e) => handleClickTrack(e, 100)}
+                                    >
+                                        15 triệu + 
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Items price */}
+                            <div className='mt-16'> 
+                                <h4 className='font-medium mb-4'>Choose quickly</h4>
+                                <div className='flex gap-2 items-center flex-wrap w-full'>
+                                    {content?.map(item => 
+                                        <button 
+                                            key={item.code} 
+                                            className={`px-4 py-2 rounded-md cursor-pointer ${item.code === activeEl? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                            onClick={() => handlePrice(item)}
+                                        >
+                                            {item.value}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     }
                 </div>
+                <button
+                    className='w-full bg-orange-400 py-2 font-medium rounded-bl-md rounded-br-md'
+                    onClick={handleSubmit}
+                >
+                    Confirm
+                </button>
             </div>
         </div>
     )
