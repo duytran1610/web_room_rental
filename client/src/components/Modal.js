@@ -40,6 +40,9 @@ const Modal = ({setIsShowModal, content, name}) => {
         }
     }
 
+    // convert 100% to 15 
+    const converPersentToPrice = persent => Math.ceil(Math.round(persent * 1.5) / 5) / 2;
+
     return (
         <div 
             className='fixed top-0 left-0 right-0 bottom-0 z-10 bg-overlay70 flex justify-center items-center'
@@ -69,8 +72,11 @@ const Modal = ({setIsShowModal, content, name}) => {
                             </span>
                         )
                         :
-                        <div className='p-4'>
+                        <div className='px-12 py-20'>
                             <div className='flex flex-col items-center justify-center relative'>
+                                <div className='absolute z-30 top-[-48px] font-bold text-xl text-orange-600'>
+                                    {`Tu ${converPersentToPrice(persent1 >= persent2? persent2 : persent1)} - ${converPersentToPrice(persent2 >= persent1? persent2 : persent1)} trieu`}
+                                </div>
                                 {/* Create thanh độ dài của phạm vi kéo (slider track) */}
                                 <div 
                                     id="track" 
@@ -101,6 +107,10 @@ const Modal = ({setIsShowModal, content, name}) => {
                                 onChange={(e) => setPersent2(+e.target.value) }
                                 className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
                                 />
+                                <div className='absolute top-4 z-10 flex justify-between left-0 right-0'>
+                                    <span className=''>0</span>
+                                    <span className='mr-[-12px]'>15 triệu + </span>
+                                </div>
                             </div>
                         </div>
                     }
