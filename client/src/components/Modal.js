@@ -15,13 +15,15 @@ const Modal = ({setIsShowModal, content, name}) => {
     useEffect(() => {
         const activedTrack = document.getElementById('track-active');
 
-        if (persent1 <= persent2) {
-            activedTrack.style.left = `${persent1}%`;
-            activedTrack.style.right = `${100-persent2}%`;
-        }
-        else {
-            activedTrack.style.left = `${persent2}%`;
-            activedTrack.style.right = `${100-persent1}%`;
+        if (activedTrack) {
+            if (persent1 <= persent2) {
+                activedTrack.style.left = `${persent1}%`;
+                activedTrack.style.right = `${100-persent2}%`;
+            }
+            else {
+                activedTrack.style.left = `${persent2}%`;
+                activedTrack.style.right = `${100-persent1}%`;
+            }
         }
     }, [persent1, persent2]);
 
@@ -45,40 +47,60 @@ const Modal = ({setIsShowModal, content, name}) => {
         activeEl && setActiveEl('');
     }
 
-    // convert 100% to 15 
-    const converPersentToPrice = persent => Math.ceil(Math.round(persent * 1.5) / 5) / 2;
+    // convert 100% to target (price, area) 
+    const converPersentToTarget = persent => {
+        if (name === 'prices')
+            return Math.ceil(Math.round(persent * 1.5) / 5) / 2;
+        if (name === 'areas')
+            return Math.ceil(Math.round(persent * 0.9) / 5) * 5;
+        return 0;
+    }
 
-    // convert 15 to 100%
-    const convertPriceToPersent = price => Math.floor(price / 15  * 100);
+    // convert target (price, area) to 100%
+    const convertTargetToPersent = target => {
+        if (name === 'prices')
+            return Math.floor(target / 15  * 100);
+        if (name === 'areas')
+            return Math.floor(target / 90  * 100);
+        return 0;
+    };
 
     // get number in value item
-    const getNumbers = string => string.split(' ').map(item => +item).filter(item => item);
+    const getNumbers = string => string.match(/\d+/g).map(item => +item);
 
-    // handle value price
-    const handlePrice = (item) => {
+    // handle value target (price, area)
+    const handleTarget = (item) => {
         setActiveEl(item.code);
 
-        // get numbers in price
+        // get numbers in target (price, area)
         const arrNum = getNumbers(item.value);
 
         if (arrNum.length === 1 && arrNum[0] === 1) {
             setPersent1(0);
-            setPersent2(convertPriceToPersent(1)); 
+            setPersent2(convertTargetToPersent(1)); 
         }
         else if (arrNum.length === 1 && arrNum[0] === 15) {
-            setPersent1(convertPriceToPersent(15));
-            setPersent2(convertPriceToPersent(15)); 
+            setPersent1(convertTargetToPersent(15));
+            setPersent2(convertTargetToPersent(15)); 
+        }
+        else if (arrNum.length === 1 && arrNum[0] === 20) {
+            setPersent1(0);
+            setPersent2(convertTargetToPersent(20));
+        }
+        else if (arrNum.length === 1 && arrNum[0] === 90) {
+            setPersent1(convertTargetToPersent(90));
+            setPersent2(convertTargetToPersent(90)); 
         }
         else {
-            setPersent1(convertPriceToPersent(arrNum[0]));
-            setPersent2(convertPriceToPersent(arrNum[1]));
+            setPersent1(convertTargetToPersent(arrNum[0]));
+            setPersent2(convertTargetToPersent(arrNum[1]));
         }
     }
 
     // handle Submit
     const handleSubmit = (e) => {
-        console.log('start ', converPersentToPrice(persent1));
-        console.log('end ', converPersentToPrice(persent2));
+        console.log('start ', converPersentToTarget(persent1));
+        console.log('end ', converPersentToTarget(persent2));
     }
 
     return (
@@ -114,7 +136,7 @@ const Modal = ({setIsShowModal, content, name}) => {
                             {/* Two range slider */}
                             <div className='flex flex-col items-center justify-center relative'>
                                 <div className='absolute z-30 top-[-48px] font-bold text-xl text-orange-600'>
-                                    {`Tu ${converPersentToPrice(persent1 >= persent2? persent2 : persent1)} - ${converPersentToPrice(persent2 >= persent1? persent2 : persent1)} trieu`}
+                                    {`Tu ${converPersentToTarget(persent1 >= persent2? persent2 : persent1)} - ${converPersentToTarget(persent2 >= persent1? persent2 : persent1)} trieu`}
                                 </div>
                                 {/* Create thanh độ dài của phạm vi kéo (slider track) */}
                                 <div 
@@ -163,7 +185,7 @@ const Modal = ({setIsShowModal, content, name}) => {
                                         className='mr-[-12px] cursor-pointer'
                                         onClick={(e) => handleClickTrack(e, 100)}
                                     >
-                                        15 triệu + 
+                                        {name === 'prices'? '15 triệu + ': name === 'areas'? 'Trên 90m2': ''}
                                     </span>
                                 </div>
                             </div>
@@ -176,7 +198,7 @@ const Modal = ({setIsShowModal, content, name}) => {
                                         <button 
                                             key={item.code} 
                                             className={`px-4 py-2 rounded-md cursor-pointer ${item.code === activeEl? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-                                            onClick={() => handlePrice(item)}
+                                            onClick={() => handleTarget(item)}
                                         >
                                             {item.value}
                                         </button>
@@ -186,12 +208,14 @@ const Modal = ({setIsShowModal, content, name}) => {
                         </div>
                     }
                 </div>
-                <button
-                    className='w-full bg-orange-400 py-2 font-medium rounded-bl-md rounded-br-md'
-                    onClick={handleSubmit}
-                >
-                    Confirm
-                </button>
+                {(name === 'prices' || name === 'areas') &&
+                    <button
+                        className='w-full bg-[#FFA500] py-2 font-medium rounded-bl-md rounded-br-md'
+                        onClick={handleSubmit}
+                    >
+                        Confirm
+                    </button>
+                }
             </div>
         </div>
     )
