@@ -13,19 +13,21 @@ const Search = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [content, setContent] = useState([]);
   const [name, setName] = useState([]);
-  const [queries, setQueries] = useState({});          // contains the information you want to search
+  const [queries, setQueries] = useState({});          // contains the information query parameters you want to search
+  const [rangePercent, setRangePersent] = useState({});    // contain % for show two range slider (price, area)
 
   // handle show modal
   const handleShowModal = (content, name) => {
     setIsShowModal(true);
     setContent(content);
-    setName(name)
+    setName(name);
   }
 
-  // handle Submit
-  const handleSubmit = (query) => {
+  // handle Confirm query parameters
+  const handleConfirm = (query, newRange) => {
     setQueries(prev => ({...prev, ...query}));
     setIsShowModal(false);
+    newRange && setRangePersent(prev => ({...prev, ...newRange}));
   }
 
   return (
@@ -63,7 +65,15 @@ const Search = () => {
         </button>
       </div>
 
-      {isShowModal && <Modal handleSubmit={handleSubmit} queries={queries} content={content} name={name} setIsShowModal={setIsShowModal}/>}
+      {isShowModal && 
+      <Modal 
+        handleConfirm={handleConfirm} 
+        queries={queries} 
+        content={content} 
+        name={name} 
+        setIsShowModal={setIsShowModal}
+        rangePercent={rangePercent}
+      />}
     </>
   )
 }

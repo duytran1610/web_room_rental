@@ -1,13 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, memo} from 'react';
 import icons from '../utils/icons';
+import { getNumbers } from '../utils/Common/getNumbers';
+import { getCode } from '../utils/Common/getCodes';
 
 const {GrLinkPrevious} = icons;
 
-const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
+const Modal = ({setIsShowModal, content, name, handleConfirm, queries, rangePercent}) => {
     // state
     // get value two range slider
-    const [persent1, setPersent1] = useState(0);
-    const [persent2, setPersent2] = useState(100);
+    const [percent1, setPercent1] = useState(rangePercent[`${name}Range`] ? rangePercent[`${name}Range`][0] : 0);
+    const [percent2, setPercent2] = useState(rangePercent[`${name}Range`] ? rangePercent[`${name}Range`][1] : 100);
     // element is clicked
     const [activeEl, setActiveEl] = useState('');
 
@@ -15,18 +17,19 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
     useEffect(() => {
         const activedTrack = document.getElementById('track-active');
 
-        if (activedTrack) {
-            if (persent1 <= persent2) {
-                activedTrack.style.left = `${persent1}%`;
-                activedTrack.style.right = `${100-persent2}%`;
-            }
-            else {
-                activedTrack.style.left = `${persent2}%`;
-                activedTrack.style.right = `${100-persent1}%`;
-            }
+        if (percent1 > percent2) {
+            const temp = percent1;
+            setPercent1(percent2);
+            setPercent2(temp);
         }
-    }, [persent1, persent2]);
 
+        if (activedTrack) {
+            activedTrack.style.left = `${percent1}%`;
+            activedTrack.style.right = `${100-percent2}%`;
+        }
+    }, [percent1, percent2]);
+
+    // handle click slider track
     const handleClickTrack = (e, value) => {
         e.stopPropagation();
         const trackEl = document.getElementById('track');
@@ -34,13 +37,13 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
         // element size and position relative to viewport 
         const trackRect = trackEl.getBoundingClientRect();
         
-        let persent = value? value : Math.round((e.clientX - trackRect.x) * 100 / trackRect.width);
+        let percent = value? value : Math.round((e.clientX - trackRect.x) * 100 / trackRect.width);
 
-        if (Math.abs(persent - persent1) <= Math.abs(persent - persent2)) {
-            setPersent1(persent);
+        if (Math.abs(percent - percent1) <= Math.abs(percent - percent2)) {
+            setPercent1(percent);
         }
         else {
-            setPersent2(persent);
+            setPercent2(percent);
         }
 
         // turn off active element
@@ -48,25 +51,22 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
     }
 
     // convert 100% to target (price, area) 
-    const converPersentToTarget = persent => {
+    const converPercentToTarget = percent => {
         if (name === 'price')
-            return Math.ceil(Math.round(persent * 1.5) / 5) / 2;
+            return Math.ceil(Math.round(percent * 1.5) / 5) / 2;
         if (name === 'area')
-            return Math.ceil(Math.round(persent * 0.9) / 5) * 5;
+            return Math.ceil(Math.round(percent * 0.9) / 5) * 5;
         return 0;
     }
 
     // convert target (price, area) to 100%
-    const convertTargetToPersent = target => {
+    const convertTargetToPercent = target => {
         if (name === 'price')
             return Math.floor(target / 15  * 100);
         if (name === 'area')
             return Math.floor(target / 90  * 100);
         return 0;
     };
-
-    // get number in value item
-    const getNumbers = string => string.match(/\d+/g).map(item => +item);
 
     // handle value target (price, area)
     const handleTarget = (item) => {
@@ -76,25 +76,38 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
         const arrNum = getNumbers(item.value);
 
         if (arrNum.length === 1 && arrNum[0] === 1) {
-            setPersent1(0);
-            setPersent2(convertTargetToPersent(1)); 
+            setPercent1(0);
+            setPercent2(convertTargetToPercent(1)); 
         }
         else if (arrNum.length === 1 && arrNum[0] === 15) {
-            setPersent1(convertTargetToPersent(15));
-            setPersent2(convertTargetToPersent(15)); 
+            setPercent1(convertTargetToPercent(15));
+            setPercent2(convertTargetToPercent(15)); 
         }
         else if (arrNum.length === 1 && arrNum[0] === 20) {
-            setPersent1(0);
-            setPersent2(convertTargetToPersent(20));
+            setPercent1(0);
+            setPercent2(convertTargetToPercent(20));
         }
         else if (arrNum.length === 1 && arrNum[0] === 90) {
-            setPersent1(convertTargetToPersent(90));
-            setPersent2(convertTargetToPersent(90)); 
+            setPercent1(convertTargetToPercent(90));
+            setPercent2(convertTargetToPercent(90)); 
         }
         else {
-            setPersent1(convertTargetToPersent(arrNum[0]));
-            setPersent2(convertTargetToPersent(arrNum[1]));
+            setPercent1(convertTargetToPercent(arrNum[0]));
+            setPercent2(convertTargetToPercent(arrNum[1]));
         }
+    }
+
+    // handle output before confirm (price, area)
+    const handleBeforeConfirm = () => {
+        const rangesSelected = getCode([converPercentToTarget(percent1), converPercentToTarget(percent2)], content) || [];
+        let value = (percent1 === 100)? `Tren ${converPercentToTarget(percent1)} ` :
+                                        `Tu ${converPercentToTarget(percent1)} - ${converPercentToTarget(percent2)} `
+        value += `${name === 'price'? 'triệu': name === 'area'? 'm2': ''}`;
+
+        handleConfirm({
+            [name]: value,
+            [`${name}Code`]: rangesSelected?.map(item => item.code)
+        }, {[`${name}Range`]: [percent1, percent2]});
     }
 
     return (
@@ -127,7 +140,8 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
                                     id={item.code} 
                                     value={item.code}
                                     checked={item.code === queries[`${name}Code`] ? true : false}
-                                    onClick={() => handleSubmit({[name]: item.value, [`${name}Code`]: item.code})}
+                                    onClick={() => handleConfirm({[name]: item.value, [`${name}Code`]: item.code})}
+                                    onChange={()=>{}}
                                 /> 
                                 <label htmlFor={item.code}>{item.value}</label>
                             </span>
@@ -137,8 +151,8 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
                             {/* Two range slider */}
                             <div className='flex flex-col items-center justify-center relative'>
                                 <div className='absolute z-30 top-[-48px] font-bold text-xl text-orange-600'>
-                                    {(persent1 === 100 && persent2 === 100)? `Tren ${converPersentToTarget(persent1)} ` :
-                                    `Tu ${converPersentToTarget(persent1 >= persent2? persent2 : persent1)} - ${converPersentToTarget(persent2 >= persent1? persent2 : persent1)} `
+                                    {(percent1 === 100)? `Tren ${converPercentToTarget(percent1)} ` :
+                                    `Tu ${converPercentToTarget(percent1)} - ${converPercentToTarget(percent2)} `
                                     }
                                     {name === 'price'? 'triệu': name === 'area'? 'm2': ''}
                                 </div>
@@ -159,9 +173,9 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
                                 min='0'
                                 step='1'
                                 type='range'
-                                value={persent1}
+                                value={percent1}
                                 onChange={(e) => {
-                                    setPersent1(+e.target.value);
+                                    setPercent1(+e.target.value);
                                     activeEl && setActiveEl('');
                                 } }
                                 className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
@@ -171,9 +185,9 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
                                 min='0'
                                 step='1'
                                 type='range'
-                                value={persent2}
+                                value={percent2}
                                 onChange={(e) => {
-                                    setPersent2(+e.target.value);
+                                    setPercent2(+e.target.value);
                                     activeEl && setActiveEl('');
                                 } }
                                 className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
@@ -215,7 +229,7 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
                 {(name === 'price' || name === 'area') &&
                     <button
                         className='w-full bg-[#FFA500] py-2 font-medium rounded-bl-md rounded-br-md'
-                        onClick={handleSubmit}
+                        onClick={() => handleBeforeConfirm()}
                     >
                         Confirm
                     </button>
@@ -225,4 +239,4 @@ const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
     )
 }
 
-export default Modal;
+export default memo(Modal);
