@@ -3,7 +3,7 @@ import icons from '../utils/icons';
 
 const {GrLinkPrevious} = icons;
 
-const Modal = ({setIsShowModal, content, name}) => {
+const Modal = ({setIsShowModal, content, name, handleSubmit, queries}) => {
     // state
     // get value two range slider
     const [persent1, setPersent1] = useState(0);
@@ -49,18 +49,18 @@ const Modal = ({setIsShowModal, content, name}) => {
 
     // convert 100% to target (price, area) 
     const converPersentToTarget = persent => {
-        if (name === 'prices')
+        if (name === 'price')
             return Math.ceil(Math.round(persent * 1.5) / 5) / 2;
-        if (name === 'areas')
+        if (name === 'area')
             return Math.ceil(Math.round(persent * 0.9) / 5) * 5;
         return 0;
     }
 
     // convert target (price, area) to 100%
     const convertTargetToPersent = target => {
-        if (name === 'prices')
+        if (name === 'price')
             return Math.floor(target / 15  * 100);
-        if (name === 'areas')
+        if (name === 'area')
             return Math.floor(target / 90  * 100);
         return 0;
     };
@@ -97,12 +97,6 @@ const Modal = ({setIsShowModal, content, name}) => {
         }
     }
 
-    // handle Submit
-    const handleSubmit = (e) => {
-        console.log('start ', converPersentToTarget(persent1));
-        console.log('end ', converPersentToTarget(persent2));
-    }
-
     return (
         <div 
             className='fixed top-0 left-0 right-0 bottom-0 z-10 bg-overlay70 flex justify-center items-center'
@@ -116,7 +110,7 @@ const Modal = ({setIsShowModal, content, name}) => {
                     <span
                         className='cursor-pointer'
                         onClick={(e) => {
-                            e.stopPropagation();
+                            // e.stopPropagation();
                             setIsShowModal(false);
                         }}
                     >
@@ -124,10 +118,17 @@ const Modal = ({setIsShowModal, content, name}) => {
                     </span>
                 </div>
                 <div className='p-4 flex flex-col'>
-                    {(name === 'categories' || name === 'provinces')?
+                    {(name === 'category' || name === 'province')?
                         content?.map(item => 
                             <span key={item.code} className='py-2 flex items-center gap-2 border-b border-gray-200'>
-                                <input type="radio" name={name}  id={item.code} value={item.code}/> 
+                                <input 
+                                    type="radio" 
+                                    name={name}  
+                                    id={item.code} 
+                                    value={item.code}
+                                    checked={item.code === queries[`${name}Code`] ? true : false}
+                                    onClick={() => handleSubmit({[name]: item.value, [`${name}Code`]: item.code})}
+                                /> 
                                 <label htmlFor={item.code}>{item.value}</label>
                             </span>
                         )
@@ -136,7 +137,10 @@ const Modal = ({setIsShowModal, content, name}) => {
                             {/* Two range slider */}
                             <div className='flex flex-col items-center justify-center relative'>
                                 <div className='absolute z-30 top-[-48px] font-bold text-xl text-orange-600'>
-                                    {`Tu ${converPersentToTarget(persent1 >= persent2? persent2 : persent1)} - ${converPersentToTarget(persent2 >= persent1? persent2 : persent1)} trieu`}
+                                    {(persent1 === 100 && persent2 === 100)? `Tren ${converPersentToTarget(persent1)} ` :
+                                    `Tu ${converPersentToTarget(persent1 >= persent2? persent2 : persent1)} - ${converPersentToTarget(persent2 >= persent1? persent2 : persent1)} `
+                                    }
+                                    {name === 'price'? 'triệu': name === 'area'? 'm2': ''}
                                 </div>
                                 {/* Create thanh độ dài của phạm vi kéo (slider track) */}
                                 <div 
@@ -185,7 +189,7 @@ const Modal = ({setIsShowModal, content, name}) => {
                                         className='mr-[-12px] cursor-pointer'
                                         onClick={(e) => handleClickTrack(e, 100)}
                                     >
-                                        {name === 'prices'? '15 triệu + ': name === 'areas'? 'Trên 90m2': ''}
+                                        {name === 'price'? '15 triệu + ': name === 'area'? 'Trên 90m2': ''}
                                     </span>
                                 </div>
                             </div>
@@ -208,7 +212,7 @@ const Modal = ({setIsShowModal, content, name}) => {
                         </div>
                     }
                 </div>
-                {(name === 'prices' || name === 'areas') &&
+                {(name === 'price' || name === 'area') &&
                     <button
                         className='w-full bg-[#FFA500] py-2 font-medium rounded-bl-md rounded-br-md'
                         onClick={handleSubmit}

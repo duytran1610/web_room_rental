@@ -13,6 +13,7 @@ const Search = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [content, setContent] = useState([]);
   const [name, setName] = useState([]);
+  const [queries, setQueries] = useState({});          // contains the information you want to search
 
   // handle show modal
   const handleShowModal = (content, name) => {
@@ -21,32 +22,38 @@ const Search = () => {
     setName(name)
   }
 
+  // handle Submit
+  const handleSubmit = (query) => {
+    setQueries(prev => ({...prev, ...query}));
+    setIsShowModal(false);
+  }
+
   return (
     <>
       <div className='w-4/5 lg:w-1100 my-3 p-[10px] bg-[#febb02] rounded-lg flex lg:flex-row flex-col items-center justify-around gap-2'>
         <span 
           className='cursor-pointer flex-1'
-          onClick={() => handleShowModal(categories, 'categories')}
+          onClick={() => handleShowModal(categories, 'category')}
         >
-          <SearchItem IcStart={<GiFamilyHouse />} IcEnd={<BsChevronRight />} fontWeight text='Phòng trọ, nhà trọ' />
+          <SearchItem IcStart={<GiFamilyHouse />} IcEnd={<BsChevronRight />} fontWeight text={queries.category} defaultText='Phòng trọ, nhà trọ' />
         </span>
         <span 
           className='cursor-pointer flex-1'
-          onClick={() => handleShowModal(provinces, 'provinces')}
+          onClick={() => handleShowModal(provinces, 'province')}
         >
-          <SearchItem IcStart={<CiLocationOn />} IcEnd={<BsChevronRight />} text='Toàn quốc' />
+          <SearchItem IcStart={<CiLocationOn />} IcEnd={<BsChevronRight />} text={queries.province} defaultText='Toàn quốc' />
         </span>
         <span 
           className='cursor-pointer flex-1'
-          onClick={() => handleShowModal(prices, 'prices')}
+          onClick={() => handleShowModal(prices, 'price')}
         >
-          <SearchItem IcStart={<TbReportMoney />} IcEnd={<BsChevronRight />} text='Chọn giá' />
+          <SearchItem IcStart={<TbReportMoney />} IcEnd={<BsChevronRight />} text={queries.price} defaultText='Chọn giá' />
         </span>
         <span 
           className='cursor-pointer flex-1'
-          onClick={() => handleShowModal(areas, 'areas')}
+          onClick={() => handleShowModal(areas, 'area')}
         >
-          <SearchItem IcStart={<RiCrop2Line />} IcEnd={<BsChevronRight />} text='Chọn diện tích' />
+          <SearchItem IcStart={<RiCrop2Line />} IcEnd={<BsChevronRight />} text={queries.area} defaultText='Chọn diện tích' />
         </span>
         <button 
           className="outline-none p-2 flex-1 bg-secondary1 text-[12px] flex items-center justify-center text-white gap-2 font-medium"
@@ -56,7 +63,7 @@ const Search = () => {
         </button>
       </div>
 
-      {isShowModal && <Modal content={content} name={name} setIsShowModal={setIsShowModal}/>}
+      {isShowModal && <Modal handleSubmit={handleSubmit} queries={queries} content={content} name={name} setIsShowModal={setIsShowModal}/>}
     </>
   )
 }
