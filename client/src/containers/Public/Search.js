@@ -1,13 +1,17 @@
 import React, {useState} from 'react';
 import { SearchItem, Modal } from "../../components";
 import icons from "../../utils/icons";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../store/actions';
 
 const {BsChevronRight, CiLocationOn, TbReportMoney, RiCrop2Line, GiFamilyHouse, BsSearch} = icons;
 
 const Search = () => {
   // get categories, provinces, prices, areas from appReducer in redux store
   const {categories, provinces, prices, areas} = useSelector(state => state.app);
+
+  // dispatch
+  const dispatch = useDispatch();
 
   //state
   const [isShowModal, setIsShowModal] = useState(false);
@@ -28,6 +32,17 @@ const Search = () => {
     setQueries(prev => ({...prev, ...query}));
     setIsShowModal(false);
     newRange && setRangePersent(prev => ({...prev, ...newRange}));
+  }
+
+  // handle Search to filter posts
+  const handleSearch = () => {
+    // get query parameters contain 'Code'
+    const arrQueries = Object.entries(queries).filter(item => item[0].includes('Code'));
+    
+    // convert arr to obj
+    const paramsSearchObj = arrQueries.reduce((obj, i) => ({...obj, [i[0]]: i[1]}), {});
+    
+    dispatch(actions.getPostsLimit(paramsSearchObj));
   }
 
   return (
@@ -58,6 +73,7 @@ const Search = () => {
           <SearchItem IcStart={<RiCrop2Line />} IcEnd={<BsChevronRight />} text={queries.area} defaultText='Chọn diện tích' />
         </span>
         <button 
+          onClick={handleSearch}
           className="outline-none p-2 flex-1 bg-secondary1 text-[12px] flex items-center justify-center text-white gap-2 font-medium"
         >
           <BsSearch />
