@@ -5,7 +5,7 @@ import { getCode } from '../utils/Common/getCodes';
 
 const {GrLinkPrevious} = icons;
 
-const Modal = ({setIsShowModal, content, name, handleConfirm, queries, rangePercent}) => {
+const Modal = ({setIsShowModal, content, name, handleConfirm, queries, rangePercent, defaultValue}) => {
     // state
     // get value two range slider
     const [percent1, setPercent1] = useState(rangePercent[`${name}Range`] ? rangePercent[`${name}Range`][0] : 0);
@@ -116,7 +116,7 @@ const Modal = ({setIsShowModal, content, name, handleConfirm, queries, rangePerc
             onClick={() => setIsShowModal(false)}
         >
             <div
-             className='w-2/5 bg-white rounded-md'
+             className='w-2/5 h-[500px] bg-white rounded-md relative'
              onClick={(e) => e.stopPropagation()}
             >
                 <div className='h-[45px] px-4 flex items-center border-b border-gray-200'>
@@ -130,105 +130,117 @@ const Modal = ({setIsShowModal, content, name, handleConfirm, queries, rangePerc
                         <GrLinkPrevious size={24}/>
                     </span>
                 </div>
-                <div className='p-4 flex flex-col'>
-                    {(name === 'category' || name === 'province')?
-                        content?.map(item => 
-                            <span key={item.code} className='py-2 flex items-center gap-2 border-b border-gray-200'>
-                                <input 
-                                    type="radio" 
-                                    name={name}  
-                                    id={item.code} 
-                                    value={item.code}
-                                    checked={item.code === queries[`${name}Code`] ? true : false}
-                                    onClick={() => handleConfirm({[name]: item.value, [`${name}Code`]: item.code})}
-                                    onChange={()=>{}}
-                                /> 
-                                <label htmlFor={item.code}>{item.value}</label>
-                            </span>
-                        )
-                        :
-                        <div className='px-12 py-20'>
-                            {/* Two range slider */}
-                            <div className='flex flex-col items-center justify-center relative'>
-                                <div className='absolute z-30 top-[-48px] font-bold text-xl text-orange-600'>
-                                    {(percent1 === 100)? `Tren ${converPercentToTarget(percent1)} ` :
-                                    `Tu ${converPercentToTarget(percent1)} - ${converPercentToTarget(percent2)} `
-                                    }
-                                    {name === 'price'? 'triệu': name === 'area'? 'm2': ''}
-                                </div>
-                                {/* Create thanh độ dài của phạm vi kéo (slider track) */}
-                                <div 
-                                    id="track" 
-                                    className='slider-track h-[5px] absolute top-0 bottom-0 bg-gray-300 w-full rounded-md'
-                                    onClick={handleClickTrack} 
-                                ></div>
-                                <div 
-                                    id="track-active" 
-                                    className='slider-track-active h-[5px] absolute top-0 bottom-0 bg-orange-600 file:rounded-md'
-                                    onClick={handleClickTrack} 
-                                ></div>
-                                {/* appearance-none: xóa đi những mặc định của element */}
-                                <input 
-                                max='100'
-                                min='0'
-                                step='1'
-                                type='range'
-                                value={percent1}
-                                onChange={(e) => {
-                                    setPercent1(+e.target.value);
-                                    activeEl && setActiveEl('');
-                                } }
-                                className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
-                                />
-                                <input 
-                                max='100'
-                                min='0'
-                                step='1'
-                                type='range'
-                                value={percent2}
-                                onChange={(e) => {
-                                    setPercent2(+e.target.value);
-                                    activeEl && setActiveEl('');
-                                } }
-                                className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
-                                />
-                                <div className='absolute top-4 z-10 flex justify-between left-0 right-0'>
-                                    <span 
-                                        className='cursor-pointer'
-                                        onClick={(e) => handleClickTrack(e, 0)}
-                                    >
-                                        0
-                                    </span>
-                                    <span 
-                                        className='mr-[-12px] cursor-pointer'
-                                        onClick={(e) => handleClickTrack(e, 100)}
-                                    >
-                                        {name === 'price'? '15 triệu + ': name === 'area'? 'Trên 90m2': ''}
-                                    </span>
-                                </div>
+                {(name === 'category' || name === 'province')? 
+                    <div className='p-4 flex flex-col'>
+                        <span className='py-2 flex items-center gap-2 border-b border-gray-200'>
+                            <input 
+                                type="radio" 
+                                name={name}  
+                                id='defaultValue' 
+                                value={defaultValue}
+                                checked={!queries[`${name}Code`] ? true : false}
+                                onChange={() => handleConfirm({[name]: defaultValue, [`${name}Code`]: null})}
+                            /> 
+                            <label htmlFor='defaultValue'>{defaultValue}</label>
+                        </span>
+                        {
+                            content?.map(item => 
+                                <span key={item.code} className='py-2 flex items-center gap-2 border-b border-gray-200'>
+                                    <input 
+                                        type="radio" 
+                                        name={name}  
+                                        id={item.code} 
+                                        value={item.code}
+                                        checked={item.code === queries[`${name}Code`] ? true : false}
+                                        onChange={() => handleConfirm({[name]: item.value, [`${name}Code`]: item.code})}
+                                    /> 
+                                    <label htmlFor={item.code}>{item.value}</label>
+                                </span>
+                            )
+                        }
+                    </div>                 
+                    :
+                    <div className='px-12 py-20'>
+                        {/* Two range slider */}
+                        <div className='flex flex-col items-center justify-center relative'>
+                            <div className='absolute z-30 top-[-48px] font-bold text-xl text-orange-600'>
+                                {(percent1 === 100)? `Tren ${converPercentToTarget(percent1)} ` :
+                                `Tu ${converPercentToTarget(percent1)} - ${converPercentToTarget(percent2)} `
+                                }
+                                {name === 'price'? 'triệu': name === 'area'? 'm2': ''}
                             </div>
-
-                            {/* Items price */}
-                            <div className='mt-16'> 
-                                <h4 className='font-medium mb-4'>Choose quickly</h4>
-                                <div className='flex gap-2 items-center flex-wrap w-full'>
-                                    {content?.map(item => 
-                                        <button 
-                                            key={item.code} 
-                                            className={`px-4 py-2 rounded-md cursor-pointer ${item.code === activeEl? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-                                            onClick={() => handleTarget(item)}
-                                        >
-                                            {item.value}
-                                        </button>
-                                    )}
-                                </div>
+                            {/* Create thanh độ dài của phạm vi kéo (slider track) */}
+                            <div 
+                                id="track" 
+                                className='slider-track h-[5px] absolute top-0 bottom-0 bg-gray-300 w-full rounded-md'
+                                onClick={handleClickTrack} 
+                            ></div>
+                            <div 
+                                id="track-active" 
+                                className='slider-track-active h-[5px] absolute top-0 bottom-0 bg-orange-600 file:rounded-md'
+                                onClick={handleClickTrack} 
+                            ></div>
+                            {/* appearance-none: xóa đi những mặc định của element */}
+                            <input 
+                            max='100'
+                            min='0'
+                            step='1'
+                            type='range'
+                            value={percent1}
+                            onChange={(e) => {
+                                setPercent1(+e.target.value);
+                                activeEl && setActiveEl('');
+                            } }
+                            className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
+                            />
+                            <input 
+                            max='100'
+                            min='0'
+                            step='1'
+                            type='range'
+                            value={percent2}
+                            onChange={(e) => {
+                                setPercent2(+e.target.value);
+                                activeEl && setActiveEl('');
+                            } }
+                            className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
+                            />
+                            <div className='absolute top-4 z-10 flex justify-between left-0 right-0'>
+                                <span 
+                                    className='cursor-pointer'
+                                    onClick={(e) => handleClickTrack(e, 0)}
+                                >
+                                    0
+                                </span>
+                                <span 
+                                    className='mr-[-12px] cursor-pointer'
+                                    onClick={(e) => handleClickTrack(e, 100)}
+                                >
+                                    {name === 'price'? '15 triệu + ': name === 'area'? 'Trên 90m2': ''}
+                                </span>
                             </div>
                         </div>
-                    }
-                </div>
+
+                        {/* Items price */}
+                        <div className='mt-16'> 
+                            <h4 className='font-medium mb-4'>Choose quickly</h4>
+                            <div className='flex gap-2 items-center flex-wrap w-full'>
+                                {content?.map(item => 
+                                    <button 
+                                        key={item.code} 
+                                        className={`px-4 py-2 rounded-md cursor-pointer ${item.code === activeEl? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                        onClick={() => handleTarget(item)}
+                                    >
+                                        {item.value}
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                }
                 {(name === 'price' || name === 'area') &&
                     <button
-                        className='w-full bg-[#FFA500] py-2 font-medium rounded-bl-md rounded-br-md'
+                        className='w-full absolute bottom-0 bg-[#FFA500] py-2 font-medium rounded-bl-md rounded-br-md'
                         onClick={() => handleBeforeConfirm()}
                     >
                         Confirm

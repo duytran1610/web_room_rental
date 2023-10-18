@@ -25,7 +25,10 @@ const PageNumber = ({text, curPage, icon, setCurPage}) => {
         for (let ps of params.entries()) paramsSearch.push(ps);   
 
         // convert arr to obj
-        let paramsSearchObj = paramsSearch.reduce((obj, i) => ({...obj, [i[0]]: i[1]}), {});
+        let paramsSearchObj = paramsSearch.reduce((obj, i) => {
+            if (Object.keys(obj)?.some(item => item === i[0] && item !== 'page')) return {...obj, [i[0]]: [...obj[i[0]], i[1]]}
+            return {...obj, [i[0]]: [i[1]]}
+          }, {});
 
         return paramsSearchObj;
     }

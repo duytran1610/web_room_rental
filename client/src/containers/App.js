@@ -1,5 +1,5 @@
 import {Routes, Route} from 'react-router-dom';
-import {Home, Login, Rental, Homepage, DetailPost} from './Public';
+import {Home, Login, Rental, Homepage, DetailPost, SearchDetail} from './Public';
 import {path} from '../utils/constant';
 
 function App() {
@@ -13,6 +13,7 @@ function App() {
           <Route path={path.CTMB} element={<Rental />} />
           <Route path={path.CTPT} element={<Rental />} />
           <Route path={path.NCT} element={<Rental />} />
+          <Route path={path.SEARCHDETAIL} element={<SearchDetail />} />
           <Route path={path.DETAIL_POSTS__TITLE__POSTID} element={<DetailPost />} />
         </Route>
       </Routes>
