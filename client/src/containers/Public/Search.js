@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { SearchItem, Modal } from "../../components";
 import icons from "../../utils/icons";
 import { useSelector } from 'react-redux';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import { path } from '../../utils/constant';
+import { useLocation } from 'react-router-dom';
 
 const {BsChevronRight, CiLocationOn, TbReportMoney, RiCrop2Line, GiFamilyHouse, BsSearch} = icons;
 
@@ -14,6 +15,9 @@ const Search = () => {
   // navigate
   const navigate = useNavigate();
 
+  // location
+  const location = useLocation();
+
   //state
   const [isShowModal, setIsShowModal] = useState(false);
   const [content, setContent] = useState([]);
@@ -22,6 +26,11 @@ const Search = () => {
   const [rangePercent, setRangePersent] = useState({});    // contain % for show two range slider (price, area)
   const [defaultValue, setDefaultValue] = useState('');   // default value when see
 
+  // set default for search item when URL !== path.SEARCHDETAIL
+  useEffect(() => {
+    if (!location.pathname.includes(path.SEARCHDETAIL)) setQueries({});
+  }, [location]);
+
   // handle show modal
   const handleShowModal = (content, name, value) => {
     setIsShowModal(true);
@@ -29,6 +38,7 @@ const Search = () => {
     setName(name);
     setDefaultValue(value);
   }
+
 
   // handle Confirm query parameters
   const handleConfirm = (query, newRange) => {
@@ -48,7 +58,7 @@ const Search = () => {
     navigate({
       pathname: path.SEARCHDETAIL,
       search: createSearchParams(paramsSearchObj).toString()
-  });
+    });
   }
 
   return (

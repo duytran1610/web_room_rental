@@ -9,8 +9,7 @@ const SearchDetail = () => {
   return (
     <div className='w-full flex flex-col gap-3'>
       <div>
-        {/* <h1 className='text-[28px] font-bold'>{categoryCurrent?.header}</h1>
-        <p className='text-base text-gray-700'>{categoryCurrent?.subheader}</p> */}
+        <h1 className='text-[28px] font-bold'>RESULT SEARCH:</h1>
       </div>
       <Province />
       <div className='w-full flex gap-4'>
