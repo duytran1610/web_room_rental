@@ -22,7 +22,8 @@ export const getAllCategories = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: actionTypes.GET_CATEGORIES,
-            categories: null
+            categories: null,
+            msg: err
         });
     }
 }
@@ -48,7 +49,8 @@ export const getAllPrices = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: actionTypes.GET_PRICES,
-            prices: null
+            prices: null,
+            msg: err
         });
     }
 }
@@ -74,7 +76,8 @@ export const getAllAreas = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: actionTypes.GET_AREAS,
-            areas: null
+            areas: null,
+            msg: err
         });
     }
 }
@@ -100,7 +103,8 @@ export const getAllProvinces = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: actionTypes.GET_PROVINCES,
-            provinces: null
+            provinces: null,
+            msg: err
         });
     }
 }

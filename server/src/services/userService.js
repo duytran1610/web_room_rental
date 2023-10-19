@@ -8,6 +8,7 @@ export const getUser = (id) => new Promise(async(resolve, reject) => {
             raw: true,
             attributes: {exclude: ['password']}
         });
+
         resolve({
             err: user ? 0 : -1,
             msg: user ? 'Get information user succeed!' : 'Fail get information user!',

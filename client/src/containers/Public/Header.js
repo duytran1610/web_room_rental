@@ -16,6 +16,9 @@ const Header = () => {
     // get status isLoggedIn from authReducer in redux store
     const {isLoggedIn} = useSelector(state => state.auth);
 
+    // get infor current user from userReducer in redux store
+    const {curData} = useSelector(state => state.user);
+
     // dispatch
     const dispatch = useDispatch();
 
@@ -63,7 +66,7 @@ const Header = () => {
                 </>
                 :
                 <>
-                    <small>Name!</small>
+                    <small>{`Hi, ${curData?.name}!`}</small>
                     <Button 
                         text={'Log Out'} 
                         textColor={'text-white'} 

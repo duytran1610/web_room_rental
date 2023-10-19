@@ -1,10 +1,10 @@
 import actionTypes from "./actionTypes";
-import { apiGetAllPosts, apiGetPostsLimit, apiGetNewPosts } from "../../services/postService";
+import * as apis from "../../services";
 
 // get all posts
 export const getAllPosts = () => async (dispatch) => {
     try {
-        const response = await apiGetAllPosts();
+        const response = await apis.apiGetAllPosts();
 
         if (response?.data.err === 0) {
             dispatch({
@@ -21,7 +21,8 @@ export const getAllPosts = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: actionTypes.GET_POSTS,
-            posts: null
+            posts: null,
+            msg: err
         });
     }
 }
@@ -29,7 +30,7 @@ export const getAllPosts = () => async (dispatch) => {
 // get to pagination
 export const getPostsLimit = (query) => async (dispatch) => {
     try {
-        const response = await apiGetPostsLimit(query);
+        const response = await apis.apiGetPostsLimit(query);
 
         if (response?.data.err === 0) {
             dispatch({
@@ -48,7 +49,8 @@ export const getPostsLimit = (query) => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: actionTypes.GET_POSTS_LIMIT,
-            posts: null
+            posts: null,
+            msg: err
         });
     }
 }
@@ -56,7 +58,7 @@ export const getPostsLimit = (query) => async (dispatch) => {
 // get new posts
 export const getNewPosts = () => async (dispatch) => {
     try {
-        const response = await apiGetNewPosts();
+        const response = await apis.apiGetNewPosts();
 
         if (response?.data.err === 0) {
             dispatch({
@@ -74,7 +76,8 @@ export const getNewPosts = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: actionTypes.GET_NEW_POSTS,
-            newPosts: null
+            newPosts: null,
+            msg: err
         });
     }
 }

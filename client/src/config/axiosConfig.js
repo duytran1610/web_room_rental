@@ -6,22 +6,23 @@ const instance = axios.create({
 });
 
 // Add a request interceptor
-instance.interceptors.request.use(function (config) {
+instance.interceptors.request.use(function (req) {
     // Do something before request is sent
-
-    let token = '';
+    let token;
 
     // get information encoded in local storage of web
     let encode = window.localStorage.getItem('persist:auth');
 
-    if (encode) token = JSON.parse(encode).token;
+    // get value token
+    // use slice(1, -1), bởi vì đó là dạng JSON của token, nên cần loại bỏ dấu "" ở 2 đầu vì token k phải string, nên đừng nhầm lẫn
+    if (encode) token = JSON.parse(encode).token?.slice(1, -1);
 
     // put token into header
-    config.headers = {
+    req.headers = {
       authorization: `Bear ${token}`
     }
 
-    return config;
+    return req;
   }, function (err) {
     // Do something with request error
     console.log('Errol in request interceptor instance: ', err);

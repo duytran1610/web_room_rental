@@ -1,9 +1,9 @@
 import actionTypes from "./actionTypes";
-import { apiRegister, apiLogin } from "../../services/authService";
+import * as apis from "../../services";
 
 export const register = (payload) => async (dispatch) => {
     try {
-        const response = await apiRegister(payload);
+        const response = await apis.apiRegister(payload);
 
         if (response?.data.err === 0) {
             dispatch({
@@ -20,14 +20,15 @@ export const register = (payload) => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: actionTypes.REGISTER_FAIL,
-            data: null
+            data: null,
+            msg: err
         });
     }
 }
 
 export const login = (payload) => async (dispatch) => {
     try {
-        const response = await apiLogin(payload);
+        const response = await apis.apiLogin(payload);
 
         if (response?.data.err === 0) {
             dispatch({
@@ -44,7 +45,8 @@ export const login = (payload) => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: actionTypes.LOGIN_FAIL,
-            data: null
+            data: null,
+            msg: err
         });
     }
 }
