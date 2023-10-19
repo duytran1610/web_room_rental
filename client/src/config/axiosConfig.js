@@ -9,7 +9,17 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent
 
+    let token = '';
+
+    // get information encoded in local storage of web
+    let encode = window.localStorage.getItem('persist:auth');
+
+    if (encode) token = JSON.parse(encode).token;
+
     // put token into header
+    config.headers = {
+      authorization: `Bear ${token}`
+    }
 
     return config;
   }, function (err) {

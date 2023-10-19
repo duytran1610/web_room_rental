@@ -5,6 +5,7 @@ import postRouter from "./post";
 import priceRouter from "./price";
 import areaRouter from "./area";
 import provinceRouter from "./province";
+import userRouter from "./user";
 
 const Route = (app) => {
     app.use('/api/v1/auth', authRouter);
@@ -20,6 +21,8 @@ const Route = (app) => {
     app.use('/api/v1/area', areaRouter);
 
     app.use('/api/v1/province', provinceRouter);
+
+    app.use('/api/v1/user', userRouter);
 
     app.use('/', (req, res) => {
         res.json('start server ...');
