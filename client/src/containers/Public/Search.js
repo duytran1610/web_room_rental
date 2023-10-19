@@ -50,7 +50,7 @@ const Search = () => {
   // handle Search to filter posts
   const handleSearch = () => {
     // get query parameters contain 'Code'
-    const arrQueries = Object.entries(queries).filter(item => item[0].includes('Code') && item[1]);
+    const arrQueries = Object.entries(queries).filter(item => (item[0].includes('Code') || item[0].includes('Val')) && item[1]);
     
     // convert arr to obj
     const paramsSearchObj = arrQueries.reduce((obj, i) => ({...obj, [i[0]]: i[1]}), {});

@@ -1,4 +1,5 @@
 import db from "../models";
+const { Op } = require("sequelize");
 require('dotenv').config();
 
 // get infor of all post
@@ -41,6 +42,8 @@ export const getAllPosts = () => new Promise(async(resolve, reject) => {
 export const getPostsLimit = (page, query) => new Promise(async(resolve, reject) => {
     try {
         let offset = (!page || +page <= 1)? 0 : +page - 1;
+        if (query.priceVal) query.priceVal = {[Op.between]: query.priceVal}
+        if (query.areaVal) query.areaVal = {[Op.between]: query.areaVal}
 
         const posts = await db.Post.findAndCountAll({
             where: query,

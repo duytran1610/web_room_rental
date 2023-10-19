@@ -92,7 +92,9 @@ export const insertDataIntoDB = (data) => new Promise((resolve, reject) => {
                     imageID,
                     areaCode: dataAreas.find(area => area.max > curArea && curArea >= area.min)?.code,
                     priceCode: dataPrices.find(price => price.max > curPrice && curPrice >= price.min)?.code,
-                    provinceCode
+                    provinceCode,
+                    priceVal: curPrice,
+                    areaVal: curArea
                 });
             
                 // insert data in table Attributes

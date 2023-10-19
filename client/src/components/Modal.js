@@ -99,14 +99,13 @@ const Modal = ({setIsShowModal, content, name, handleConfirm, queries, rangePerc
 
     // handle output before confirm (price, area)
     const handleBeforeConfirm = () => {
-        const rangesSelected = getCode([converPercentToTarget(percent1), converPercentToTarget(percent2)], content) || [];
         let value = (percent1 === 100)? `Tren ${converPercentToTarget(percent1)} ` :
                                         `Tu ${converPercentToTarget(percent1)} - ${converPercentToTarget(percent2)} `
         value += `${name === 'price'? 'triệu': name === 'area'? 'm2': ''}`;
 
         handleConfirm({
             [name]: value,
-            [`${name}Code`]: rangesSelected?.map(item => item.code)
+            [`${name}Val`]: [converPercentToTarget(percent1), converPercentToTarget(percent2)]
         }, {[`${name}Range`]: [percent1, percent2]});
     }
 
