@@ -27,7 +27,7 @@ const Item = ({address, attrs, description, imgs, star, title, user, id}) => {
                 className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'
             >
                 {imgs.length > 0 && imgs.filter((i, index) => index < 4)?.map((item, index) => 
-                    <img key={index} src={item} alt="preview" className="w-[130px] h-[120px] object-cover" />                   
+                    <img key={index} src={item} alt="preview" className="w-[47%] h-[120px] object-cover" />                   
                 )}
                 <span className='bg-overlay70 text-white px-2 rounded-md absolute left-1 bottom-4'>{`${imgs.length} imgs`}</span>
                 <span 

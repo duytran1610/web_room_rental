@@ -1,7 +1,6 @@
 import React, {useState, useEffect, memo} from 'react';
 import icons from '../utils/icons';
 import { getNumbers } from '../utils/Common/getNumbers';
-import { getCode } from '../utils/Common/getCodes';
 
 const {GrLinkPrevious} = icons;
 
