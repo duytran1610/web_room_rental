@@ -2,6 +2,7 @@ import React from 'react';
 import { text } from '../utils/dataContact';
 import {Button} from '../components';
 
+// Information Contact
 const Contact = () => {
     return (
         <div className='w-3/5 bg-white rounded-md shadow-md p-4 flex flex-col items-center gap-6'>

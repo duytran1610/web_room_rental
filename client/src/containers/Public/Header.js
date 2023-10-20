@@ -1,23 +1,22 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import logo from "../../assets/img/logo.png";
-import { Button } from "../../components";
+import { Button, User } from "../../components";
 import icons from "../../utils/icons";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { path } from "../../utils/constant";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/actions";
+import menuManage from "../../utils/menuManage";
 
-const {AiOutlinePlusCircle} = icons;
+const {AiOutlinePlusCircle, RiLogoutCircleRLine, BsChevronDown} = icons;
 
 const Header = () => {
+    // navigate
     const navigate = useNavigate();
 
     // get status isLoggedIn from authReducer in redux store
     const {isLoggedIn} = useSelector(state => state.auth);
-
-    // get infor current user from userReducer in redux store
-    const {curData} = useSelector(state => state.user);
 
     // dispatch
     const dispatch = useDispatch();
@@ -27,6 +26,10 @@ const Header = () => {
 
     // Manipulating the DOM with a ref 
     const headerRef = useRef();
+
+    // state
+    // controll show menu
+    const [isShowMenu, setIsShowMenu] = useState(false);
 
     // status -> Login or Register
     const goRegister = (status) => {
@@ -47,9 +50,9 @@ const Header = () => {
                 className="w-[240px] h-[72px] object-contain"
             />
             </Link>
-            <div className="flex items-center gap-1">
+            <div className="flex gap-1">
                 {!isLoggedIn ? 
-                <>
+                <div className="flex items-center gap-1">
                     <small>Phongtro123.com Hello!</small>
                     <Button 
                         text={'Register'} 
@@ -63,17 +66,45 @@ const Header = () => {
                         bgColor={'bg-[#3961fb]'}
                         onClick={() => goRegister(false)}
                     />
-                </>
+                </div>
                 :
-                <>
-                    <small>{`Hi, ${curData?.name}!`}</small>
+                <div className="flex items-center gap-3 relative">
+                    <User />
                     <Button 
-                        text={'Log Out'} 
+                        text={'Control account'} 
                         textColor={'text-white'} 
-                        bgColor={'bg-red-700'}
-                        onClick={() => dispatch(actions.logout())}
+                        bgColor={'bg-blue-700'}
+                        IcAfter={BsChevronDown}
+                        onClick={() => setIsShowMenu(prev => !prev)}
                     />
-                </>
+                    {
+                        isShowMenu && 
+                        <div className="absolute min-w-[200px] top-full mt-2 right-0 p-4 bg-white rounded-md shadow-md flex flex-col">
+                            {
+                                menuManage.map(item => 
+                                    <Link
+                                        key={item.id}
+                                        to={item.path}
+                                        className="hover:text-orange-500 text-blue-600 border-b border-gray-200 py-2 flex items-center gap-1"
+                                    >
+                                        {item?.icon}
+                                        {item.text}
+                                    </Link>
+                                )
+                            }
+                            <span 
+                                className="cursor-pointer hover:text-orange-500 text-blue-600 py-2 flex items-center gap-1"
+                                onClick={() => {
+                                    setIsShowMenu(false);
+                                    dispatch(actions.logout());
+                                }}
+                            >
+                                <RiLogoutCircleRLine />
+                                Logout
+                            </span>
+                        </div>
+                    }
+                </div>
                 }
                 <Button 
                     text={'Post New News'} 

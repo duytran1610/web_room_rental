@@ -9,6 +9,7 @@ import { formatVietnameseToString } from '../utils/Common/formatVietnameseToStri
 const {BsStarFill} = icons;
 const stars = [1,2,3,4,5];
 
+// Information Introduce
 const Intro = () => {
 
     // get categories from appReducer in redux store
