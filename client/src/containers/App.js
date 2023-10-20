@@ -1,6 +1,7 @@
 import {Routes, Route} from 'react-router-dom';
 import {Home, Login, Rental, Homepage, DetailPost, SearchDetail} from './Public';
 import {path} from '../utils/constant';
+import { System, CreatePost } from './System';
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
           <Route path={path.NCT} element={<Rental />} />
           <Route path={path.SEARCHDETAIL} element={<SearchDetail />} />
           <Route path={path.DETAIL_POSTS__TITLE__POSTID} element={<DetailPost />} />
+        </Route>
+        <Route path={path.SYSTEM} element={<System />}>
+          <Route path={path.CREATE_POST} element={<CreatePost />}/>
         </Route>
       </Routes>
     </div>

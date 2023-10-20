@@ -9,7 +9,7 @@ import * as actions from '../../store/actions';
 const Active = 'bg-secondary2 px-4 flex items-center';
 const noActive = 'hover:bg-secondary2 px-4 flex items-center';
 
-const Navigation = () => {
+const Navigation = ({isSystem}) => {
     // dispatch
     const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const Navigation = () => {
         dispatch(actions.getAllCategories());
     }, [dispatch]);
     return (
-        <div className="w-full flex justify-center h-[40px] bg-secondary1 text-white">
+        <div className={`w-full flex ${isSystem? 'justify-start' : 'justify-center'} h-[40px] bg-secondary1 text-white`}>
             <div className='w-4/5 lg:w-1100 flex content-stretch text-sm font-medium'>
                 <NavLink
                     to={'/'}
@@ -31,7 +31,7 @@ const Navigation = () => {
                 {categories?.length > 0 && categories.map(item => 
                     <div key={item.code} className='flex'>
                         <NavLink
-                            to={`${formatVietnameseToString(item.value)}`}
+                            to={`/${formatVietnameseToString(item.value)}`}
                             className={({isActive}) => isActive ? Active : noActive}
                         >
                             {item.value}

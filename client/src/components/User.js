@@ -19,7 +19,7 @@ const User = () => {
                     Hi, <span className='font-semibold'>{curData?.name}</span>
                 </span>
                 <span>
-                    Code account: <span>{`${curData?.id.slice(0,10)}...`}</span>
+                    Code account: <span>{`${curData?.id?.slice(0,10)}...`}</span>
                 </span>
             </div>
         </div>

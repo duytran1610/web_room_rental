@@ -8,7 +8,9 @@ export const path = {
     NCT: 'nha-cho-thue',
     HOME__PAGE: ':page',
     DETAIL_POSTS__TITLE__POSTID: 'detail/:title/:postId',
-    SEARCHDETAIL: 'search-detail'
+    SEARCHDETAIL: 'search-detail',
+    SYSTEM: '/system',
+    CREATE_POST: 'create-new-post'
 }
 
 export const text = {
