@@ -2,8 +2,8 @@ import icons from "./icons";
 
 const { BsPencil, MdOutlineLibraryBooks, FaRegUserCircle } = icons;
 
-// các lựa chọn control account ở page home
-const menuManage = [
+// các lựa chọn control account ở page system
+const menuSidebar = [
     {
         id: 1,
         text: 'Dang tin cho thue',
@@ -18,10 +18,16 @@ const menuManage = [
     },
     {
         id: 3,
-        text: 'Thong tin tai khoan',
-        path: '/system/profile',
+        text: 'Sua thong tin ca nhan',
+        path: '/system/edit-profile',
         icon: <FaRegUserCircle />
-    }
+    },
+    {
+        id: 4,
+        text: 'Contact',
+        path: '/system/contact',
+        icon: <MdOutlineLibraryBooks />
+    },
 ];
 
-export default menuManage;
+export default menuSidebar;

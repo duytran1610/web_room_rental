@@ -19,15 +19,6 @@ const Home = () => {
         dispatch(actions.getAllProvinces());
     },[dispatch]);
 
-
-    // get infor user when logged succeedfully
-    useEffect(() => {
-        // use setTimeout, because time delay to save token in local storage
-        setTimeout(() => {
-            isLoggedIn && dispatch(actions.getUser());
-        }, 1000);
-    }, [isLoggedIn, dispatch]);
-
     return (
         <div className="w-full h-full gap-6 flex flex-col items-center">
             <Header />
