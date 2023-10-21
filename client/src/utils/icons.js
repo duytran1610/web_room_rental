@@ -1,5 +1,5 @@
 import {AiOutlinePlusCircle, AiFillHeart, AiOutlineHeart} from 'react-icons/ai';
-import {BsChevronRight, BsSearch, BsStarFill, BsBookmarkStarFill, BsPencil, BsChevronDown} from 'react-icons/bs';
+import {BsChevronRight, BsSearch, BsStarFill, BsBookmarkStarFill, BsPencil, BsChevronDown, BsFillCameraFill} from 'react-icons/bs';
 import {CiLocationOn} from 'react-icons/ci';
 import {TbReportMoney} from 'react-icons/tb';
 import {RiCrop2Line, RiLogoutCircleRLine} from 'react-icons/ri';
@@ -27,7 +27,8 @@ const icons = {
     MdOutlineLibraryBooks,
     FaRegUserCircle,
     RiLogoutCircleRLine,
-    BsChevronDown
+    BsChevronDown,
+    BsFillCameraFill
 }
 
 export default icons;

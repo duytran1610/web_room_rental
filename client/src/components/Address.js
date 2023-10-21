@@ -1,6 +1,7 @@
-import React, {memo, useEffect, useState} from 'react';
-import {SelectedAddress} from '../components';
+import React, { memo, useEffect, useState } from 'react';
+import { SelectOption } from '../components';
 import { apiGetPublicProvinces, apiGetPublicDistricts } from '../services';
+import { InputReadOnly } from '../components';
 
 // use in path system
 const Address = () => {
@@ -38,27 +39,22 @@ const Address = () => {
 
         if (province) fetchPublicDistricts(province);
         else setDistricts([]);
-        
+
     }, [province]);
 
     return (
         <div>
-            <h2 className='font-semibold text-xl py-4'>Dia chi cho thue</h2>
+            <h2 className='font-semibold text-xl py-4'>Địa chỉ cho thuê</h2>
             <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-4'>
-                    <SelectedAddress type='province' value={province} setValue={setProvince} options={provinces} label='Tinh/ TP'/>
-                    <SelectedAddress type='district' value={district} setValue={setDistrict} options={districts} label='Quan/ huyen'/>
+                    <SelectOption type='province' value={province} setValue={setProvince} options={provinces} label='Tỉnh/ TP' />
+                    <SelectOption type='district' value={district} setValue={setDistrict} options={districts} label='Quận/ huyện' />
                 </div>
-                <div className='flex flex-col gap-2'>
-                    <label className='font-medium' htmlFor='exactly-address'>Dia chi chinh xac</label>
-                    <input 
-                        id='exactly-address'
-                        type='text' 
-                        readOnly 
-                        className='border border-gray-200 rounded-md p-2 w-full outline-none bg-gray-100'
-                        value={`${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? `${provinces?.find(item => item.province_id === province)?.province_name}` : ''}`}
-                    />
-                </div>
+                <InputReadOnly
+                    label='Địa chỉ chính xác'
+                    value={`${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? `${provinces?.find(item => item.province_id === province)?.province_name}` : ''}`}
+                />
+
             </div>
         </div>
     )
