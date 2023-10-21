@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Creating an instance
+// Creating an instance map server host
 const instance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL
 });
