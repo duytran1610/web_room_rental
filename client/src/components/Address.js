@@ -4,17 +4,17 @@ import { apiGetPublicProvinces, apiGetPublicDistricts } from '../services';
 import { InputReadOnly } from '../components';
 
 // use in path system
-const Address = () => {
+const Address = ({payload, setPayload}) => {
 
     // state
     // provinces
     const [provinces, setProvinces] = useState([]);
-    // province
-    const [province, setProvince] = useState();
+    // province id
+    const [provinceId, setProvinceId] = useState();
     // districts in province
     const [districts, setDistricts] = useState([]);
-    // district
-    const [district, setDistrict] = useState();
+    // district id
+    const [districtId, setDistrictId] = useState();
 
     // auto get public provinces
     useEffect(() => {
@@ -29,7 +29,7 @@ const Address = () => {
 
     // auto fetch public districts in province
     useEffect(() => {
-        setDistrict();
+        setDistrictId();
 
         // function get public provinces
         const fetchPublicDistricts = async (provinceId) => {
@@ -37,22 +37,30 @@ const Address = () => {
             if (response.status === 200) setDistricts(response?.data.results);
         }
 
-        if (province) fetchPublicDistricts(province);
+        if (provinceId) fetchPublicDistricts(provinceId);
         else setDistricts([]);
 
-    }, [province]);
+    }, [provinceId]);
+
+    useEffect(() => {
+        setPayload(prev => ({
+            ...prev,
+            province: provinceId ? provinces?.find(item => item.province_id === provinceId)?.province_name : '',
+            address: `${districtId ? `${districts?.find(item => item.district_id === districtId)?.district_name}, ` : ''}${provinceId ? `${provinces?.find(item => item.province_id === provinceId)?.province_name}` : ''}`
+        }));
+    }, [provinceId, districtId]);
 
     return (
         <div>
             <h2 className='font-semibold text-xl py-4'>Địa chỉ cho thuê</h2>
             <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-4'>
-                    <SelectOption type='province' value={province} setValue={setProvince} options={provinces} label='Tỉnh/ TP' />
-                    <SelectOption type='district' value={district} setValue={setDistrict} options={districts} label='Quận/ huyện' />
+                    <SelectOption type='province' setValue={setProvinceId} options={provinces} label='Tỉnh/ TP' />
+                    <SelectOption type='district' setValue={setDistrictId} options={districts} label='Quận/ huyện' />
                 </div>
                 <InputReadOnly
                     label='Địa chỉ chính xác'
-                    value={`${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? `${provinces?.find(item => item.province_id === province)?.province_name}` : ''}`}
+                    value={payload?.address || ''}
                 />
 
             </div>
