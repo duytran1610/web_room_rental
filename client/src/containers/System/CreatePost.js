@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Overview, Address } from '../../components';
 import icons from '../../utils/icons';
 
@@ -12,7 +12,7 @@ const CreatePost = () => {
         title: '',
         priceVal: 0,
         areaVal: 0,
-        image: '',
+        images: '',
         address: '',
         priceCode: '',
         areaCode: '',
@@ -20,8 +20,29 @@ const CreatePost = () => {
         target: '',                      // renter: male or female
         province: ''
     });
+    // images uploaded
+    const [images, setImages] = useState([]);
+    // URL of images
+    const [imageUrls, setImageUrls] = useState([]);
 
-    console.log(payload)
+    useEffect(() => {
+        if (images.length >= 1) {
+            const newImageUrls = [];
+
+            // create URL for every image
+            images.forEach(item => newImageUrls.push(URL.createObjectURL(item)));
+
+            setImageUrls(newImageUrls);
+            setPayload(prev => ({...prev, images: JSON.stringify(imageUrls)}));
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [images]);
+
+
+    // handle upload multiple files
+    const handleFiles = (e) => {
+        setImages([...e.target.files]);
+    }
 
     return (
         <div className='px-6'>
@@ -38,7 +59,17 @@ const CreatePost = () => {
                                 <BsFillCameraFill color='blue' size={50} />
                                 Thêm ảnh
                             </label>
-                            <input hidden id='fileImg' type='file' />
+                            <input hidden id='fileImg' type='file' accept='image/*' multiple onChange={handleFiles} />
+                            <div className='w-full'>
+                                <h3 className='font-medim'>Preview</h3>
+                                <div className='flex flex-wrap gap-4 items-center'>
+                                {
+                                    imageUrls?.map((item, i) => 
+                                        <img key={i} src={item} alt="img" className='w-1/4 h-1/4 object-cover rounded-md' />
+                                    )
+                                }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

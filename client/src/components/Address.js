@@ -48,6 +48,8 @@ const Address = ({payload, setPayload}) => {
             province: provinceId ? provinces?.find(item => item.province_id === provinceId)?.province_name : '',
             address: `${districtId ? `${districts?.find(item => item.district_id === districtId)?.district_name}, ` : ''}${provinceId ? `${provinces?.find(item => item.province_id === provinceId)?.province_name}` : ''}`
         }));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [provinceId, districtId]);
 
     return (
