@@ -20,7 +20,14 @@ function App() {
     setTimeout(() => {
         isLoggedIn && dispatch(actions.getUser());
     }, 100);
-}, [isLoggedIn, dispatch]);
+  }, [isLoggedIn, dispatch]);
+
+  // auto dispatch when run app
+  useEffect(() => {
+    dispatch(actions.getAllPrices());
+    dispatch(actions.getAllAreas());
+    dispatch(actions.getAllProvinces());
+  },[dispatch]);
 
   return (
     <div className="App bg-primary">

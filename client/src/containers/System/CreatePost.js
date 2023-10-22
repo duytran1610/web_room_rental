@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import { Overview, Address } from '../../components';
+import { Overview, Address, Button } from '../../components';
 import icons from '../../utils/icons';
+import {getCode} from '../../utils/Common/getCodes';
+import { useSelector } from 'react-redux';
 
-const {BsFillCameraFill} = icons
+const {BsFillCameraFill, RiDeleteBin5Fill} = icons
 
 const CreatePost = () => {
     // state
@@ -25,23 +27,42 @@ const CreatePost = () => {
     // URL of images
     const [imageUrls, setImageUrls] = useState([]);
 
+    // get prices, areas from appReducer in redux store
+    const {prices, areas} = useSelector(state => state.app);
+
+    // auto update url images and save when images is changed
     useEffect(() => {
-        if (images.length >= 1) {
+        if (images.length >= 1) {           
             const newImageUrls = [];
 
             // create URL for every image
             images.forEach(item => newImageUrls.push(URL.createObjectURL(item)));
-
-            setImageUrls(newImageUrls);
-            setPayload(prev => ({...prev, images: JSON.stringify(imageUrls)}));
+            
+            setImageUrls(prev => [...newImageUrls]);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [images]);
 
-
     // handle upload multiple files
     const handleFiles = (e) => {
-        setImages([...e.target.files]);
+        setImages(prev => [...prev, ...e.target.files]);
+    }
+
+    // handle delete image
+    const handleDeleteImage = (i) => {
+        setImages(prev => prev.filter((item, index) => index !== i));
+    }
+
+    // handle submit
+    const handleSubmit = () => {
+        let priceCode = getCode(+payload.priceVal, prices)?.code;
+        let areaCode = getCode(+payload.areaVal, areas)?.code;
+        setPayload(prev => ({
+            ...prev, 
+            priceCode,
+            areaCode,
+            images: JSON.stringify(imageUrls)
+        }));
     }
 
     return (
@@ -59,19 +80,33 @@ const CreatePost = () => {
                                 <BsFillCameraFill color='blue' size={50} />
                                 Thêm ảnh
                             </label>
-                            <input hidden id='fileImg' type='file' accept='image/*' multiple onChange={handleFiles} />
+                            <input hidden id='fileImg' type='file' multiple onChange={handleFiles} />
+                            {images.length > 0 &&
                             <div className='w-full'>
-                                <h3 className='font-medim'>Preview</h3>
+                                <h3 className='font-medim'>Ảnh đã chọn  </h3>
                                 <div className='flex flex-wrap gap-4 items-center'>
-                                {
-                                    imageUrls?.map((item, i) => 
-                                        <img key={i} src={item} alt="img" className='w-1/4 h-1/4 object-cover rounded-md' />
-                                    )
-                                }
+                                    {imageUrls?.map((item, i) => 
+                                        <div  key={i} className='relative w-1/4 h-1/4'>
+                                            <img src={item} alt="img" className='w-full h-full object-cover rounded-md' />
+                                            <span 
+                                                title='delete' 
+                                                className='absolute top-0 right-0 p-1 bg-gray-300 hover:bg-gray-400 rounded-full cursor-pointer'
+                                                onClick={() => handleDeleteImage(i)}
+                                            >
+                                                <RiDeleteBin5Fill />
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
-                            </div>
+                            </div>}
                         </div>
                     </div>
+                    <Button 
+                        text='Creat new'
+                        bgColor='bg-green-600'
+                        textColor='text-white'
+                        onClick={handleSubmit}
+                    />
                 </div>
                 <div className='w-[30%] flex-none'>
                     maps

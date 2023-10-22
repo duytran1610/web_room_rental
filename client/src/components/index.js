@@ -17,3 +17,4 @@ export { default as Overview } from './Overview';
 export { default as SelectOption } from './SelectOption';
 export { default as InputReadOnly } from './InputReadOnly';
 export { default as Input } from './Input';
+export { default as Loading } from './Loading';

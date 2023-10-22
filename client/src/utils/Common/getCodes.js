@@ -20,7 +20,7 @@ export const getRange = (totals) => {
 }
 
 // get code from ranges
-export const getCode = (range, target) => {
+export const getCode = (value, target) => {
     const targetRanges = getRange(target);
-    return targetRanges.filter(item => (item.min >= range[0] && item.min <= range[1]) || (item.max >= range[0] && item.max <= range[1]));
+    return targetRanges.filter(item => value >= item.min && value < item.max);
 }

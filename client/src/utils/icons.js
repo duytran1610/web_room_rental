@@ -2,7 +2,7 @@ import {AiOutlinePlusCircle, AiFillHeart, AiOutlineHeart} from 'react-icons/ai';
 import {BsChevronRight, BsSearch, BsStarFill, BsBookmarkStarFill, BsPencil, BsChevronDown, BsFillCameraFill} from 'react-icons/bs';
 import {CiLocationOn} from 'react-icons/ci';
 import {TbReportMoney} from 'react-icons/tb';
-import {RiCrop2Line, RiLogoutCircleRLine} from 'react-icons/ri';
+import {RiCrop2Line, RiLogoutCircleRLine, RiDeleteBin5Fill} from 'react-icons/ri';
 import {GiFamilyHouse} from 'react-icons/gi';
 import {GrNext, GrPrevious, GrLinkPrevious} from 'react-icons/gr';
 import {MdOutlineLibraryBooks} from 'react-icons/md';
@@ -28,7 +28,8 @@ const icons = {
     FaRegUserCircle,
     RiLogoutCircleRLine,
     BsChevronDown,
-    BsFillCameraFill
+    BsFillCameraFill,
+    RiDeleteBin5Fill
 }
 
 export default icons;
