@@ -1,26 +1,20 @@
 import { getNumbers } from "./getNumbers"
 
 // function takes min, max of range values
-export const getRange = (totals) => {
-    // array contain minimum and maximum 
-    let arr = [];
-
+export const getRanges = (totals, min, max) => {
     return totals.map(item => {
-        let arrMinMax = getNumbers(item.value);
-
-        let checkLength = arrMinMax.length === 1;
-        if (checkLength) arr.push(arrMinMax[0]);
+        let range = getNumbers(item.value);
 
         return ({
             ...item,
-            min: (checkLength && arr.indexOf(arrMinMax[0]) === 0) ? 0 : arrMinMax[0],
-            max: (checkLength && arr.indexOf(arrMinMax[0]) === 0) ? arrMinMax[0] : arr.indexOf(arrMinMax[0]) === 1 ? 99999999 : arrMinMax[1]
+            min: range.length === 2 ? range[0] : range[0] === max ? max : 0,
+            max: range.length === 2 ? range[1] : range[0] === min ? min : 99999999
         });
     })
 }
 
 // get code from ranges
-export const getCode = (value, target) => {
-    const targetRanges = getRange(target);
-    return targetRanges.filter(item => value >= item.min && value < item.max);
+export const getCode = (value, target, min, max) => {
+    const targetRanges = getRanges(target, min, max);
+    return targetRanges.find(item => value >= item.min && value < item.max);
 }

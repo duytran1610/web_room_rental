@@ -55,13 +55,15 @@ const CreatePost = () => {
 
     // handle submit
     const handleSubmit = () => {
-        let priceCode = getCode(+payload.priceVal, prices)?.code;
-        let areaCode = getCode(+payload.areaVal, areas)?.code;
+        let priceCode = getCode(+payload.priceVal, prices, 1, 15)?.code;
+        let areaCode = getCode(+payload.areaVal, areas, 20, 90)?.code;
+        let imgs = JSON.stringify(imageUrls);
+
         setPayload(prev => ({
             ...prev, 
             priceCode,
             areaCode,
-            images: JSON.stringify(imageUrls)
+            images: imgs
         }));
     }
 

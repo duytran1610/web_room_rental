@@ -17,6 +17,8 @@ export const getUser = () => async (dispatch) => {
                 type: actionTypes.GET_CURRENT_USER,
                 msg: response.data.msg
             });
+            // when access token expired or err then logout
+            dispatch({type: actionTypes.LOGOUT});
         }
     } catch (err) {
         dispatch({
@@ -24,5 +26,7 @@ export const getUser = () => async (dispatch) => {
             curData: null,
             msg: err
         });
+        // when access token expired or err then logout
+        dispatch({type: actionTypes.LOGOUT});
     }
 }
