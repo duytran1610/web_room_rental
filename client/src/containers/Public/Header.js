@@ -79,7 +79,7 @@ const Header = () => {
                     />
                     {
                         isShowMenu && 
-                        <div className="absolute min-w-[200px] top-full mt-2 right-0 p-4 bg-white rounded-md shadow-md flex flex-col">
+                        <div className="absolute min-w-[200px] top-full mt-2 right-0 p-4 bg-white rounded-md shadow-md flex flex-col z-20">
                             {
                                 menuManage.map(item => 
                                     <Link
