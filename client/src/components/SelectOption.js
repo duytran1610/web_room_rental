@@ -8,13 +8,13 @@ const SelectOption = ({ label, options, type, setValue, name }) => {
             <select
                 id='select-address'
                 className='outline-none border border-gary-300 p-2 w-full rounded-md'
-                onChange={(e) => !name? setValue(e.target.value) : setValue(prev => ({...prev, [name]: e.target.value}))}
+                onChange={(e) => !name? setValue(e.target.value) : setValue(prev => ({...prev, [name]: e.target?.value}))}
             >
                 <option value="">{`--Chon ${label}--`}</option>
                 {options?.map(item =>
                     <option
                         key={(type === 'district' || type === 'province') ? item[`${type}_id`] : item.code}
-                        value={(type === 'district' || type === 'province') ? item[`${type}_id`] : item.value}
+                        value={(type === 'district' || type === 'province') ? item[`${type}_id`] : item.code}
                     >
                         {(type === 'district' || type === 'province') ? item[`${type}_name`] : item.value}
                     </option>

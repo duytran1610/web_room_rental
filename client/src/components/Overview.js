@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 // renter
 const target = [
+    {code: 'Tất cả', value: 'Tất cả'},
     {code: 'Nam', value: 'Nam'},
     {code: 'Nữ', value: 'Nữ'}
 ]
