@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {Routes, Route} from 'react-router-dom';
 import {Home, Login, Rental, Homepage, DetailPost, SearchDetail} from './Public';
+import { System, CreatePost, ManagePost } from './System';
 import {path} from '../utils/constant';
-import { System, CreatePost } from './System';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions';
 
@@ -44,6 +44,7 @@ function App() {
         </Route>
         <Route path={path.SYSTEM} element={<System />}>
           <Route path={path.CREATE_POST} element={<CreatePost />}/>
+          <Route path={path.MANAGE_POST} element={<ManagePost />}/>
         </Route>
       </Routes>
     </div>

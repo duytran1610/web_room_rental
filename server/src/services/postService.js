@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import generateCode from "../utils/generateCode";
 import moment from 'moment';           // format time 
 import 'moment/locale/vi';             // format time with lang vi
+import generateDate from "../utils/generateDate";
 require('dotenv').config();
 
 // get infor of all post
@@ -128,7 +129,7 @@ export const createNewPostService = (body) => new Promise(async(resolve, reject)
         const overviewID = uuidv4();
         const labelCode = generateCode(body.label);
         const hashtag = `#${Math.floor(Math.random() * Math.pow(10,6))}`;
-        const curDate = new Date();
+        const curDate = generateDate(30);
         const provinceName = body.province?.includes('Thành phố')? body.province?.replace('Thành phố ','') : body.province?.replace('Tỉnh ','');
         const provinceCode = generateCode(provinceName);
 
@@ -174,8 +175,8 @@ export const createNewPostService = (body) => new Promise(async(resolve, reject)
             type: body.category || null,
             target: body.target,
             bonus: 'Tin thường',
-            created: JSON.stringify(curDate),
-            expire: JSON.stringify(curDate.setFullYear(curDate.getFullYear()+1)),
+            created: curDate.today,
+            expire: curDate.expireDay,
         });
 
         // insert data in table Labels
@@ -197,6 +198,53 @@ export const createNewPostService = (body) => new Promise(async(resolve, reject)
         resolve({
             err: 0,
             msg: 'Create a new post succeed!'
+        });
+    } catch (err) {
+        reject(err);
+    }
+});
+
+// get posts in manage posts of user
+export const getPostsLimitUser = (page, id, query) => new Promise(async(resolve, reject) => {
+    try {
+        let offset = (!page || +page <= 1)? 0 : +page - 1;
+        const queries = {...query, userID: id}
+
+        const posts = await db.Post.findAndCountAll({
+            where: queries,
+            raw: true,
+            nest: true,
+            offset: offset * process.env.LIMIT_PAGINATION,
+            order: [['createdAt', 'DESC']],
+            limit: process.env.LIMIT_PAGINATION,
+            include: [
+                {
+                    model: db.Image,
+                    as: 'imgs',
+                    attributes: ['image']
+                },
+                {
+                    model: db.Attribute,
+                    as: 'attrs',
+                    attributes: ['price', 'acreage', 'published', 'hashtag']
+                },
+                {
+                    model: db.Overview,
+                    as: 'overviews'
+                },
+                {
+                    model: db.User,
+                    as: 'user',
+                    attributes: ['name', 'phone', 'zalo']
+                }
+            ],
+            attributes: ['id', 'title', 'star', 'address', 'description']
+        });
+
+        resolve({
+            err: posts ? 0 : -1,
+            msg: posts ? 'Get posts limit admin succeed!' : 'Fail get posts admin!',
+            data: posts
         });
     } catch (err) {
         reject(err);

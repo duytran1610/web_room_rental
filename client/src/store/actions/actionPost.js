@@ -27,7 +27,7 @@ export const getAllPosts = () => async (dispatch) => {
     }
 }
 
-// get to pagination
+// get posts to pagination
 export const getPostsLimit = (query) => async (dispatch) => {
     try {
         const response = await apis.apiGetPostsLimit(query);
@@ -77,6 +77,34 @@ export const getNewPosts = () => async (dispatch) => {
         dispatch({
             type: actionTypes.GET_NEW_POSTS,
             newPosts: null,
+            msg: err
+        });
+    }
+}
+
+// get posts in manage posts of user
+export const getPostsLimitUser = (query) => async (dispatch) => {
+    try {
+        const response = await apis.apiGetPostsLimitUser(query);
+
+        if (response?.data.err === 0) {
+            dispatch({
+                type: actionTypes.GET_POSTS_USER,
+                posts: response.data.data?.rows,
+                count: response.data.data?.count 
+            });
+        } 
+        else {
+            dispatch({
+                type: actionTypes.GET_POSTS_USER,
+                msg: response.data.msg,
+                posts: null
+            });
+        }
+    } catch (err) {
+        dispatch({
+            type: actionTypes.GET_POSTS_USER,
+            posts: null,
             msg: err
         });
     }

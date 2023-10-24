@@ -144,7 +144,7 @@ const CreatePost = () => {
                                 <h3 className='font-medim'>Ảnh đã chọn  </h3>
                                 <div className='flex flex-wrap gap-4 items-center'>
                                     {imageUrls?.map((item, i) => 
-                                        <div  key={i} className='relative w-1/4 h-1/4'>
+                                        <div  key={i} className='relative w-1/5 h-1/5'>
                                             <img src={item} alt="img" className='w-full h-full object-cover rounded-md' />
                                             <span 
                                                 title='delete' 

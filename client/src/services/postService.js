@@ -14,7 +14,7 @@ export const apiGetAllPosts = () => new Promise(async(resolve, reject) => {
     }
 });
 
-// get to pagination
+// get posts to pagination
 export const apiGetPostsLimit = (query) => new Promise(async(resolve, reject) => {
     try {
         const response = instance({
@@ -50,6 +50,21 @@ export const apiCreateNewPost = (payload) => new Promise(async(resolve, reject) 
             method: 'post',
             url: `/api/v1/post/create-new`,
             data: payload
+        });
+
+        resolve(response);
+    } catch (err) {
+        reject(err);
+    }
+});
+
+// get posts in manage posts of user
+export const apiGetPostsLimitUser = (query) => new Promise(async(resolve, reject) => {
+    try {
+        const response = instance({
+            method: 'get',
+            url: `/api/v1/post/limit-user`,
+            params: query
         });
 
         resolve(response);

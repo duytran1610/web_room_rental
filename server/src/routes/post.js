@@ -10,6 +10,7 @@ postRouter.get('/new-post', postController.getNewPosts);
 
 postRouter.use(verifyJWT);
 postRouter.post('/create-new', postController.createNewPost);
+postRouter.get('/limit-user', postController.getPostsLimitUser);
 
 
 export default postRouter;

@@ -29,6 +29,7 @@ const Overview = ({payload, setPayload, invalidFields, setInvalidFields}) => {
                         options={categories} 
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
+                        value={payload.categoryCode}
                     />
                 </div>
                 <Input 

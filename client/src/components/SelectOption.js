@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // item input for choose option in path /system/create-new-post
-const SelectOption = ({ label, options, type, setValue, name, invalidFields, setInvalidFields}) => {
+const SelectOption = ({ label, options, type, value, setValue, name, invalidFields, setInvalidFields}) => {
     // handleTextErr
     const handleTextErr = () => {
         if (name) return invalidFields?.find(item => item.name === name)?.msg;
@@ -16,6 +16,7 @@ const SelectOption = ({ label, options, type, setValue, name, invalidFields, set
                 className='outline-none border border-gary-300 p-2 w-full rounded-md'
                 onChange={(e) => !name? setValue(e.target.value) : setValue(prev => ({...prev, [name]: e.target?.value}))}
                 onFocus={() => setInvalidFields([])}
+                value={value}
             >
                 <option value="">{`--Chon ${label}--`}</option>
                 {options?.map(item =>

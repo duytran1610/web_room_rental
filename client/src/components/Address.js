@@ -29,7 +29,7 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
 
     // auto fetch public districts in province
     useEffect(() => {
-        setDistrictId();
+        setDistrictId('');
 
         // function get public provinces
         const fetchPublicDistricts = async (provinceId) => {
@@ -52,6 +52,12 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [provinceId, districtId]);
 
+    useEffect(() => {
+        if (payload.address === '') {
+            setProvinceId('');
+        }
+    }, [payload.address]);
+
     return (
         <div>
             <h2 className='font-semibold text-xl py-4'>Địa chỉ cho thuê</h2>
@@ -60,6 +66,7 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
                     <SelectOption
                         type='province'
                         setValue={setProvinceId}
+                        value={provinceId}
                         options={provinces}
                         label='Tỉnh/ TP' 
                         invalidFields={invalidFields}
@@ -68,6 +75,7 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
                     <SelectOption
                         type='district'
                         setValue={setDistrictId}
+                        value={districtId}
                         options={districts}
                         label='Quận/ huyện' 
                         invalidFields={invalidFields}

@@ -9,8 +9,9 @@ export const path = {
     HOME__PAGE: ':page',
     DETAIL_POSTS__TITLE__POSTID: 'detail/:title/:postId',
     SEARCHDETAIL: 'search-detail',
-    SYSTEM: '/system',
-    CREATE_POST: 'create-new-post'
+    SYSTEM: '/system/*',
+    CREATE_POST: 'create-new-post',
+    MANAGE_POST: 'manage-posts'
 }
 
 export const text = {

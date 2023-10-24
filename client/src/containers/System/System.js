@@ -11,10 +11,12 @@ const System = () => {
     if(!isLoggedIn) return <Navigate to={`/${path.LOGIN}`} replace={true}/>          // thuộc tính replace: có xóa lịch sử của trang trước đó k, nếu true thì k thể quay lại trang trước đó
 
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center h-screen overflow-hidden">
             <Header />
             <div className='w-full flex flex-auto h-screen'>
-                <Sidebar />
+                <div className='flex-none'>
+                    <Sidebar />
+                </div>
                 <div className='flex-auto bg-white p-4 overflow-y-scroll'>
                     <Outlet />
                 </div>

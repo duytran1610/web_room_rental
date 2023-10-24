@@ -1,5 +1,6 @@
 import * as postService from '../services/postService';
 
+//==========================SHOW FOR ALL USERS=================================
 // get all posts
 export const getAllPosts = async (req, res) => {
     try {
@@ -14,7 +15,7 @@ export const getAllPosts = async (req, res) => {
     }
 }
 
-// get to pagination
+// get posts to pagination
 export const getPostsLimit = async (req, res) => {
     const {page, ...query} = req.query;
     try {
@@ -29,7 +30,7 @@ export const getPostsLimit = async (req, res) => {
     }
 }
 
-// get new posts at time
+// get new posts at the moment
 export const getNewPosts = async (req, res) => {
     try {
         const response = await postService.getNewPostsService();
@@ -43,6 +44,8 @@ export const getNewPosts = async (req, res) => {
     }
 }
 
+//==========================SHOW FOR USER (NEED LOGIN)=================================
+
 // create new post
 export const createNewPost = async (req, res) => {
     try {
@@ -54,6 +57,27 @@ export const createNewPost = async (req, res) => {
         })
 
         const response = await postService.createNewPostService(req.body);
+
+        return res.status(200).json(response);
+    } catch (err) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at post controller: ' + err
+        })
+    }
+}
+
+// get posts in manage posts of user
+export const getPostsLimitUser = async (req, res) => {
+    const {page, ...query} = req.query;
+    const { id } = req.user;
+    try {
+        if (!id) return res.status(400).json({
+            err: -1,
+            msg: 'Missing inputs!'
+        });
+
+        const response = await postService.getPostsLimitUser(page, id, query);
 
         return res.status(200).json(response);
     } catch (err) {
