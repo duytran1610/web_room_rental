@@ -1,7 +1,13 @@
 import React, { memo } from 'react';
 
 // item input for choose option in path /system/create-new-post
-const SelectOption = ({ label, options, type, setValue, name }) => {
+const SelectOption = ({ label, options, type, setValue, name, invalidFields, setInvalidFields}) => {
+    // handleTextErr
+    const handleTextErr = () => {
+        if (name) return invalidFields?.find(item => item.name === name)?.msg;
+        return invalidFields?.find(item => item.name === 'address')?.msg
+    }
+
     return (
         <div className='flex flex-col gap-2 flex-1'>
             <label className='font-medium' htmlFor='select-address'>{label}</label>
@@ -9,6 +15,7 @@ const SelectOption = ({ label, options, type, setValue, name }) => {
                 id='select-address'
                 className='outline-none border border-gary-300 p-2 w-full rounded-md'
                 onChange={(e) => !name? setValue(e.target.value) : setValue(prev => ({...prev, [name]: e.target?.value}))}
+                onFocus={() => setInvalidFields([])}
             >
                 <option value="">{`--Chon ${label}--`}</option>
                 {options?.map(item =>
@@ -20,7 +27,9 @@ const SelectOption = ({ label, options, type, setValue, name }) => {
                     </option>
                 )}
             </select>
-
+            <small className='text-red-500'>
+                {handleTextErr()}
+            </small>
         </div>
     )
 }

@@ -5,6 +5,7 @@ import {getCode} from '../../utils/Common/getCodes';
 import { useSelector } from 'react-redux';
 import { apiCreateNewPost } from '../../services';
 import Swal from 'sweetalert2';        // A beautiful, responsive, highly customizable and accessible (WAI-ARIA) replacement for JavaScript's popup boxes. 
+import validateFields from '../../utils/Common/validateFields';
 
 
 const {BsFillCameraFill, RiDeleteBin5Fill} = icons
@@ -26,6 +27,8 @@ const CreatePost = () => {
     const [images, setImages] = useState([]);
     // URL of images
     const [imageUrls, setImageUrls] = useState([]);
+    // control valid data when user input
+    const [invalidFields, setInvalidFields] = useState([]);
 
     // get prices, areas, categories from appReducer in redux store
     const {prices, areas, categories} = useSelector(state => state.app);
@@ -42,6 +45,10 @@ const CreatePost = () => {
             
             setImageUrls(prev => [...newImageUrls]);
         }
+        else {
+            setImageUrls([]);
+        }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [images]);
 
@@ -71,30 +78,32 @@ const CreatePost = () => {
             areaCode,
             images: imageUrls,
             userID: curData.id,
-            target: payload?.target || 'Tất cả',
             label
         };
-        
-        const response = await apiCreateNewPost(finalPayload);
 
-        if (response.data.err === 0) {
-            Swal.fire('Success!', 'Created a post', 'success').then(() => {
-                setPayload({
-                    categoryCode: '',
-                    title: '',
-                    priceVal: 0,
-                    areaVal: 0,
-                    address: '',
-                    description: '',
-                    target: '',                      
-                    province: ''
+        const invalid = validateFields(finalPayload, setInvalidFields);
+
+        if (!invalid) {
+            const response = await apiCreateNewPost(finalPayload);
+    
+            if (response.data.err === 0) {
+                Swal.fire('Success!', 'Created a post', 'success').then(() => {
+                    setPayload({
+                        categoryCode: '',
+                        title: '',
+                        priceVal: 0,
+                        areaVal: 0,
+                        address: '',
+                        description: '',
+                        target: '',                      
+                        province: ''
+                    });
+                    setImages([]);
                 });
-                setImageUrls([]);
-                setImages([]);
-            });
-        } else {
-            Swal.fire('Ooops...', 'Cannot create a new post', 'error');
-        }
+            } else {
+                Swal.fire('Ooops...', 'Cannot create a new post', 'error');
+            }
+        }       
     }
 
     return (
@@ -102,17 +111,34 @@ const CreatePost = () => {
            <h1 className='text-3xl font-medium py-4 border-b border-gray-200'>Đăng tin mới</h1>
            <div className='flex'>
                 <div className='py-4 flex flex-col gap-8 flex-auto'>
-                    <Address payload={payload} setPayload={setPayload} />
-                    <Overview payload={payload} setPayload={setPayload} />
+                    <Address
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        payload={payload}
+                        setPayload={setPayload} 
+                    />
+                    <Overview
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        payload={payload}
+                        setPayload={setPayload} 
+                    />
                     <div>
                         <h2 className='font-semibold text-xl py-4'>Hình ảnh</h2>
                         <small>Cập nhật hình ảnh rõ ràng sẽ cho thuê nhanh hơn</small>
                         <div className='w-full'>
-                            <label className='flex flex-col gap-4 border h-[300px] border-dashed rounded-md items-center justify-center my-4 cursor-pointer' htmlFor='fileImg'>
+                            <label 
+                                className='flex flex-col gap-4 border h-[300px] border-dashed rounded-md items-center justify-center my-4 cursor-pointer' 
+                                htmlFor='fileImg'
+                                onClick={() => setInvalidFields([])}
+                            >
                                 <BsFillCameraFill color='blue' size={50} />
                                 Thêm ảnh
                             </label>
-                            <input hidden id='fileImg' type='file' multiple onChange={handleFiles} />
+                            <input hidden id='fileImg' type='file' multiple onChange={handleFiles}/>
+                            <small className='text-red-500'>
+                                {invalidFields?.find(item => item.name === 'images')?.msg}
+                            </small>
                             {images.length > 0 &&
                             <div className='w-full'>
                                 <h3 className='font-medim'>Ảnh đã chọn  </h3>

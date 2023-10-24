@@ -4,7 +4,7 @@ import { apiGetPublicProvinces, apiGetPublicDistricts } from '../services';
 import { InputReadOnly } from '../components';
 
 // use in path system
-const Address = ({payload, setPayload}) => {
+const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
 
     // state
     // provinces
@@ -57,8 +57,22 @@ const Address = ({payload, setPayload}) => {
             <h2 className='font-semibold text-xl py-4'>Địa chỉ cho thuê</h2>
             <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-4'>
-                    <SelectOption type='province' setValue={setProvinceId} options={provinces} label='Tỉnh/ TP' />
-                    <SelectOption type='district' setValue={setDistrictId} options={districts} label='Quận/ huyện' />
+                    <SelectOption
+                        type='province'
+                        setValue={setProvinceId}
+                        options={provinces}
+                        label='Tỉnh/ TP' 
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                    />
+                    <SelectOption
+                        type='district'
+                        setValue={setDistrictId}
+                        options={districts}
+                        label='Quận/ huyện' 
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                    />
                 </div>
                 <InputReadOnly
                     label='Địa chỉ chính xác'

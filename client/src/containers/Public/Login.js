@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector} from 'react-redux';
 import * as actions from '../../store/actions';
 import Swal from 'sweetalert2';        // A beautiful, responsive, highly customizable and accessible (WAI-ARIA) replacement for JavaScript's popup boxes. 
-
+import validateFields from "../../utils/Common/validateFields";
 
 const Login = () => {
     // location
@@ -50,13 +50,17 @@ const Login = () => {
     // Register <-> Login
     const setStatus = () => {
         setIsRegister(!isRegister);
+    }
+
+    // auto set default when change type register <->login
+    useEffect(() => {
         setPayload({
             name: '',
             phone: '',
             password: ''
         });
         setInvalidFields([]);
-    }
+    }, [isRegister]);
 
     // click button submit
     const handleSubmit = async () => {
@@ -65,58 +69,11 @@ const Login = () => {
             password: payload.password
         }
 
-        let invalids = validate(finalPayload);
+        let invalids = validateFields(finalPayload, setInvalidFields);
 
         if (!invalids) isRegister? dispatch(actions.register(finalPayload)) : dispatch(actions.login(finalPayload));
     }
 
-    // check valid data input
-    const validate = (payload) => {
-        let invalids = 0;
-
-        // Returns an array of key/values of the enumerable properties of an object 
-        let fields = Object.entries(payload);
-
-        fields.forEach(item => {
-            if (!item[1]) {
-                setInvalidFields(prev => [...prev, {
-                    name: item[0],
-                    msg: 'You forget input data into this field!'
-                }]);
-                invalids++;
-            }
-        });
-
-        fields.forEach(item => {
-            switch(item[0]) {
-                case 'password':
-                    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+-=])[A-Za-z\d!@#$%^&*()_+-=]{8,}$/;
-                    let checkPassword = passwordRegex.test(item[1]);
-                    if (!checkPassword) {
-                        setInvalidFields(prev => [...prev, {
-                            name: item[0],
-                            msg: 'Password invalid!'
-                        }]);
-                        invalids++;
-                    }
-                    break;
-                case 'phone': 
-                    const phoneRegex = /^\d{6,11}$/; // Regex check number phone
-                    let checkPhone = phoneRegex.test(item[1]);
-                    if (!checkPhone) {
-                        setInvalidFields(prev => [...prev, {
-                            name: item[0],
-                            msg: 'Phone invalid!'
-                        }]);
-                        invalids++;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        })
-        return invalids;
-    }
 
     return (
         <div className="w-full flex justify-center">

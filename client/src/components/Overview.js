@@ -10,7 +10,7 @@ const target = [
 ]
 
 // use in path /system
-const Overview = ({payload, setPayload}) => {
+const Overview = ({payload, setPayload, invalidFields, setInvalidFields}) => {
     // get categories from appReducer in redux store
     const { categories } = useSelector(state => state.app);
 
@@ -22,13 +22,22 @@ const Overview = ({payload, setPayload}) => {
             <h2 className='font-semibold text-xl py-4'>Thông tin mô tả</h2>
             <div className='w-full flex flex-col gap-4'>
                 <div className='w-1/2'>
-                    <SelectOption label='loại chuyên mục' setValue={setPayload} name='categoryCode' options={categories} />
+                    <SelectOption 
+                        label='loại chuyên mục'
+                        setValue={setPayload}
+                        name='categoryCode'
+                        options={categories} 
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                    />
                 </div>
                 <Input 
                     label='Tiêu đề' 
                     value={payload.title} 
                     setValue={setPayload} 
                     name='title' 
+                    invalidFields={invalidFields}
+                    setInvalidFields={setInvalidFields}
                 />
                 <div className='flex flex-col gap-2'>
                     <label className='font-medium' htmlFor='desc'>Nội dung mô tả</label>
@@ -39,7 +48,11 @@ const Overview = ({payload, setPayload}) => {
                         className='w-full rounded-md outline-none border border-gray-300 p-2' 
                         value={payload.description}
                         onChange={(e) => setPayload(prev => ({...prev, description: e.target.value}))}
+                        onFocus={() => setInvalidFields([])}
                     />
+                    <small className='text-red-500'>
+                        {invalidFields?.find(item => item.name === 'description')?.msg}
+                    </small>
                 </div>
                 <div className='w-1/2 flex flex-col gap-4'>
                     <InputReadOnly label='Thông tin liên hệ' value={curData?.name} />
@@ -51,6 +64,8 @@ const Overview = ({payload, setPayload}) => {
                         value={payload.priceVal} 
                         setValue={setPayload} 
                         name='priceVal' 
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
                     />
                     <Input 
                         label='Diện tích' 
@@ -58,8 +73,18 @@ const Overview = ({payload, setPayload}) => {
                         value={payload.areaVal} 
                         setValue={setPayload} 
                         name='areaVal' 
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
                     />
-                    <SelectOption options={target} value={payload.target} setValue={setPayload} name='target' label='Đối tượng cho thuê' />
+                    <SelectOption
+                        options={target}
+                        value={payload.target}
+                        setValue={setPayload}
+                        name='target'
+                        label='Đối tượng cho thuê' 
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                    />
                 </div>
                 
             </div>
