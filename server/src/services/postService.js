@@ -139,7 +139,6 @@ export const createNewPostService = (body) => new Promise(async(resolve, reject)
             title: body.title || null,
             labelCode,
             address: body.address || null,
-            attributeID,
             categoryCode: body.categoryCode,
             description: JSON.stringify(body.description) || null,
             userID: body.userID,
@@ -245,6 +244,71 @@ export const getPostsLimitUser = (page, id, query) => new Promise(async(resolve,
             err: posts ? 0 : -1,
             msg: posts ? 'Get posts limit admin succeed!' : 'Fail get posts admin!',
             data: posts
+        });
+    } catch (err) {
+        reject(err);
+    }
+});
+
+// update post 
+export const updatePost = (data) => new Promise(async(resolve, reject) => {
+    try {
+        const {postID, attributeID, overviewID, imageID, ...body} = data;
+        const labelCode = generateCode(body.label);
+        const provinceName = body.province?.includes('Thành phố')? body.province?.replace('Thành phố ','') : body.province?.replace('Tỉnh ','');
+        const provinceCode = generateCode(provinceName);
+
+        // update data in table Posts
+        await db.Post.update({
+            title: body.title || null,
+            labelCode,
+            address: body.address || null,
+            categoryCode: body.categoryCode,
+            description: JSON.stringify(body.description) || null,
+            areaCode: body.areaCode || null,
+            priceCode: body.priceCode || null,
+            provinceCode: provinceCode || null,
+            priceVal: body.priceVal,
+            areaVal: body.areaVal
+        }, {where: {id: postID}});
+
+        // update data in table Attributes
+        await db.Attribute.update({
+            price: body.priceVal < 1 ? `${body.priceVal * Math.pow(10,6)} đồng/tháng` : `${body.priceVal} triệu/tháng`,
+            acreage: `${body.areaVal} m2`,
+        }, {where: {id: attributeID}});
+
+        // update data in table Images
+        await db.Image.update({
+            image: JSON.stringify(body.images)
+        }, {where: {id: imageID}});
+
+        // insert data in table Overviews
+        await db.Overview.update({
+            area: body.label,
+            type: body.category || null,
+            target: body.target,
+        }, {where: {id: overviewID}});
+
+        // insert data in table Labels
+        await db.Label.findOrCreate({
+            where: { code: labelCode },
+            defaults: {
+                value: body.label
+            }
+        });
+
+        // insert data in table Provinces
+        await db.Province.findOrCreate({
+            where: { code: provinceCode },
+            defaults: {
+                value: provinceName
+            }
+        });
+
+        resolve({
+            err: 0,
+            msg: 'Updated!'
         });
     } catch (err) {
         reject(err);

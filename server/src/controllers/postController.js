@@ -87,3 +87,23 @@ export const getPostsLimitUser = async (req, res) => {
         })
     }
 }
+
+// update post 
+export const updatePost = async (req, res) => {
+    const {postID, attributeID, overviewID, imageID, ...payload} = req.body;
+    try {
+        if (!postID || !attributeID || !overviewID || !imageID) return res.status(400).json({
+            err: -1,
+            msg: 'Missing inputs!'
+        });
+
+        const response = await postService.updatePost(req.body);
+
+        return res.status(200).json(response);
+    } catch (err) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at post controller: ' + err
+        })
+    }
+}

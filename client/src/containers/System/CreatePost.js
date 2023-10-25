@@ -3,7 +3,7 @@ import { Overview, Address, Button } from '../../components';
 import icons from '../../utils/icons';
 import {getCode} from '../../utils/Common/getCodes';
 import { useSelector } from 'react-redux';
-import { apiCreateNewPost } from '../../services';
+import { apiCreateNewPost, apiUpdatePost } from '../../services';
 import Swal from 'sweetalert2';        // A beautiful, responsive, highly customizable and accessible (WAI-ARIA) replacement for JavaScript's popup boxes. 
 import validateFields from '../../utils/Common/validateFields';
 
@@ -39,13 +39,26 @@ const CreatePost = ({isEdit}) => {
     // get curData from userReducer in redux store
     const {curData} = useSelector(state => state.user);
 
+    // auto get images of post, which needs edit
+    useEffect(() => {
+        if (postEdit) {
+            // JSON.parse(postEdit?.imgs.image).forEach((item, index) => {
+            //     if (item.includes('http')) console.log(index)
+            // })
+            setImages(JSON.parse(postEdit?.imgs.image));
+        }
+    }, [postEdit]);
+
     // auto update url images and save when images is changed
     useEffect(() => {
         if (images.length >= 1) {           
             const newImageUrls = [];
 
             // create URL for every image
-            images.forEach(item => newImageUrls.push(URL.createObjectURL(item)));
+            images.forEach(item => {
+                if (typeof item === 'string') newImageUrls.push(item);
+                else newImageUrls.push(URL.createObjectURL(item));
+            });
             
             setImageUrls(prev => [...newImageUrls]);
         }
@@ -88,24 +101,52 @@ const CreatePost = ({isEdit}) => {
         const invalid = validateFields(finalPayload, setInvalidFields);
 
         if (!invalid) {
-            const response = await apiCreateNewPost(finalPayload);
-    
-            if (response.data.err === 0) {
-                Swal.fire('Success!', 'Created a post', 'success').then(() => {
-                    setPayload({
-                        categoryCode: '',
-                        title: '',
-                        priceVal: 0,
-                        areaVal: 0,
-                        address: '',
-                        description: '',
-                        target: '',                      
-                        province: ''
+            if (postEdit && isEdit) {
+                finalPayload.postID = postEdit.id;
+                finalPayload.attributeID = postEdit.attributeID;
+                finalPayload.overviewID = postEdit.overviewID;
+                finalPayload.imageID = postEdit.imageID;
+
+                const response = await apiUpdatePost(finalPayload);
+
+                if (response.data.err === 0) {
+                    Swal.fire('Success!', 'Updated post succeed!', 'success').then(() => {
+                        setPayload({
+                            categoryCode: '',
+                            title: '',
+                            priceVal: 0,
+                            areaVal: 0,
+                            address: '',
+                            description: '',
+                            target: '',                      
+                            province: ''
+                        });
+                        setImages([]);
                     });
-                    setImages([]);
-                });
-            } else {
-                Swal.fire('Ooops...', 'Cannot create a new post', 'error');
+                } else {
+                    Swal.fire('Ooops...', 'Cannot update post', 'error');
+                }
+            }
+            else {
+                const response = await apiCreateNewPost(finalPayload);
+        
+                if (response.data.err === 0) {
+                    Swal.fire('Success!', 'Created a post', 'success').then(() => {
+                        setPayload({
+                            categoryCode: '',
+                            title: '',
+                            priceVal: 0,
+                            areaVal: 0,
+                            address: '',
+                            description: '',
+                            target: '',                      
+                            province: ''
+                        });
+                        setImages([]);
+                    });
+                } else {
+                    Swal.fire('Ooops...', 'Cannot create a new post', 'error');
+                }
             }
         }       
     }
@@ -164,7 +205,7 @@ const CreatePost = ({isEdit}) => {
                         </div>
                     </div>
                     <Button 
-                        text={isEdit ? 'Save' : 'Creat new'}
+                        text={isEdit ? 'Update' : 'Creat new'}
                         bgColor='bg-green-600'
                         textColor='text-white'
                         onClick={handleSubmit}

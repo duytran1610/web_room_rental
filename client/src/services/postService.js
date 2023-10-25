@@ -72,3 +72,18 @@ export const apiGetPostsLimitUser = (query) => new Promise(async(resolve, reject
         reject(err);
     }
 });
+
+// upate post
+export const apiUpdatePost = (payload) => new Promise(async(resolve, reject) => {
+    try {
+        const response = instance({
+            method: 'put',
+            url: `/api/v1/post/update`,
+            data: payload
+        });
+
+        resolve(response);
+    } catch (err) {
+        reject(err);
+    }
+});
