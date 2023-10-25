@@ -41,6 +41,12 @@ const postReducer = (state=initState, action) => {
                 ...state,
                 postEdit: action.post || null
             }
+
+        case actionTypes.RESET_POST_EDIT:
+            return {
+                ...state,
+                postEdit: null
+            }
         default:
             return state;
     }

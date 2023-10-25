@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import { Overview, Address, Button } from '../../components';
 import icons from '../../utils/icons';
 import {getCode} from '../../utils/Common/getCodes';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { apiCreateNewPost, apiUpdatePost } from '../../services';
 import Swal from 'sweetalert2';        // A beautiful, responsive, highly customizable and accessible (WAI-ARIA) replacement for JavaScript's popup boxes. 
 import validateFields from '../../utils/Common/validateFields';
+import * as actions from '../../store/actions';
 
 
 const {BsFillCameraFill, RiDeleteBin5Fill} = icons
@@ -15,12 +16,15 @@ const CreatePost = ({isEdit}) => {
     // get postEdit from postReducer in redux store
     const {postEdit} = useSelector(state => state.post);
 
+    // dispatch
+    const dispatch = useDispatch();
+
     // state
     // infor input of post
     const [payload, setPayload] = useState({
         categoryCode: postEdit?.categoryCode || '',
         title: postEdit?.title || '',
-        priceVal: postEdit?.priceVal || 0,
+        priceVal: (postEdit?.priceVal < 1000 ? postEdit?.priceVal * Math.pow(10,6) : postEdit?.priceVal) || 0,
         areaVal: postEdit?.areaVal || 0,
         address: '',
         description: postEdit?.description? JSON.parse(postEdit?.description) : '',
@@ -42,9 +46,6 @@ const CreatePost = ({isEdit}) => {
     // auto get images of post, which needs edit
     useEffect(() => {
         if (postEdit) {
-            // JSON.parse(postEdit?.imgs.image).forEach((item, index) => {
-            //     if (item.includes('http')) console.log(index)
-            // })
             setImages(JSON.parse(postEdit?.imgs.image));
         }
     }, [postEdit]);
@@ -66,7 +67,6 @@ const CreatePost = ({isEdit}) => {
             setImageUrls([]);
         }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [images]);
 
     // handle upload multiple files
@@ -77,6 +77,21 @@ const CreatePost = ({isEdit}) => {
     // handle delete image
     const handleDeleteImage = (i) => {
         setImages(prev => prev.filter((item, index) => index !== i));
+    }
+
+    // reset payload and imgs
+    const resetData = () => {
+        setPayload({
+            categoryCode: '',
+            title: '',
+            priceVal: 0,
+            areaVal: 0,
+            address: '',
+            description: '',
+            target: '',                      
+            province: ''
+        });
+        setImages([]);
     }
 
     // handle submit
@@ -111,17 +126,8 @@ const CreatePost = ({isEdit}) => {
 
                 if (response.data.err === 0) {
                     Swal.fire('Success!', 'Updated post succeed!', 'success').then(() => {
-                        setPayload({
-                            categoryCode: '',
-                            title: '',
-                            priceVal: 0,
-                            areaVal: 0,
-                            address: '',
-                            description: '',
-                            target: '',                      
-                            province: ''
-                        });
-                        setImages([]);
+                        resetData();
+                        dispatch(actions.resetPostEdit());
                     });
                 } else {
                     Swal.fire('Ooops...', 'Cannot update post', 'error');
@@ -132,17 +138,7 @@ const CreatePost = ({isEdit}) => {
         
                 if (response.data.err === 0) {
                     Swal.fire('Success!', 'Created a post', 'success').then(() => {
-                        setPayload({
-                            categoryCode: '',
-                            title: '',
-                            priceVal: 0,
-                            areaVal: 0,
-                            address: '',
-                            description: '',
-                            target: '',                      
-                            province: ''
-                        });
-                        setImages([]);
+                        resetData();
                     });
                 } else {
                     Swal.fire('Ooops...', 'Cannot create a new post', 'error');

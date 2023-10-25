@@ -115,3 +115,8 @@ export const getPostEdit = (dataEdit) => ({
     type: actionTypes.GET_POST_EDIT,
     post: dataEdit
 });
+
+// reset post edit
+export const resetPostEdit = () => ({
+    type: actionTypes.RESET_POST_EDIT
+});

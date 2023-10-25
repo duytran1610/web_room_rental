@@ -9,8 +9,8 @@ const ManagePost = () => {
     // dispatch
     const dispatch = useDispatch();
 
-    // get postsUser in postReducer in redux store
-    const {postsUser} = useSelector(state => state.post);
+    // get postsUser, postEdit in postReducer in redux store
+    const {postsUser, postEdit} = useSelector(state => state.post);
 
     // state
     // controll edit info post
@@ -20,6 +20,10 @@ const ManagePost = () => {
     useEffect(() => {
         dispatch(actions.getPostsLimitUser());
     }, [dispatch]);
+
+    useEffect(() => {
+        !postEdit && setIsEdit(false);
+    }, [postEdit]);
 
     // check status
     const checkStatus = (datetime) => {

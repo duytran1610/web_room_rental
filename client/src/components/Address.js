@@ -30,15 +30,21 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
         fetchPublicProvinces();
     }, []);
 
-    // useEffect(() => {
-    //     if (postEdit) {
-    //         let addressParts = postEdit.address.split(', ');
-    //         const province_id = provinces.find(item => item.province_name === addressParts[addressParts.length-1])?.province_id;
-    //         setProvinceId(province_id);
-    //         const district_id = districts.find(item => item.district_name === addressParts[addressParts.length-2])?.district_id;
-    //         setDistrictId(district_id);
-    //     }
-    // }, [provinces, districts]);
+    useEffect(() => {
+        if (postEdit) {
+            let addressParts = postEdit.address.split(', ');
+            const province_id = provinces.find(item => item.province_name === addressParts[addressParts.length-1])?.province_id;
+            setProvinceId(province_id);
+        }
+    }, [provinces, postEdit]);
+
+    useEffect(() => {
+        if (postEdit) {
+            let addressParts = postEdit.address.split(', ');
+            const district_id = districts.find(item => item.district_name === addressParts[addressParts.length-2])?.district_id;
+            setDistrictId(district_id);
+        }
+    }, [districts, postEdit]);
 
 
     // auto fetch public districts in province
@@ -63,7 +69,6 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
             address: `${districtId ? `${districts?.find(item => item.district_id === districtId)?.district_name}, ` : ''}${provinceId ? `${provinces?.find(item => item.province_id === provinceId)?.province_name}` : ''}`
         }));
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [provinceId, districtId]);
 
     useEffect(() => {

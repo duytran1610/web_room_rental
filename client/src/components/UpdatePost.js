@@ -11,7 +11,7 @@ const UpdatePost = ({setIsEdit}) => {
             className='absolute top-0 left-0 right-0 bottom-0 z-20 bg-overlay70 flex justify-center'
             onClick={() => {
                 setIsEdit(false);
-                dispatch(actions.getPostEdit());
+                dispatch(actions.resetPostEdit());
             }}
         >
             <div 
