@@ -10,17 +10,21 @@ import validateFields from '../../utils/Common/validateFields';
 
 const {BsFillCameraFill, RiDeleteBin5Fill} = icons
 
-const CreatePost = () => {
+// component to a new post or edit post (isEdit shown edit post)
+const CreatePost = ({isEdit}) => {
+    // get postEdit from postReducer in redux store
+    const {postEdit} = useSelector(state => state.post);
+
     // state
     // infor input of post
     const [payload, setPayload] = useState({
-        categoryCode: '',
-        title: '',
-        priceVal: 0,
-        areaVal: 0,
+        categoryCode: postEdit?.categoryCode || '',
+        title: postEdit?.title || '',
+        priceVal: postEdit?.priceVal || 0,
+        areaVal: postEdit?.areaVal || 0,
         address: '',
-        description: '',
-        target: '',                      // renter: male or female
+        description: postEdit?.description? JSON.parse(postEdit?.description) : '',
+        target: postEdit?.overviews.target || '',                      // renter: male or female
         province: ''
     });
     // images uploaded
@@ -108,7 +112,7 @@ const CreatePost = () => {
 
     return (
         <div className='px-6'>
-           <h1 className='text-3xl font-medium py-4 border-b border-gray-200'>Đăng tin mới</h1>
+           <h1 className='text-3xl font-medium py-4 border-b border-gray-200'>{isEdit ? 'Chỉnh sửa tin đăng' : 'Đăng tin mới'}</h1>
            <div className='flex'>
                 <div className='py-4 flex flex-col gap-8 flex-auto'>
                     <Address
@@ -160,7 +164,7 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <Button 
-                        text='Creat new'
+                        text={isEdit ? 'Save' : 'Creat new'}
                         bgColor='bg-green-600'
                         textColor='text-white'
                         onClick={handleSubmit}

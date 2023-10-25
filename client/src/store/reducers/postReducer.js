@@ -5,7 +5,8 @@ const initState = {
     msg: '',
     count: 0,
     newPosts: [],
-    postsUser: []
+    postsUser: [],
+    postEdit: null
 }
 
 
@@ -33,6 +34,12 @@ const postReducer = (state=initState, action) => {
                 postsUser: action.posts || [],
                 msg: action.msg || '',
                 count: action.count || 0
+            }
+
+        case actionTypes.GET_POST_EDIT:
+            return {
+                ...state,
+                postEdit: action.post || null
             }
         default:
             return state;

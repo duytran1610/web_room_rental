@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions';
 import moment from 'moment';           // format time 
 import 'moment/locale/vi';             // format time with lang vi
-import { Button } from '../../components';
+import { Button, UpdatePost } from '../../components';
 
 const ManagePost = () => {
     // dispatch
@@ -11,6 +11,10 @@ const ManagePost = () => {
 
     // get postsUser in postReducer in redux store
     const {postsUser} = useSelector(state => state.post);
+
+    // state
+    // controll edit info post
+    const [isEdit, setIsEdit] = useState(false);
 
     // auto get posts user
     useEffect(() => {
@@ -67,6 +71,10 @@ const ManagePost = () => {
                                         text='Edit'
                                         bgColor='bg-blue-600'
                                         textColor='text-white'
+                                        onClick = {() => {
+                                            dispatch(actions.getPostEdit(item));
+                                            setIsEdit(true);
+                                        }}
                                     />
                                     <Button 
                                         text='Delete'
@@ -79,6 +87,7 @@ const ManagePost = () => {
                     }
                 </tbody>
             </table>
+            {isEdit && <UpdatePost setIsEdit={setIsEdit} />}
         </div>
     )
 }

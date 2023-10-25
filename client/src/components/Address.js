@@ -2,9 +2,12 @@ import React, { memo, useEffect, useState } from 'react';
 import { SelectOption } from '../components';
 import { apiGetPublicProvinces, apiGetPublicDistricts } from '../services';
 import { InputReadOnly } from '../components';
+import { useSelector } from 'react-redux';
 
 // use in path system
 const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
+    // get postEdit from postReducer in redux store
+    const {postEdit} = useSelector(state => state.post);
 
     // state
     // provinces
@@ -26,6 +29,17 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
 
         fetchPublicProvinces();
     }, []);
+
+    // useEffect(() => {
+    //     if (postEdit) {
+    //         let addressParts = postEdit.address.split(', ');
+    //         const province_id = provinces.find(item => item.province_name === addressParts[addressParts.length-1])?.province_id;
+    //         setProvinceId(province_id);
+    //         const district_id = districts.find(item => item.district_name === addressParts[addressParts.length-2])?.district_id;
+    //         setDistrictId(district_id);
+    //     }
+    // }, [provinces, districts]);
+
 
     // auto fetch public districts in province
     useEffect(() => {
@@ -57,6 +71,7 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
             setProvinceId('');
         }
     }, [payload.address]);
+
 
     return (
         <div>

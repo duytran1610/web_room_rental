@@ -109,3 +109,9 @@ export const getPostsLimitUser = (query) => async (dispatch) => {
         });
     }
 }
+
+// get post edit
+export const getPostEdit = (dataEdit) => ({
+    type: actionTypes.GET_POST_EDIT,
+    post: dataEdit
+});

@@ -3,11 +3,10 @@ import React, {memo} from 'react';
 const Input = ({label, unit, value, setValue, name, small, invalidFields, setInvalidFields}) => {
     return (
         <div>
-            <label className='font-medium' htmlFor='title'>{label}</label>
+            <label className='font-medium'>{label}</label>
             <div className='flex items-center'>
                 <input 
-                    type='text' 
-                    id='title' 
+                    type='text'
                     className={`${unit ? 'rounded-tl-md rounded-bl-md' : 'rounded-md'} w-full flex-auto outline-none border border-gray-300 p-2`} 
                     value={value}
                     onChange={(e) => setValue(prev => ({...prev, [name]: e.target.value}))}

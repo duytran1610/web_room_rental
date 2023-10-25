@@ -18,3 +18,4 @@ export { default as SelectOption } from './SelectOption';
 export { default as InputReadOnly } from './InputReadOnly';
 export { default as Input } from './Input';
 export { default as Loading } from './Loading';
+export { default as UpdatePost } from './UpdatePost';

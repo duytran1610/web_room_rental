@@ -10,10 +10,10 @@ const SelectOption = ({ label, options, type, value, setValue, name, invalidFiel
 
     return (
         <div className='flex flex-col gap-2 flex-1'>
-            <label className='font-medium' htmlFor='select-address'>{label}</label>
+            <label className='font-medium'>{label}</label>
             <select
-                id='select-address'
                 className='outline-none border border-gary-300 p-2 w-full rounded-md'
+                name={type || name}
                 onChange={(e) => !name? setValue(e.target.value) : setValue(prev => ({...prev, [name]: e.target?.value}))}
                 onFocus={() => setInvalidFields([])}
                 value={value}

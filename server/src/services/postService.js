@@ -238,7 +238,7 @@ export const getPostsLimitUser = (page, id, query) => new Promise(async(resolve,
                     attributes: ['name', 'phone', 'zalo']
                 }
             ],
-            attributes: ['id', 'title', 'star', 'address', 'description']
+            // attributes: ['id', 'title', 'star', 'address', 'description']
         });
 
         resolve({
