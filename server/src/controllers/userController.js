@@ -14,3 +14,24 @@ export const getUser = async (req, res) => {
         });
     }
 }
+
+// update user
+export const updateUser = async (req, res) => {
+    const {id} = req.user;
+    const payload = req.body;
+    try {
+        if (!payload) return res.status(400).json({
+            err: -1,
+            msg: 'Missing input!'
+        });
+
+        const response = await userService.updateUser(id, payload);
+
+        return res.status(200).json(response);
+    } catch (err) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at user Controller: ' + err
+        });
+    }
+}

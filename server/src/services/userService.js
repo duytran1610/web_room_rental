@@ -18,3 +18,19 @@ export const getUser = (id) => new Promise(async(resolve, reject) => {
         reject(err);
     }
 });
+
+// update user
+export const updateUser = (id, payload) => new Promise(async(resolve, reject) => {
+    try {
+        const response = await db.User.update(payload, { 
+            where: {id},
+        });
+
+        resolve({
+            err: response[0] > 0 ? 0 : -1,
+            msg: response[0] > 0 ? 'Updated information user succeed!' : 'Fail update information user!'
+        })
+    } catch (err) {
+        reject(err);
+    }
+});

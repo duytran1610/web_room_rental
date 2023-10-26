@@ -5,6 +5,7 @@ import menuSidebar from '../../utils/menuSidebar';
 import { NavLink } from 'react-router-dom';
 import icons from '../../utils/icons';
 import * as actions from '../../store/actions';
+import { getPartID } from '../../utils/Common/getNumbers';
 
 const {RiLogoutCircleRLine} = icons;
 
@@ -30,7 +31,7 @@ const Sidebar = () => {
                     </div>
                 </div>
                 <span>
-                    Mã thành viên: <small className='font-medium'>{curData?.id?.match(/\d+/g).join('')?.slice(0,6)}</small>
+                    Mã thành viên: <small className='font-medium'>{getPartID(curData?.id)}</small>
                 </span>
             </div>
             <div className="">

@@ -8,6 +8,7 @@ const userRouter = express.Router();
 userRouter.use(verifyJWT);
 
 userRouter.get('/get-current', userController.getUser);
+userRouter.put('/update', userController.updateUser);
 
 
 export default userRouter;
