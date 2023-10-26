@@ -2,6 +2,7 @@ export const path = {
     HOME: '/',
     LOGIN: 'login',
     SIGNUP: 'signup',
+
     CTCN: 'cho-thue-can-ho',
     CTMB: 'cho-thue-mat-bang',
     CTPT: 'cho-thue-phong-tro',
@@ -9,9 +10,11 @@ export const path = {
     HOME__PAGE: ':page',
     DETAIL_POSTS__TITLE__POSTID: 'detail/:title/:postId',
     SEARCHDETAIL: 'search-detail',
+
     SYSTEM: '/system/*',
     CREATE_POST: 'create-new-post',
-    MANAGE_POST: 'manage-posts'
+    MANAGE_POST: 'manage-posts',
+    EDIT_PROFILE: 'edit-profile'
 }
 
 export const text = {

@@ -13,7 +13,7 @@ const InputForm = ({label, value, setValue, keyPayload, invalidFields, setInvali
                 onChange={(e) => setValue(payload => ({...payload, [keyPayload]: e.target.value}))}
                 onFocus={(e) => setInvalidFields([])}
             />
-            {invalidFields.length > 0 && invalidFields.some(i => i.name === keyPayload) && <small className="text-red-500 italic">{invalidFields.find(i => i.name === keyPayload)?.msg}</small> }
+            {invalidFields?.length > 0 && invalidFields?.some(i => i.name === keyPayload) && <small className="text-red-500 italic">{invalidFields.find(i => i.name === keyPayload)?.msg}</small> }
         </div>
     );
 }

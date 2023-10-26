@@ -5,7 +5,9 @@ import moment from 'moment';           // format time
 import 'moment/locale/vi';             // format time with lang vi
 import { Button, UpdatePost } from '../../components';
 import { apiDeletePost } from '../../services';
+import Swal from 'sweetalert2';
 
+// component to manage posts user
 const ManagePost = () => {
     // dispatch
     const dispatch = useDispatch();
@@ -16,7 +18,7 @@ const ManagePost = () => {
     // state
     // controll edit info post
     const [isEdit, setIsEdit] = useState(false);
-    // controll update posts user
+    // controll update status page when postsUser is changed
     const [update, setUpdate] = useState(false);
     // posts
     const [posts, setPosts] = useState([]);
@@ -42,8 +44,13 @@ const ManagePost = () => {
     const handleDeletePost = async (item) => {
         const {id, imageID, overviewID, labelCode, attributeID} = item;
         const data = {postID: id, imageID, overviewID, labelCode, attributeID};
-        await apiDeletePost(data);
-        setUpdate(prev => !prev);
+        const response = await apiDeletePost(data);
+        if (response.data.err === 0) {
+            setUpdate(prev => !prev);
+        }
+        else {
+            Swal.fire('Ooops...', 'Cannot delete post', 'error');
+        }
     }
 
     // handle filter posts

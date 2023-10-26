@@ -11,7 +11,7 @@ import * as actions from '../../store/actions';
 
 const {BsFillCameraFill, RiDeleteBin5Fill} = icons
 
-// component to a new post or edit post (isEdit shown edit post)
+// component to create a new post or edit post (isEdit shown edit post)
 const CreatePost = ({isEdit, setUpdate}) => {
     // get postEdit from postReducer in redux store
     const {postEdit} = useSelector(state => state.post);
