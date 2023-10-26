@@ -3,7 +3,8 @@ import {CreatePost} from '../containers/System';
 import { useDispatch } from 'react-redux';
 import * as actions from '../store/actions';
 
-const UpdatePost = ({setIsEdit}) => {
+// show biểu mẫu để update thông tin 
+const UpdatePost = ({setIsEdit, setUpdate}) => {
     // dispatch
     const dispatch = useDispatch();
     return (
@@ -18,7 +19,7 @@ const UpdatePost = ({setIsEdit}) => {
                 className='bg-white max-w-1100 w-full overflow-y-auto'
                 onClick={(e) => e.stopPropagation()}
             >
-                <CreatePost isEdit />
+                <CreatePost isEdit setUpdate={setUpdate}/>
             </div>
         </div>
     )

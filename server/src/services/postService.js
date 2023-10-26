@@ -142,6 +142,7 @@ export const createNewPostService = (body) => new Promise(async(resolve, reject)
             categoryCode: body.categoryCode,
             description: JSON.stringify(body.description) || null,
             userID: body.userID,
+            attributeID,
             overviewID,
             imageID,
             areaCode: body.areaCode || null,
@@ -309,6 +310,46 @@ export const updatePost = (data) => new Promise(async(resolve, reject) => {
         resolve({
             err: 0,
             msg: 'Updated!'
+        });
+    } catch (err) {
+        reject(err);
+    }
+});
+
+// delete post
+export const deletePost = (data) => new Promise(async(resolve, reject) => {
+    try {
+        const {postID, attributeID, overviewID, imageID, labelCode} = data;
+
+        // delete data in table posts
+        const response = await db.Post.destroy({
+            where: {id: postID}
+        });
+
+        // delete data in table Attributes
+        await db.Attribute.destroy({
+            where: {id: attributeID}
+        });
+
+        // delete data in table Images
+        await db.Image.destroy({
+            where: {id: imageID}
+        });
+
+        // delete data in table Overviews
+        await db.Overview.destroy({
+            where: {id: overviewID}
+        });
+
+        // delete data in table Labels
+        await db.Label.destroy({
+            where: { code: labelCode } 
+        });
+
+        resolve({
+            err: response ? 0 : -1,
+            msg: response ? 'Deleted post succeed!' : 'Fail delete post!',
+            data: response
         });
     } catch (err) {
         reject(err);

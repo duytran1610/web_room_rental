@@ -4,6 +4,7 @@ import * as actions from '../../store/actions';
 import moment from 'moment';           // format time 
 import 'moment/locale/vi';             // format time with lang vi
 import { Button, UpdatePost } from '../../components';
+import { apiDeletePost } from '../../services';
 
 const ManagePost = () => {
     // dispatch
@@ -15,29 +16,59 @@ const ManagePost = () => {
     // state
     // controll edit info post
     const [isEdit, setIsEdit] = useState(false);
+    // controll update posts user
+    const [update, setUpdate] = useState(false);
+    // posts
+    const [posts, setPosts] = useState([]);
 
-    // auto get posts user
+    // auto get posts user from redux store
     useEffect(() => {
         dispatch(actions.getPostsLimitUser());
-    }, [dispatch]);
+    }, [dispatch, update]);
+
+    // get posts user
+    useEffect(() => {
+        setPosts(postsUser);
+    }, [postsUser])
 
     useEffect(() => {
         !postEdit && setIsEdit(false);
     }, [postEdit]);
 
     // check status
-    const checkStatus = (datetime) => {
-        let isWorking = moment(datetime, "HH:mm YYYY-MM-DD").isSameOrAfter(new Date());
+    const checkStatus = (datetime) => moment(datetime, "HH:mm YYYY-MM-DD").isSameOrAfter(new Date());
 
-        return isWorking ? 'Đang hoạt động' : 'Đã hết hạn';
+    // handle delete post
+    const handleDeletePost = async (item) => {
+        const {id, imageID, overviewID, labelCode, attributeID} = item;
+        const data = {postID: id, imageID, overviewID, labelCode, attributeID};
+        await apiDeletePost(data);
+        setUpdate(prev => !prev);
+    }
+
+    // handle filter posts
+    const handleFilterPosts = (status) => {
+        if (status === 1) {
+            const postsFilter = postsUser?.filter(item => checkStatus(item?.overviews?.expire.split(', ')[1]));
+            setPosts(postsFilter);
+        }
+        else if (status === 2) {
+            const postsFilter = postsUser?.filter(item => !checkStatus(item?.overviews?.expire.split(', ')[1]));
+            setPosts(postsFilter);
+        }
+        else {
+            setPosts(postsUser);
+        }
     }
 
     return (
         <div className='flex flex-col gap-6'>
             <div className='py-4 border-b border-gray-200 flex items-center justify-between'>
                 <h1 className='text-3xl font-medium '>Quản lý tin đăng</h1>
-                <select className='outline-none border p-2 border-gray-200 rounded-md' name="">
-                    <option value=''>Lọc bài đăng theo trạng thái</option>
+                <select onChange={(e) => handleFilterPosts(+e.target.value)} className='outline-none border p-2 border-gray-200 rounded-md' name="">
+                    <option value='0'>Lọc bài đăng theo trạng thái</option>
+                    <option value='1'>Đang hoạt động</option>
+                    <option value='2'>Đã hết hạn</option>
                 </select>
             </div>
             <table className="w-full">
@@ -54,12 +85,12 @@ const ManagePost = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {!postsUser ? 
+                    {!posts ? 
                         <tr>
                             <td>adfsafdasfasf</td>
                         </tr>
                         :
-                        postsUser?.map(item => 
+                        posts?.map(item => 
                             <tr key={item.id} className='flex'>
                                 <td className='border flex-1 text-center p-2'>{item?.overviews?.code}</td>
                                 <td className='border flex-1 flex items-center justify-center p-2'>
@@ -69,7 +100,7 @@ const ManagePost = () => {
                                 <td className='border flex-1 text-center p-2'>{item?.attrs?.price}</td>
                                 <td className='border flex-1 text-center p-2'>{item?.overviews?.created}</td>
                                 <td className='border flex-1 text-center p-2'>{item?.overviews?.expire}</td>
-                                <td className='border flex-1 text-center p-2'>{checkStatus(item?.overviews?.expire.split(', ')[1])}</td>
+                                <td className='border flex-1 text-center p-2'>{checkStatus(item?.overviews?.expire.split(', ')[1])? 'Đang hoạt động' : 'Đã hết hạn'}</td>
                                 <td className='border flex-1 p-2 flex items-center justify-center flex-wrap gap-2'>
                                     <Button 
                                         text='Edit'
@@ -84,6 +115,7 @@ const ManagePost = () => {
                                         text='Delete'
                                         bgColor='bg-red-600'
                                         textColor='text-white'
+                                        onClick={() => handleDeletePost(item)}
                                     />
                                 </td>
                             </tr>
@@ -91,7 +123,7 @@ const ManagePost = () => {
                     }
                 </tbody>
             </table>
-            {isEdit && <UpdatePost setIsEdit={setIsEdit} />}
+            {isEdit && <UpdatePost setIsEdit={setIsEdit} setUpdate={setUpdate} />}
         </div>
     )
 }

@@ -12,7 +12,7 @@ import * as actions from '../../store/actions';
 const {BsFillCameraFill, RiDeleteBin5Fill} = icons
 
 // component to a new post or edit post (isEdit shown edit post)
-const CreatePost = ({isEdit}) => {
+const CreatePost = ({isEdit, setUpdate}) => {
     // get postEdit from postReducer in redux store
     const {postEdit} = useSelector(state => state.post);
 
@@ -128,6 +128,7 @@ const CreatePost = ({isEdit}) => {
                     Swal.fire('Success!', 'Updated post succeed!', 'success').then(() => {
                         resetData();
                         dispatch(actions.resetPostEdit());
+                        setUpdate(prev => !prev);
                     });
                 } else {
                     Swal.fire('Ooops...', 'Cannot update post', 'error');

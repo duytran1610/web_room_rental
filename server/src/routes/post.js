@@ -12,6 +12,8 @@ postRouter.use(verifyJWT);
 postRouter.post('/create-new', postController.createNewPost);
 postRouter.get('/limit-user', postController.getPostsLimitUser);
 postRouter.put('/update', postController.updatePost);
+postRouter.delete('/delete', postController.deletePost);
+
 
 
 export default postRouter;

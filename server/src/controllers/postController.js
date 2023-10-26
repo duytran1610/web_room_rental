@@ -107,3 +107,23 @@ export const updatePost = async (req, res) => {
         })
     }
 }
+
+// delete post 
+export const deletePost = async (req, res) => {
+    const {postID, attributeID, overviewID, imageID, labelCode} = req.body;
+    try {
+        if (!postID || !attributeID || !overviewID || !imageID || !labelCode) return res.status(400).json({
+            err: -1,
+            msg: 'Missing delete!'
+        });
+
+        const response = await postService.deletePost(req.body);
+
+        return res.status(200).json(response);
+    } catch (err) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at post controller: ' + err
+        })
+    }
+}

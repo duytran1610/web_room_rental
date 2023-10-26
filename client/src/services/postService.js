@@ -87,3 +87,18 @@ export const apiUpdatePost = (payload) => new Promise(async(resolve, reject) => 
         reject(err);
     }
 });
+
+// delete post
+export const apiDeletePost = (payload) => new Promise(async(resolve, reject) => {
+    try {
+        const response = instance({
+            method: 'delete',
+            url: `/api/v1/post/delete`,
+            data: payload
+        });
+
+        resolve(response);
+    } catch (err) {
+        reject(err);
+    }
+});

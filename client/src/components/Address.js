@@ -19,6 +19,12 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
     // district id
     const [districtId, setDistrictId] = useState();
 
+    useEffect(() => {
+        if (payload.address === '') {
+            setProvinceId('');
+        }
+    }, [payload.address]);
+
     // auto get public provinces
     useEffect(() => {
         // function fetch public provinces
@@ -29,23 +35,6 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
 
         fetchPublicProvinces();
     }, []);
-
-    useEffect(() => {
-        if (postEdit) {
-            let addressParts = postEdit.address.split(', ');
-            const province_id = provinces.find(item => item.province_name === addressParts[addressParts.length-1])?.province_id;
-            setProvinceId(province_id);
-        }
-    }, [provinces, postEdit]);
-
-    useEffect(() => {
-        if (postEdit) {
-            let addressParts = postEdit.address.split(', ');
-            const district_id = districts.find(item => item.district_name === addressParts[addressParts.length-2])?.district_id;
-            setDistrictId(district_id);
-        }
-    }, [districts, postEdit]);
-
 
     // auto fetch public districts in province
     useEffect(() => {
@@ -62,6 +51,25 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
 
     }, [provinceId]);
 
+    // auto get data province id for post edit
+    useEffect(() => {
+        if (postEdit) {
+            let addressParts = postEdit.address.split(', ');
+            const province_id = provinces.find(item => item.province_name === addressParts[addressParts.length-1])?.province_id;
+            setProvinceId(province_id);
+        }
+    }, [provinces, postEdit]);
+
+    // auto get data district id for post edit
+    useEffect(() => {
+        if (postEdit) {
+            let addressParts = postEdit.address.split(', ');
+            const district_id = districts.find(item => item.district_name === addressParts[addressParts.length-2])?.district_id;
+            setDistrictId(district_id);
+        }
+    }, [districts, postEdit]);
+
+
     useEffect(() => {
         setPayload(prev => ({
             ...prev,
@@ -70,12 +78,6 @@ const Address = ({payload, setPayload, invalidFields, setInvalidFields}) => {
         }));
 
     }, [provinceId, districtId]);
-
-    useEffect(() => {
-        if (payload.address === '') {
-            setProvinceId('');
-        }
-    }, [payload.address]);
 
 
     return (
