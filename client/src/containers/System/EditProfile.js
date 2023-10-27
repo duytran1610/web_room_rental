@@ -1,35 +1,49 @@
 import React, {useState} from 'react';
 import { InputReadOnly, Input, Button } from '../../components';
 import avatar from '../../assets/img/avatar.png';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getPartID } from '../../utils/Common/getNumbers';
 import { apiUpdateUser } from '../../services';
+import { fileToBase64, blobToBase64 } from '../../utils/Common/toBase64';
+import * as actions from '../../store/actions';
+import Swal from 'sweetalert2';
 
 // component to control info user
 const EditProfile = () => {
     // get infor current user from userReducer in redux store
     const { curData } = useSelector(state => state.user);
+
+    // dispatch
+    const dispatch = useDispatch();
     
 
     // payload (content user input)
     const [payload, setPayload] = useState({
         name: curData.name || '',
-        avatar: curData.avatar || '',
+        avatar: blobToBase64(curData.avatar) || '',
         fbUrl: curData.fbUrl || '',
         zalo: curData.zalo || ''
     });
 
     // handleSumit 
-    const handleSubmit = () => {
-        apiUpdateUser(payload);
+    const handleSubmit = async() => {
+        const response = await apiUpdateUser(payload);
+        if (response.data.err === 0){
+            Swal.fire('Success!', 'Updated user', 'success').then(() => {
+                dispatch(actions.getUser());
+            });
+        }
+        else {
+            Swal.fire('Ooops...', 'Cannot update user', 'error');
+        }
     }
 
     // handle upload file
-    const handleUploadFile = (e) => {
-        const img = e.target.files[0];
-        if (img) {
-            const imageUrl = URL.createObjectURL(img);
-            setPayload(prev => ({...prev, avatar: imageUrl}));
+    const handleUploadFile = async (e) => {
+        const imgBase64 = await fileToBase64(e.target.files[0]);
+
+        if (imgBase64) {
+            setPayload(prev => ({...prev, avatar: imgBase64}));
         }
     }
 

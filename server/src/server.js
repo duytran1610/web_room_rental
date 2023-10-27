@@ -17,10 +17,12 @@ app.use(cors({
 }));
 
 // create middleware (req.body) for request method POST, that allows the server to get and process data from the user
+// cho phép tăng dung lượng tham số truy vấn lên 10mb
 app.use(express.urlencoded({
-    extended: true
+    extended: true,
+    limit: '10mb'
 }));
-app.use(express.json());
+app.use(express.json({limit: '10mb'}));
 
 // connect database
 connectDB(app);

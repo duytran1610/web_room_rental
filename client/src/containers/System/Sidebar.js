@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom';
 import icons from '../../utils/icons';
 import * as actions from '../../store/actions';
 import { getPartID } from '../../utils/Common/getNumbers';
+import { blobToBase64 } from '../../utils/Common/toBase64';
 
 const {RiLogoutCircleRLine} = icons;
 
@@ -24,7 +25,7 @@ const Sidebar = () => {
         <div className='w-[256px] p-4 flex flex-col gap-6'>
             <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-4'>
-                    <img src={avatar} alt="avatar" className='w-12 h-12 object-cover rounded-full border-2 border-white' />
+                    <img src={blobToBase64(curData?.avatar) || avatar} alt="avatar" className='w-12 h-12 object-cover rounded-full border-2 border-white' />
                     <div className='flex flex-col justify-center'>
                         <span className='font-semibold'>{curData?.name}</span>
                         <small>{curData?.phone}</small>
