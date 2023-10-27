@@ -44,6 +44,21 @@ export const getNewPosts = async (req, res) => {
     }
 }
 
+// get post by id
+export const getPostById = async (req, res) => {
+    const {id} = req.query;
+    try {
+        const response = await postService.getPostById(id);
+
+        return res.status(200).json(response);
+    } catch (err) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at post controller: ' + err
+        });
+    }
+}
+
 //==========================SHOW FOR USER (NEED LOGIN)=================================
 
 // create new post

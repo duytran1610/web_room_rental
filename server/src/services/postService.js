@@ -132,7 +132,7 @@ export const createNewPostService = (body) => new Promise(async(resolve, reject)
         const imageID = uuidv4();
         const overviewID = uuidv4();
         const labelCode = generateCode(body.label);
-        const hashtag = `#${Math.floor(Math.random() * Math.pow(10,6))}`;
+        const hashtag = `${Math.floor(Math.random() * Math.pow(10,6))}`;
         const curDate = generateDate(30);
         const provinceName = body.province?.includes('Thành phố')? body.province?.replace('Thành phố ','') : body.province?.replace('Tỉnh ','');
         const provinceCode = generateCode(provinceName);
@@ -355,6 +355,46 @@ export const deletePost = (data) => new Promise(async(resolve, reject) => {
             msg: response ? 'Deleted post succeed!' : 'Fail delete post!',
             data: response
         });
+    } catch (err) {
+        reject(err);
+    }
+});
+
+// get post by id
+export const getPostById = (id) => new Promise(async (resolve, reject) => {
+    try {
+        const post = await db.Post.findByPk(id, {
+            nest: true,
+            include: [
+                {
+                    model: db.Image,
+                    as: 'imgs',
+                    attributes: ['image']
+                },
+                {
+                    model: db.Attribute,
+                    as: 'attrs',
+                    attributes: ['price', 'acreage', 'published', 'hashtag']
+                },
+                {
+                    model: db.Overview,
+                    as: 'overviews',
+                    attributes: {exclude: ['id']}
+                },
+                {
+                    model: db.User,
+                    as: 'user',
+                    attributes: ['name', 'phone', 'zalo']
+                }
+            ],
+            attributes: ['id', 'title', 'star', 'address', 'description']
+        });
+
+        resolve({
+            err: post ? 0 : -1,
+            msg: post ? 'Get post by id succeed!' : 'Fail get post!',
+            data: post
+        })
     } catch (err) {
         reject(err);
     }

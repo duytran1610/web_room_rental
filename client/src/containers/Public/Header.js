@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import logo from "../../assets/img/logo.png";
 import { Button, User } from "../../components";
 import icons from "../../utils/icons";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { path } from "../../utils/constant";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/actions";
 import menuManage from "../../utils/menuManage";
+
 
 const {AiOutlinePlusCircle, RiLogoutCircleRLine, BsChevronDown} = icons;
 
@@ -20,6 +21,9 @@ const Header = () => {
 
     // dispatch
     const dispatch = useDispatch();
+
+    // location
+    const location = useLocation();
 
     // query params
     const [params] = useSearchParams();
@@ -39,7 +43,7 @@ const Header = () => {
     useEffect(() => {
         // scrolling list item into view
         headerRef.current.scrollIntoView({behavior: 'smooth', block: 'start'});
-    }, [params]);
+    }, [params, location.pathname]);
 
     return (
         <div ref={headerRef} className="w-4/5 lg:w-1100 flex items-center justify-between bg-primary">

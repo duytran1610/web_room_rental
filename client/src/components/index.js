@@ -19,3 +19,4 @@ export { default as InputReadOnly } from './InputReadOnly';
 export { default as Input } from './Input';
 export { default as Loading } from './Loading';
 export { default as UpdatePost } from './UpdatePost';
+export { default as SliderRun } from './SliderRun';

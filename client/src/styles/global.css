@@ -75,3 +75,36 @@ input[type="range"]::-moz-range-thumb:active {
 input[type="range"]::-ms-thumb:active {
     border: solid 1px rgb(144, 211, 255);
 }
+
+button.slick-arrow::before {
+    font-size: 50px !important;
+    color: orange !important
+}
+
+ul.slick-dots {
+    bottom: 4px;
+}
+
+.slick-next {
+    right: 35px !important;
+    top: 45% !important;
+}
+
+.slick-prev {
+    left: 5px !important;
+    top: 45% !important;
+    z-index: 5;
+}
+
+@keyframes slide-right {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+
+    100% {
+        -webkit-transform: translateX(100px);
+        transform: translateX(100px);
+    }
+}
+

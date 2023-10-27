@@ -43,6 +43,21 @@ export const apiGetNewPosts = () => new Promise(async(resolve, reject) => {
     }
 });
 
+// get post by id
+export const apiGetPostById = (id) => new Promise(async(resolve, reject) => {
+    try {
+        const response = instance({
+            method: 'get',
+            url: `/api/v1/post/id`,
+            params: id
+        });
+
+        resolve(response);
+    } catch (err) {
+        reject(err);
+    }
+});
+
 // create a new post
 export const apiCreateNewPost = (payload) => new Promise(async(resolve, reject) => {
     try {
