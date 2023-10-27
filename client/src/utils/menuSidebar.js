@@ -25,7 +25,7 @@ const menuSidebar = [
     {
         id: 4,
         text: 'Contact',
-        path: '/system/contact',
+        path: '/contact',
         icon: <MdOutlineLibraryBooks />
     },
 ];

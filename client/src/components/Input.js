@@ -1,11 +1,12 @@
 import React, {memo} from 'react';
 
-// use when user edit info or create info
+// in path /system
+// use when user edit info or create info user or new post
 const Input = ({label, unit, value, setValue, name, small, invalidFields, setInvalidFields, direction}) => {
     return (
         <div>
             <div className={direction ? 'flex' : 'flex flex-col'}>
-                <label className={`font-medium flex-none ${direction ? 'w-48' : ''}`}>{label}</label>
+                <label className={`font-medium flex-none ${direction && 'w-48'}`}>{label}</label>
                 <div className='flex flex-col flex-auto'>
                     <div className='flex w-full'>
                         <input 

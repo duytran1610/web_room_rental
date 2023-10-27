@@ -2,8 +2,8 @@ import React, {memo} from 'react'
 
 const InputReadOnly = ({label, value, direction, isPhone}) => {
     return (
-        <div className={`flex ${direction? '' : 'flex-col gap-2'}`}>
-            <label className={`font-medium flex-none ${direction ? 'w-48' : ''}`}>{label}</label>
+        <div className={`flex ${!direction && 'flex-col gap-2'}`}>
+            <label className={`font-medium flex-none ${direction && 'w-48'}`}>{label}</label>
             <div className='flex-auto'>
                 <input
                     type='text'

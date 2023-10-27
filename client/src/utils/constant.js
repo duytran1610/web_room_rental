@@ -10,6 +10,7 @@ export const path = {
     HOME__PAGE: ':page',
     DETAIL_POSTS__TITLE__POSTID: 'detail/:title/:postId',
     SEARCHDETAIL: 'search-detail',
+    CONTACT: 'contact',
 
     SYSTEM: '/system/*',
     CREATE_POST: 'create-new-post',

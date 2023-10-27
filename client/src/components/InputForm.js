@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-// use in when login or register
+// use in when login or register or contact public
 const InputForm = ({label, value, setValue, keyPayload, invalidFields, setInvalidFields, type}) => {
     return (
         <div>
@@ -11,7 +11,7 @@ const InputForm = ({label, value, setValue, keyPayload, invalidFields, setInvali
                 className="outline-none bg-[#e8f0fe] p-2 rounded-md w-full"
                 value={value}
                 onChange={(e) => setValue(payload => ({...payload, [keyPayload]: e.target.value}))}
-                onFocus={(e) => setInvalidFields([])}
+                onFocus={(e) => setInvalidFields && setInvalidFields([])}
             />
             {invalidFields?.length > 0 && invalidFields?.some(i => i.name === keyPayload) && <small className="text-red-500 italic">{invalidFields.find(i => i.name === keyPayload)?.msg}</small> }
         </div>
