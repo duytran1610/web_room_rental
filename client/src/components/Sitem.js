@@ -2,6 +2,7 @@ import React,{memo} from 'react';
 import moment from 'moment';           // format time 
 import 'moment/locale/vi';             // format time with lang vi
 
+// used in sidebar
 const Sitem = ({title, price, img, createdAt}) => {
     return (
         <div className='w-full flex items-center gap-2 py-2 border-b border-gray-300'>

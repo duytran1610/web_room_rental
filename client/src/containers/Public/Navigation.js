@@ -4,6 +4,7 @@ import { formatVietnameseToString } from '../../utils/Common/formatVietnameseToS
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import * as actions from '../../store/actions';
+import {path} from '../../utils/constant';
 
 
 
@@ -52,6 +53,12 @@ const Navigation = ({isSystem}) => {
                         </NavLink>
                     </div>
                 )}
+                <NavLink
+                    to={`/${path.CONTACT}`}
+                    className={({isActive}) => isActive ? Active : noActive}
+                >
+                    Contact
+                </NavLink>
             </div>
         </div>
     );

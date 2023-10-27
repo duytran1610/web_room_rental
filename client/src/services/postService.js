@@ -14,7 +14,7 @@ export const apiGetAllPosts = () => new Promise(async(resolve, reject) => {
     }
 });
 
-// get posts to pagination
+// get posts to pagination or a post
 export const apiGetPostsLimit = (query) => new Promise(async(resolve, reject) => {
     try {
         const response = instance({

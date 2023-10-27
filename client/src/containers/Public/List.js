@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions';
 import { useSearchParams } from 'react-router-dom';
 
-const List = ({categoryCode}) => {
+const List = ({ categoryCode }) => {
   // dispatch
   const dispatch = useDispatch();
 
@@ -22,8 +22,8 @@ const List = ({categoryCode}) => {
 
     // convert arr to obj
     let paramsSearchObj = paramsSearch.reduce((obj, i) => {
-      if (Object.keys(obj)?.some(item => item === i[0])) return {...obj, [i[0]]: [...obj[i[0]], i[1]]}
-      return {...obj, [i[0]]: [i[1]]}
+      if (Object.keys(obj)?.some(item => item === i[0])) return { ...obj, [i[0]]: [...obj[i[0]], i[1]] }
+      return { ...obj, [i[0]]: [i[1]] }
     }, {});
 
     // get posts by categoryCode

@@ -2,6 +2,7 @@ import {memo, useState, useEffect} from 'react';
 import icons from '../utils/icons';
 import { Link } from 'react-router-dom';
 import {formatVietnameseToString} from '../utils/Common/formatVietnameseToString';
+import { path } from '../utils/constant';
 
 const {BsStarFill, AiFillHeart, AiOutlineHeart, BsBookmarkStarFill} = icons;
 
@@ -23,7 +24,7 @@ const Item = ({address, attrs, description, imgs, star, title, user, id}) => {
     return (
         <div className='w-full flex border-t border-orange-600 py-4'>
             <Link 
-                to={`detail/${formatVietnameseToString(title)}/${id}`} 
+                to={`/${path.DETAIL}/${formatVietnameseToString(title)}/${id}`} 
                 className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'
             >
                 {imgs.length > 0 && imgs.filter((i, index) => index < 4)?.map((item, index) => 
@@ -40,12 +41,15 @@ const Item = ({address, attrs, description, imgs, star, title, user, id}) => {
             </Link>
             <div className='w-3/5'>
                 <div className='flex justify-between gap-3 w-full'>
-                    <div className=' text-red-600 font-medium uppercase'>
+                    <Link 
+                        to={`/${path.DETAIL}/${formatVietnameseToString(title)}/${id}`}
+                        className=' text-red-600 font-medium uppercase'
+                    >
                         {stars.length > 0 && stars.map((item, index) => 
                             <span key={index}>{item}</span>
                         )}
                         {title}
-                    </div>
+                    </Link>
                     <div className='w-[10%] flex justify-end'>
                         <BsBookmarkStarFill size={24} color='orange' />
                     </div>               

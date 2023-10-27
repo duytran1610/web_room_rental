@@ -15,7 +15,7 @@ export const getAllPosts = async (req, res) => {
     }
 }
 
-// get posts to pagination
+// get posts to pagination or show a post
 export const getPostsLimit = async (req, res) => {
     const {page, ...query} = req.query;
     try {

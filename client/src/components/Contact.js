@@ -5,7 +5,7 @@ import {Button} from '../components';
 // Information Contact
 const Contact = () => {
     return (
-        <div className='w-3/5 bg-white rounded-md shadow-md p-4 flex flex-col items-center gap-6'>
+        <div className='w-4/5 lg:w-1100 bg-white rounded-md shadow-md p-4 flex flex-col items-center gap-6'>
             <img 
                 src={text.img}
                 alt="img" 

@@ -8,6 +8,7 @@ export const path = {
     CTPT: 'cho-thue-phong-tro',
     NCT: 'nha-cho-thue',
     HOME__PAGE: ':page',
+    DETAIL: 'detail',
     DETAIL_POSTS__TITLE__POSTID: 'detail/:title/:postId',
     SEARCHDETAIL: 'search-detail',
     CONTACT: 'contact',
