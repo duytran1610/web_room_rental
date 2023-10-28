@@ -17,7 +17,7 @@ export const getAllPosts = async (req, res) => {
 
 // get posts to pagination or show a post
 export const getPostsLimit = async (req, res) => {
-    const {page, ...query} = req.query;
+    const { page, ...query } = req.query;
     try {
         const response = await postService.getPostsLimit(page, query);
 
@@ -30,10 +30,11 @@ export const getPostsLimit = async (req, res) => {
     }
 }
 
-// get new posts at the moment
-export const getNewPosts = async (req, res) => {
+// get new posts or hot posts
+export const getOrderPosts = async (req, res) => {
+    const {order} = req.query;
     try {
-        const response = await postService.getNewPostsService();
+        const response = await postService.getOrderPostsService(order);
 
         return res.status(200).json(response);
     } catch (err) {
@@ -46,7 +47,7 @@ export const getNewPosts = async (req, res) => {
 
 // get post by id
 export const getPostById = async (req, res) => {
-    const {id} = req.query;
+    const { id } = req.query;
     try {
         const response = await postService.getPostById(id);
 
@@ -64,7 +65,7 @@ export const getPostById = async (req, res) => {
 // create new post
 export const createNewPost = async (req, res) => {
     try {
-        const {categoryCode, userID, title, priceVal, areaVal, label} = req.body;
+        const { categoryCode, userID, title, priceVal, areaVal, label } = req.body;
 
         if (!categoryCode || !userID || !title || !priceVal || !areaVal || !label) return res.status(400).json({
             err: -1,
@@ -84,7 +85,7 @@ export const createNewPost = async (req, res) => {
 
 // get posts in manage posts of user
 export const getPostsLimitUser = async (req, res) => {
-    const {page, ...query} = req.query;
+    const { page, ...query } = req.query;
     const { id } = req.user;
     try {
         if (!id) return res.status(400).json({
@@ -105,7 +106,7 @@ export const getPostsLimitUser = async (req, res) => {
 
 // update post 
 export const updatePost = async (req, res) => {
-    const {postID, attributeID, overviewID, imageID, ...payload} = req.body;
+    const { postID, attributeID, overviewID, imageID, ...payload } = req.body;
     try {
         if (!postID || !attributeID || !overviewID || !imageID) return res.status(400).json({
             err: -1,
@@ -125,7 +126,7 @@ export const updatePost = async (req, res) => {
 
 // delete post 
 export const deletePost = async (req, res) => {
-    const {postID, attributeID, overviewID, imageID, labelCode} = req.body;
+    const { postID, attributeID, overviewID, imageID, labelCode } = req.body;
     try {
         if (!postID || !attributeID || !overviewID || !imageID || !labelCode) return res.status(400).json({
             err: -1,

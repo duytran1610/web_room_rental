@@ -1,7 +1,7 @@
 import instance from "../config/axiosConfig";
 
 // get all post
-export const apiGetAllPosts = () => new Promise(async(resolve, reject) => {
+export const apiGetAllPosts = () => new Promise(async (resolve, reject) => {
     try {
         const response = instance({
             method: 'get',
@@ -15,7 +15,7 @@ export const apiGetAllPosts = () => new Promise(async(resolve, reject) => {
 });
 
 // get posts to pagination or a post
-export const apiGetPostsLimit = (query) => new Promise(async(resolve, reject) => {
+export const apiGetPostsLimit = (query) => new Promise(async (resolve, reject) => {
     try {
         const response = instance({
             method: 'get',
@@ -29,12 +29,13 @@ export const apiGetPostsLimit = (query) => new Promise(async(resolve, reject) =>
     }
 });
 
-// get new posts
-export const apiGetNewPosts = () => new Promise(async(resolve, reject) => {
+// get new posts or hot posts
+export const apiGetOrderPosts = (query) => new Promise(async (resolve, reject) => {
     try {
         const response = instance({
             method: 'get',
-            url: `/api/v1/post/new-post`,
+            url: `/api/v1/post/order-post`,
+            params: query
         });
 
         resolve(response);
@@ -44,7 +45,7 @@ export const apiGetNewPosts = () => new Promise(async(resolve, reject) => {
 });
 
 // get post by id
-export const apiGetPostById = (id) => new Promise(async(resolve, reject) => {
+export const apiGetPostById = (id) => new Promise(async (resolve, reject) => {
     try {
         const response = instance({
             method: 'get',
@@ -59,7 +60,7 @@ export const apiGetPostById = (id) => new Promise(async(resolve, reject) => {
 });
 
 // create a new post
-export const apiCreateNewPost = (payload) => new Promise(async(resolve, reject) => {
+export const apiCreateNewPost = (payload) => new Promise(async (resolve, reject) => {
     try {
         const response = instance({
             method: 'post',
@@ -74,7 +75,7 @@ export const apiCreateNewPost = (payload) => new Promise(async(resolve, reject) 
 });
 
 // get posts in manage posts of user
-export const apiGetPostsLimitUser = (query) => new Promise(async(resolve, reject) => {
+export const apiGetPostsLimitUser = (query) => new Promise(async (resolve, reject) => {
     try {
         const response = instance({
             method: 'get',
@@ -89,7 +90,7 @@ export const apiGetPostsLimitUser = (query) => new Promise(async(resolve, reject
 });
 
 // upate post
-export const apiUpdatePost = (payload) => new Promise(async(resolve, reject) => {
+export const apiUpdatePost = (payload) => new Promise(async (resolve, reject) => {
     try {
         const response = instance({
             method: 'put',
@@ -104,7 +105,7 @@ export const apiUpdatePost = (payload) => new Promise(async(resolve, reject) => 
 });
 
 // delete post
-export const apiDeletePost = (payload) => new Promise(async(resolve, reject) => {
+export const apiDeletePost = (payload) => new Promise(async (resolve, reject) => {
     try {
         const response = instance({
             method: 'delete',

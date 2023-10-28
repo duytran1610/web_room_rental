@@ -6,7 +6,7 @@ const postRouter = express.Router();
 
 postRouter.get('/all', postController.getAllPosts);
 postRouter.get('/limit', postController.getPostsLimit);
-postRouter.get('/new-post', postController.getNewPosts);
+postRouter.get('/order-post', postController.getOrderPosts);
 postRouter.get('/id', postController.getPostById);
 
 postRouter.use(verifyJWT);

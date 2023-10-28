@@ -8,7 +8,7 @@ import generateDate from "../utils/generateDate";
 require('dotenv').config();
 
 // get infor of all post
-export const getAllPosts = () => new Promise(async(resolve, reject) => {
+export const getAllPosts = () => new Promise(async (resolve, reject) => {
     try {
         const posts = await db.Post.findAll({
             raw: true,
@@ -44,22 +44,22 @@ export const getAllPosts = () => new Promise(async(resolve, reject) => {
 });
 
 // get limit number posts (to pagination) with request (query) or a post
-export const getPostsLimit = (page, {order,...query}) => new Promise(async(resolve, reject) => {
+export const getPostsLimit = (page, { order, ...query }) => new Promise(async (resolve, reject) => {
     try {
         let queries = {};
-        let offset = (!page || +page <= 1)? 0 : +page - 1;
-        let limit = query.id ? 1 : process.env.LIMIT_PAGINATION;
+        let offset = (!page || +page <= 1) ? 0 : +page - 1;
+        let limit = process.env.LIMIT_PAGINATION;
         queries.limit = limit;
         queries.order = order ? [order] : [['createdAt', 'DESC']];
-        if (query.priceVal) query.priceVal = {[Op.between]: query.priceVal}
-        if (query.areaVal) query.areaVal = {[Op.between]: query.areaVal}
-        
+        if (query.priceVal) query.priceVal = { [Op.between]: query.priceVal }
+        if (query.areaVal) query.areaVal = { [Op.between]: query.areaVal }
+
 
         const posts = await db.Post.findAndCountAll({
             where: query,
             raw: true,
             nest: true,
-            offset: offset * process.env.LIMIT_PAGINATION,
+            offset: offset * limit,
             ...queries,
             include: [
                 {
@@ -91,14 +91,16 @@ export const getPostsLimit = (page, {order,...query}) => new Promise(async(resol
     }
 });
 
-// get new posts at time
-export const getNewPostsService = () => new Promise(async(resolve, reject) => {
+// get new posts or hot posts
+export const getOrderPostsService = (order) => new Promise(async (resolve, reject) => {
     try {
+        order = order ? [order] : [['createdAt', 'DESC']];
+
         const posts = await db.Post.findAll({
             raw: true,
             nest: true,
             offset: 0,
-            order: [['createdAt', 'DESC']],
+            order,
             limit: process.env.LIMIT_PAGINATION,
             include: [
                 {
@@ -126,15 +128,15 @@ export const getNewPostsService = () => new Promise(async(resolve, reject) => {
 });
 
 // create new post
-export const createNewPostService = (body) => new Promise(async(resolve, reject) => {
+export const createNewPostService = (body) => new Promise(async (resolve, reject) => {
     try {
         const attributeID = uuidv4();
         const imageID = uuidv4();
         const overviewID = uuidv4();
         const labelCode = generateCode(body.label);
-        const hashtag = `${Math.floor(Math.random() * Math.pow(10,6))}`;
+        const hashtag = `${Math.floor(Math.random() * Math.pow(10, 6))}`;
         const curDate = generateDate(30);
-        const provinceName = body.province?.includes('Thành phố')? body.province?.replace('Thành phố ','') : body.province?.replace('Tỉnh ','');
+        const provinceName = body.province?.includes('Thành phố') ? body.province?.replace('Thành phố ', '') : body.province?.replace('Tỉnh ', '');
         const provinceCode = generateCode(provinceName);
 
         // insert data in table Posts
@@ -159,7 +161,7 @@ export const createNewPostService = (body) => new Promise(async(resolve, reject)
         // insert data in table Attributes
         await db.Attribute.create({
             id: attributeID,
-            price: body.priceVal < 1 ? `${body.priceVal * Math.pow(10,6)} đồng/tháng` : `${body.priceVal} triệu/tháng`,
+            price: body.priceVal < 1 ? `${body.priceVal * Math.pow(10, 6)} đồng/tháng` : `${body.priceVal} triệu/tháng`,
             acreage: `${body.areaVal} m2`,
             published: moment(curDate).format('DD/MM/YYYY'),
             hashtag
@@ -209,10 +211,10 @@ export const createNewPostService = (body) => new Promise(async(resolve, reject)
 });
 
 // get posts in manage posts of user
-export const getPostsLimitUser = (page, id, query) => new Promise(async(resolve, reject) => {
+export const getPostsLimitUser = (page, id, query) => new Promise(async (resolve, reject) => {
     try {
-        let offset = (!page || +page <= 1)? 0 : +page - 1;
-        const queries = {...query, userID: id}
+        let offset = (!page || +page <= 1) ? 0 : +page - 1;
+        const queries = { ...query, userID: id }
 
         const posts = await db.Post.findAndCountAll({
             where: queries,
@@ -256,11 +258,11 @@ export const getPostsLimitUser = (page, id, query) => new Promise(async(resolve,
 });
 
 // update post 
-export const updatePost = (data) => new Promise(async(resolve, reject) => {
+export const updatePost = (data) => new Promise(async (resolve, reject) => {
     try {
-        const {postID, attributeID, overviewID, imageID, ...body} = data;
+        const { postID, attributeID, overviewID, imageID, ...body } = data;
         const labelCode = generateCode(body.label);
-        const provinceName = body.province?.includes('Thành phố')? body.province?.replace('Thành phố ','') : body.province?.replace('Tỉnh ','');
+        const provinceName = body.province?.includes('Thành phố') ? body.province?.replace('Thành phố ', '') : body.province?.replace('Tỉnh ', '');
         const provinceCode = generateCode(provinceName);
 
         // update data in table Posts
@@ -275,25 +277,25 @@ export const updatePost = (data) => new Promise(async(resolve, reject) => {
             provinceCode: provinceCode || null,
             priceVal: body.priceVal,
             areaVal: body.areaVal
-        }, {where: {id: postID}});
+        }, { where: { id: postID } });
 
         // update data in table Attributes
         await db.Attribute.update({
-            price: body.priceVal < 1 ? `${body.priceVal * Math.pow(10,6)} đồng/tháng` : `${body.priceVal} triệu/tháng`,
+            price: body.priceVal < 1 ? `${body.priceVal * Math.pow(10, 6)} đồng/tháng` : `${body.priceVal} triệu/tháng`,
             acreage: `${body.areaVal} m2`,
-        }, {where: {id: attributeID}});
+        }, { where: { id: attributeID } });
 
         // update data in table Images
         await db.Image.update({
             image: JSON.stringify(body.images)
-        }, {where: {id: imageID}});
+        }, { where: { id: imageID } });
 
         // insert data in table Overviews
         await db.Overview.update({
             area: body.label,
             type: body.category || null,
             target: body.target,
-        }, {where: {id: overviewID}});
+        }, { where: { id: overviewID } });
 
         // insert data in table Labels
         await db.Label.findOrCreate({
@@ -321,33 +323,33 @@ export const updatePost = (data) => new Promise(async(resolve, reject) => {
 });
 
 // delete post
-export const deletePost = (data) => new Promise(async(resolve, reject) => {
+export const deletePost = (data) => new Promise(async (resolve, reject) => {
     try {
-        const {postID, attributeID, overviewID, imageID, labelCode} = data;
+        const { postID, attributeID, overviewID, imageID, labelCode } = data;
 
         // delete data in table posts
         const response = await db.Post.destroy({
-            where: {id: postID}
+            where: { id: postID }
         });
 
         // delete data in table Attributes
         await db.Attribute.destroy({
-            where: {id: attributeID}
+            where: { id: attributeID }
         });
 
         // delete data in table Images
         await db.Image.destroy({
-            where: {id: imageID}
+            where: { id: imageID }
         });
 
         // delete data in table Overviews
         await db.Overview.destroy({
-            where: {id: overviewID}
+            where: { id: overviewID }
         });
 
         // delete data in table Labels
         await db.Label.destroy({
-            where: { code: labelCode } 
+            where: { code: labelCode }
         });
 
         resolve({
@@ -379,7 +381,7 @@ export const getPostById = (id) => new Promise(async (resolve, reject) => {
                 {
                     model: db.Overview,
                     as: 'overviews',
-                    attributes: {exclude: ['id']}
+                    attributes: { exclude: ['id'] }
                 },
                 {
                     model: db.User,

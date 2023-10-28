@@ -11,7 +11,7 @@ export const getAllPosts = () => async (dispatch) => {
                 type: actionTypes.GET_POSTS,
                 posts: response.data.data
             });
-        } 
+        }
         else {
             dispatch({
                 type: actionTypes.GET_POSTS,
@@ -36,9 +36,9 @@ export const getPostsLimit = (query) => async (dispatch) => {
             dispatch({
                 type: actionTypes.GET_POSTS_LIMIT,
                 posts: response.data.data?.rows,
-                count: response.data.data?.count 
+                count: response.data.data?.count
             });
-        } 
+        }
         else {
             dispatch({
                 type: actionTypes.GET_POSTS_LIMIT,
@@ -58,14 +58,14 @@ export const getPostsLimit = (query) => async (dispatch) => {
 // get new posts
 export const getNewPosts = () => async (dispatch) => {
     try {
-        const response = await apis.apiGetNewPosts();
+        const response = await apis.apiGetOrderPosts();
 
         if (response?.data.err === 0) {
             dispatch({
                 type: actionTypes.GET_NEW_POSTS,
                 newPosts: response.data.data,
             });
-        } 
+        }
         else {
             dispatch({
                 type: actionTypes.GET_NEW_POSTS,
@@ -82,6 +82,33 @@ export const getNewPosts = () => async (dispatch) => {
     }
 }
 
+// get hot posts
+export const getHotPosts = (query) => async (dispatch) => {
+    try {
+        const response = await apis.apiGetOrderPosts(query);
+
+        if (response?.data.err === 0) {
+            dispatch({
+                type: actionTypes.GET_HOT_POSTS,
+                hotPosts: response.data.data,
+            });
+        }
+        else {
+            dispatch({
+                type: actionTypes.GET_HOT_POSTS,
+                msg: response.data.msg,
+                hotPosts: null
+            });
+        }
+    } catch (err) {
+        dispatch({
+            type: actionTypes.GET_HOT_POSTS,
+            hotPosts: null,
+            msg: err
+        });
+    }
+}
+
 // get posts in manage posts of user
 export const getPostsLimitUser = (query) => async (dispatch) => {
     try {
@@ -91,9 +118,9 @@ export const getPostsLimitUser = (query) => async (dispatch) => {
             dispatch({
                 type: actionTypes.GET_POSTS_USER,
                 posts: response.data.data?.rows,
-                count: response.data.data?.count 
+                count: response.data.data?.count
             });
-        } 
+        }
         else {
             dispatch({
                 type: actionTypes.GET_POSTS_USER,

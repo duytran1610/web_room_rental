@@ -52,7 +52,7 @@ const Map = ({ address }) => {
             }
             <GoogleMapReact
                 bootstrapURLKeys={{ key: "" }}
-                defaultCenter={coords || defaultProps.center}
+                defaultCenter={defaultProps.center}
                 defaultZoom={defaultProps.zoom}
                 center={coords || defaultProps.center}
             >

@@ -1,31 +1,42 @@
-import React, {useEffect} from 'react';
-import {Sitem} from '../components';
+import React, { memo, useEffect, useState } from 'react';
+import { Sitem } from '../components';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../store/actions';
 
-const RelatedPost = () => {
+// used to show new posts or hot posts
+const RelatedPost = ({isHotPosts}) => {
     // get newPosts from postReducer in redux store
-    const {newPosts} = useSelector(state => state.post);
-    
+    const { newPosts, hotPosts } = useSelector(state => state.post);
+
     // dispatch
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(actions.getNewPosts());
-    }, [dispatch]);
+        if (isHotPosts) {
+            dispatch(actions.getHotPosts({order: ['star', 'DESC']}));
+        }
+        else {
+            dispatch(actions.getNewPosts());
+        }
+    }, [isHotPosts]);
+    
+    // state 
+    const [posts] = useState(isHotPosts ? hotPosts : newPosts);
+
 
     return (
         <div className='w-full bg-white rounded-md p-4'>
-            <h3 className='font-medium text-lg'>New Post</h3>
+            <h3 className='font-medium text-lg'>{isHotPosts? 'Hot Posts' : 'New Posts'}</h3>
             <div className='w-full flex flex-col gap-2'>
                 {
-                    newPosts?.map(item => 
+                    posts?.map(item =>
                         <Sitem
                             key={item.id}
                             title={item.title}
                             price={item.attrs.price}
                             createdAt={item.createdAt}
                             img={JSON.parse(item.imgs?.image).filter(i => i !== null)}
+                            star={+item.star}
                         />
                     )
                 }
@@ -34,4 +45,4 @@ const RelatedPost = () => {
     )
 }
 
-export default RelatedPost;
+export default memo(RelatedPost);

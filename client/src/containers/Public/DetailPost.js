@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { SliderRun, Map } from '../../components'
+import { SliderRun, Map, BoxInfo, RelatedPost } from '../../components'
 import { apiGetPostById } from '../../services';
 import icons from '../../utils/icons';
 import { infoUnderMap } from '../../utils/constant';
@@ -130,8 +130,10 @@ const DetailPost = () => {
                     </div>
                 </div>
             </div>
-            <div className='w-[30%]'>
-                slider
+            <div className='w-[30%] flex flex-col gap-8'>
+                <BoxInfo user={post?.user} />
+                <RelatedPost isHotPosts />
+                <RelatedPost />
             </div>
         </div>
     );

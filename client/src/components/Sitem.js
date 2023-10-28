@@ -1,9 +1,23 @@
-import React,{memo} from 'react';
+import React,{memo, useState, useEffect} from 'react';
 import moment from 'moment';           // format time 
 import 'moment/locale/vi';             // format time with lang vi
+import icons from '../utils/icons';
+
+const {BsStarFill} = icons;
 
 // used in sidebar
-const Sitem = ({title, price, img, createdAt}) => {
+const Sitem = ({title, price, img, createdAt, star}) => {
+    // control star
+    const [stars, setStars] = useState([]);
+
+    useEffect(() => {
+        let temp = [];
+
+        for (let i = 1; i <= star; i++) temp.push(<BsStarFill className='star-item' size={18} color='yellow' />);
+
+        setStars(temp);
+    }, [star]);
+
     return (
         <div className='w-full flex items-center gap-2 py-2 border-b border-gray-300'>
             <img 
@@ -12,7 +26,12 @@ const Sitem = ({title, price, img, createdAt}) => {
                 className='w-[65px] h-[65px] flex-none object-cover rounded-md'
             />
             <div className='gap-2 w-full'>
-                <h4 className='text-blue-600 text-[15px]'>{`${title?.slice(0,45)}...`}</h4>
+                <h4 className='text-blue-600 text-[15px]'>
+                    {stars.length > 0 && stars.map((item, index) => 
+                        <span key={index}>{item}</span>
+                    )}
+                    {`${title?.slice(0,45)}...`}
+                </h4>
                 <div className='flex justify-between'>
                     <span className='text-sm font-medium text-green-500'>{price}</span>
                     <span className='text-sm text-gray-300'>{moment(createdAt).fromNow()}</span>
