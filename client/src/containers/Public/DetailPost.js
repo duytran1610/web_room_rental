@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {SliderRun} from '../../components'
+import { SliderRun, Map } from '../../components'
 import { apiGetPostById } from '../../services';
 import icons from '../../utils/icons';
+import { infoUnderMap } from '../../utils/constant';
 
-const {MdLocationPin, TbReportMoney, RiCrop2Line, MdOutlineWatchLater, BsHash} = icons
+
+const { MdLocationPin, TbReportMoney, RiCrop2Line, MdOutlineWatchLater, BsHash } = icons;
+
 
 const DetailPost = () => {
     // params (:name_params)
-    const {postId} = useParams();
+    const { postId } = useParams();
 
     // post
     const [post, setPost] = useState({});
 
-
     useEffect(() => {
-        const fetchPost = async(id) => {
-            const response = await apiGetPostById({id});
+        const fetchPost = async (postId) => {
+            const response = await apiGetPostById({ id: postId });
             setPost(response.data.data);
         }
         postId && fetchPost(postId);
     }, [postId]);
+    
     return (
         <div className='w-full flex gap-4'>
             <div className='w-[70%] '>
-                <SliderRun images={post?.imgs && JSON.parse(post.imgs.image)}/>
+                <SliderRun images={post?.imgs && JSON.parse(post.imgs.image)} />
                 <div className='bg-white rounded-md shadow-md p-4'>
                     <div className='flex flex-col gap-2'>
                         <h2 className='text-xl font-semibold text-red-600'>{post?.title}</h2>
@@ -119,6 +122,10 @@ const DetailPost = () => {
                         </div>
                         <div className='mt-8'>
                             <h3 className='font-semibold text-lg my-4'>Bản đồ</h3>
+                            {post?.address && <Map address={post.address} /> }         
+                            <span className='text-gray-500 text-sm py-4 text-justify'>{infoUnderMap[0]}</span>     
+                            <span className='text-gray-500 text-sm py-4 text-justify italic'>{`${post?.title} - Mã tin: #${post?.attrs?.hashtag}`}</span>     
+                            <span className='text-gray-500 text-sm py-4 text-justify'>{infoUnderMap[1]}</span>                 
                         </div>
                     </div>
                 </div>

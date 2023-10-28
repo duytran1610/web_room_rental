@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Overview, Address, Button } from '../../components';
+import { Overview, Address, Button, Map } from '../../components';
 import icons from '../../utils/icons';
 import {getCode} from '../../utils/Common/getCodes';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +7,7 @@ import { apiCreateNewPost, apiUpdatePost } from '../../services';
 import Swal from 'sweetalert2';        // A beautiful, responsive, highly customizable and accessible (WAI-ARIA) replacement for JavaScript's popup boxes. 
 import validateFields from '../../utils/Common/validateFields';
 import * as actions from '../../store/actions';
+import { attention } from '../../utils/constant';
 
 
 const {BsFillCameraFill, RiDeleteBin5Fill} = icons
@@ -151,7 +152,7 @@ const CreatePost = ({isEdit, setUpdate}) => {
     return (
         <div className='px-6'>
            <h1 className='text-3xl font-medium py-4 border-b border-gray-200'>{isEdit ? 'Chỉnh sửa tin đăng' : 'Đăng tin mới'}</h1>
-           <div className='flex'>
+           <div className='flex gap-4'>
                 <div className='py-4 flex flex-col gap-8 flex-auto'>
                     <Address
                         invalidFields={invalidFields}
@@ -208,8 +209,18 @@ const CreatePost = ({isEdit, setUpdate}) => {
                         onClick={handleSubmit}
                     />
                 </div>
-                <div className='w-[30%] flex-none'>
-                    maps
+                <div className='w-[30%] flex-none pt-12'>
+                    <Map address={payload?.address}/>
+                    <div className='mt-8 bg-orange-200 text-orange-900 rounded-md p-4'>
+                        <h4 className='text-xl font-medium mb-4'>Lưu ý khi đăng tin</h4>
+                        <ul className='text-sm list-disc pl-6 text-justify'>
+                            {attention.map((item, index) =>
+                                <li key={index}>
+                                    {item}
+                                </li>
+                            )}
+                        </ul>
+                    </div>
                 </div>
            </div>
         </div>
