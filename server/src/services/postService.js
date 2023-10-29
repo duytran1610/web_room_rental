@@ -361,6 +361,7 @@ export const deletePost = (data) => new Promise(async (resolve, reject) => {
 export const getPostById = (id) => new Promise(async (resolve, reject) => {
     try {
         const post = await db.Post.findByPk(id, {
+            raw: true,
             nest: true,
             include: [
                 {

@@ -21,7 +21,7 @@ const Navigation = ({isSystem}) => {
         dispatch(actions.getAllCategories());
     }, [dispatch]);
     return (
-        <div className={`w-full flex ${isSystem? 'justify-start' : 'justify-center'} h-[40px] bg-secondary1 text-white sticky top-0 z-10`}>
+        <div className={`w-full flex ${isSystem? 'justify-start' : 'justify-center'} h-[40px] bg-secondary1 text-white`}>
             <div className='w-4/5 lg:w-1100 flex content-stretch text-sm font-medium'>
                 <NavLink
                     to={'/'}
