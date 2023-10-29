@@ -9,6 +9,7 @@ const Province = () => {
                 key={item.id} 
                 name={item.name} 
                 img={item.img}
+                provinceCode={item.provinceCode}
             />
         )}
     </div>

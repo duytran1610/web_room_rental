@@ -1,15 +1,19 @@
 import { Province, ItemSidebar, RelatedPost } from '../../components';
 import { List, Pagination } from '.';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 const SearchDetail = () => {
   // get categories, prices, areas from appReducer in redux store
   const { prices, areas } = useSelector(state => state.app); 
 
+  // location
+  const location = useLocation();
+
   return (
     <div className='w-full flex flex-col gap-3'>
       <div>
-        <h1 className='text-[28px] font-bold'>RESULT SEARCH:</h1>
+        <h1 className='text-[28px] font-bold'>{location.state?.titleSearch || 'RESULT SEARCH:'}</h1>
       </div>
       <Province />
       <div className='w-full flex gap-4'>

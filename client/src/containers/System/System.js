@@ -8,7 +8,7 @@ const System = () => {
     // get status isLoggedIn from authReducer in redux store
     const {isLoggedIn} = useSelector(state => state.auth);
 
-    if(!isLoggedIn) return <Navigate to={`/${path.LOGIN}`} replace={true}/>          // thuộc tính replace: có xóa lịch sử của trang trước đó k, nếu true thì k thể quay lại trang trước đó
+    if(!isLoggedIn) return <Navigate to={`/${path.LOGIN}`} replace={true}/>          // replace attribute cause the navigation to replace the current entry in the history stack instead of adding a new one.
 
     return (
         <div className="w-full flex flex-col items-center h-screen overflow-hidden">

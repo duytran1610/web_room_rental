@@ -98,13 +98,20 @@ const Modal = ({setIsShowModal, content, name, handleConfirm, queries, rangePerc
 
     // handle output before confirm (price, area)
     const handleBeforeConfirm = () => {
-        let value = (percent1 === 100)? `Tren ${converPercentToTarget(percent1)} ` :
-                                        `Tu ${converPercentToTarget(percent1)} - ${converPercentToTarget(percent2)} `
+        let rangeVal, value;
+        if (percent1 === 100) {
+            rangeVal = [converPercentToTarget(percent1), 999999];
+            value = `Tren ${converPercentToTarget(percent1)} `;
+        }
+        else {
+            rangeVal = [converPercentToTarget(percent1), converPercentToTarget(percent2)];
+            value = `Tu ${converPercentToTarget(percent1)} - ${converPercentToTarget(percent2)} `;
+        }
         value += `${name === 'price'? 'triệu': name === 'area'? 'm2': ''}`;
 
         handleConfirm({
             [name]: value,
-            [`${name}Val`]: [converPercentToTarget(percent1), converPercentToTarget(percent2)]
+            [`${name}Val`]: rangeVal
         }, {[`${name}Range`]: [percent1, percent2]});
     }
 

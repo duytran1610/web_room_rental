@@ -72,16 +72,22 @@ const Item = ({address, attrs, description, imgs, star, title, user, id}) => {
                         <p>{user?.name}</p>
                     </div>
                     <div className='flex items-center gap-1'>
-                        <button
+                        <a
                             className="bg-blue-700 text-white p-1 rounded-md"
+                            href='tel:'
+                            target='_blank'
+                            rel="noreferrer"    // rel attribute specifies the relationship between the current document and the linked document/resource
                         >
                             {`Call ${user.phone}`}
-                        </button>
-                        <button
+                        </a>
+                        <a
                             className="text-blue-700 px-1 rounded-md border border-blue-700"
+                            href={`https://zalo.me/${user.zalo}`}
+                            target='_blank'
+                            rel="noreferrer"
                         >
                             Ib zalo
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

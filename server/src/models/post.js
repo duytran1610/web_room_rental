@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.Attribute, {foreignKey: 'attributeID', targetKey: 'id', as: 'attrs'});
       Post.belongsTo(models.Overview, {foreignKey: 'overviewID', targetKey: 'id', as: 'overviews'});
       Post.belongsTo(models.User, {foreignKey: 'userID', targetKey: 'id', as: 'user'});
+      Post.belongsTo(models.Label, {foreignKey: 'labelCode', targetKey: 'code', as: 'labelData'});
     }
   }
   Post.init({

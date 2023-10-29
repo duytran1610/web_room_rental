@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { SliderRun, Map, BoxInfo, RelatedPost } from '../../components'
 import { apiGetPostById } from '../../services';
 import icons from '../../utils/icons';
-import { infoUnderMap } from '../../utils/constant';
+import { infoUnderMap, path } from '../../utils/constant';
+import { useNavigate, createSearchParams } from 'react-router-dom';
 
 
 const { MdLocationPin, TbReportMoney, RiCrop2Line, MdOutlineWatchLater, BsHash } = icons;
@@ -12,6 +13,9 @@ const { MdLocationPin, TbReportMoney, RiCrop2Line, MdOutlineWatchLater, BsHash }
 const DetailPost = () => {
     // params (:name_params)
     const { postId } = useParams();
+
+    // navigate
+    const navigate = useNavigate();
 
     // post
     const [post, setPost] = useState({});
@@ -23,6 +27,15 @@ const DetailPost = () => {
         }
         postId && fetchPost(postId);
     }, [postId]);
+
+    const handleFilterLabel = () => {
+        const titleSearch = `Tìm kiếm tin đăng theo chuyên mục ${post?.labelData?.value}`;
+
+        navigate({
+            pathname: `/${path.SEARCHDETAIL}`,
+            search: createSearchParams({labelCode: post?.labelData?.code}).toString()
+        }, {state: {titleSearch}});
+    }
     
     return (
         <div className='w-full flex gap-4'>
@@ -33,7 +46,12 @@ const DetailPost = () => {
                         <h2 className='text-xl font-semibold text-red-600'>{post?.title}</h2>
                         <div className='fllex gap-2'>
                             <span>Chuyên mục: </span>
-                            <span className='text-blue-600 underline font-medium hover:text-orange-600 cursor-pointer'>{post?.overviews?.area}</span>
+                            <span 
+                                className='text-blue-600 underline font-medium hover:text-orange-600 cursor-pointer'
+                                onClick={handleFilterLabel}
+                            >
+                                {post?.labelData?.value}
+                            </span>
                         </div>
                         <div className='flex gap-2 items-center'>
                             <MdLocationPin color='#2563EB' />

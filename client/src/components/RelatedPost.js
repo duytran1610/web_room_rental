@@ -5,7 +5,7 @@ import * as actions from '../store/actions';
 
 // used to show new posts or hot posts
 const RelatedPost = ({isHotPosts}) => {
-    // get newPosts from postReducer in redux store
+    // get newPosts, hotPosts from postReducer in redux store
     const { newPosts, hotPosts } = useSelector(state => state.post);
 
     // dispatch

@@ -115,6 +115,7 @@ const Header = () => {
                     textColor={'text-white'} 
                     bgColor={'bg-secondary2'} 
                     IcAfter={AiOutlinePlusCircle}
+                    onClick={() => navigate('/system/create-new-post')}
                 />
             </div>
         </div>

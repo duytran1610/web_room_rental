@@ -1,5 +1,5 @@
 export const path = {
-    HOME: '/',
+    HOME: '/*',
     LOGIN: 'login',
     SIGNUP: 'signup',
 
@@ -28,17 +28,20 @@ export const location = [
     {
         id: 'HCM',
         name: 'Phòng trọ Hồ Chí Minh',
-        img: 'https://phongtro123.com/images/location_hcm.jpg'
+        img: 'https://phongtro123.com/images/location_hcm.jpg',
+        provinceCode: '382HIC137'
     },
     {
         id: 'HN',
         name: 'Phòng trọ Hà Nội',
-        img: 'https://phongtro123.com/images/location_hn.jpg'
+        img: 'https://phongtro123.com/images/location_hn.jpg',
+        provinceCode: 'C180IN133'
     },
     {
         id: 'DN',
         name: 'Phòng trọ Đà Nẵng',
-        img: 'https://phongtro123.com/images/location_dn.jpg'
+        img: 'https://phongtro123.com/images/location_dn.jpg',
+        provinceCode: 'C327HN134'
     }
 ];
 

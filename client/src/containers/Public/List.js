@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Button, Item } from '../../components';
+import React, { useEffect, useState } from 'react';
+import { Item } from '../../components';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions';
 import { useSearchParams } from 'react-router-dom';
@@ -13,6 +13,9 @@ const List = ({ categoryCode }) => {
 
   // query parameters
   const [params] = useSearchParams();
+
+  // state
+  const [sort, setSort] = useState(false);
 
   useEffect(() => {
     let paramsSearch = [];
@@ -28,9 +31,10 @@ const List = ({ categoryCode }) => {
 
     // get posts by categoryCode
     if (categoryCode) paramsSearchObj.categoryCode = categoryCode;
+    if (sort) paramsSearchObj.order = ['createdAt', 'DESC'];
 
     dispatch(actions.getPostsLimit(paramsSearchObj));
-  }, [dispatch, params, categoryCode]);
+  }, [dispatch, params, categoryCode, sort]);
 
 
   return (
@@ -41,8 +45,8 @@ const List = ({ categoryCode }) => {
       </div>
       <div className='flex items-center gap-2 my-2'>
         <span>Sort: </span>
-        <Button bgColor='bg-gray-200' text='Default' />
-        <Button bgColor='bg-gray-200' text='Latest' />
+        <span onClick={() => setSort(0)} className={`bg-gray-200 p-2 rounded-md cursor-pointer hover:underline ${!sort && 'text-red-500'}`}>Default</span>
+        <span onClick={() => setSort(1)} className={`bg-gray-200 p-2 rounded-md cursor-pointer hover:underline ${sort && 'text-red-500'}`}>Latest</span>
       </div>
       <div className='items'>
         {posts.length > 0 && posts.map(item =>

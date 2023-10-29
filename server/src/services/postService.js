@@ -50,7 +50,7 @@ export const getPostsLimit = (page, { order, ...query }) => new Promise(async (r
         let offset = (!page || +page <= 1) ? 0 : +page - 1;
         let limit = process.env.LIMIT_PAGINATION;
         queries.limit = limit;
-        queries.order = order ? [order] : [['createdAt', 'DESC']];
+        if (order) queries.order = [order];
         if (query.priceVal) query.priceVal = { [Op.between]: query.priceVal }
         if (query.areaVal) query.areaVal = { [Op.between]: query.areaVal }
 
@@ -347,11 +347,6 @@ export const deletePost = (data) => new Promise(async (resolve, reject) => {
             where: { id: overviewID }
         });
 
-        // delete data in table Labels
-        await db.Label.destroy({
-            where: { code: labelCode }
-        });
-
         resolve({
             err: response ? 0 : -1,
             msg: response ? 'Deleted post succeed!' : 'Fail delete post!',
@@ -387,6 +382,11 @@ export const getPostById = (id) => new Promise(async (resolve, reject) => {
                     model: db.User,
                     as: 'user',
                     attributes: ['name', 'phone', 'zalo']
+                }, 
+                {
+                    model: db.Label,
+                    as: 'labelData',
+                    attributes: ['code', 'value']
                 }
             ],
             attributes: ['id', 'title', 'star', 'address', 'description']
