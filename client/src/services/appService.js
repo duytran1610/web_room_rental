@@ -4,7 +4,7 @@ import axios from "axios";
 // get all category from database
 export const apiGetAllCatgorries = () => new Promise(async(resolve, reject) => {
     try {
-        const response = instance({
+        const response = await instance({
             method: 'get',
             url: '/api/v1/category/all'
         });

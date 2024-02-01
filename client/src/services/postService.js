@@ -3,7 +3,7 @@ import instance from "../config/axiosConfig";
 // get all post
 export const apiGetAllPosts = () => new Promise(async (resolve, reject) => {
     try {
-        const response = instance({
+        const response = await instance({
             method: 'get',
             url: '/api/v1/post/all'
         });
@@ -17,7 +17,7 @@ export const apiGetAllPosts = () => new Promise(async (resolve, reject) => {
 // get posts to pagination or a post
 export const apiGetPostsLimit = (query) => new Promise(async (resolve, reject) => {
     try {
-        const response = instance({
+        const response = await instance({
             method: 'get',
             url: `/api/v1/post/limit`,
             params: query
@@ -32,7 +32,7 @@ export const apiGetPostsLimit = (query) => new Promise(async (resolve, reject) =
 // get new posts or hot posts
 export const apiGetOrderPosts = (query) => new Promise(async (resolve, reject) => {
     try {
-        const response = instance({
+        const response = await instance({
             method: 'get',
             url: `/api/v1/post/order-post`,
             params: query
@@ -47,7 +47,7 @@ export const apiGetOrderPosts = (query) => new Promise(async (resolve, reject) =
 // get post by id
 export const apiGetPostById = (id) => new Promise(async (resolve, reject) => {
     try {
-        const response = instance({
+        const response = await instance({
             method: 'get',
             url: `/api/v1/post/id`,
             params: id
@@ -62,7 +62,7 @@ export const apiGetPostById = (id) => new Promise(async (resolve, reject) => {
 // create a new post
 export const apiCreateNewPost = (payload) => new Promise(async (resolve, reject) => {
     try {
-        const response = instance({
+        const response = await instance({
             method: 'post',
             url: `/api/v1/post/create-new`,
             data: payload
@@ -77,7 +77,7 @@ export const apiCreateNewPost = (payload) => new Promise(async (resolve, reject)
 // get posts in manage posts of user
 export const apiGetPostsLimitUser = (query) => new Promise(async (resolve, reject) => {
     try {
-        const response = instance({
+        const response = await instance({
             method: 'get',
             url: `/api/v1/post/limit-user`,
             params: query
@@ -92,7 +92,7 @@ export const apiGetPostsLimitUser = (query) => new Promise(async (resolve, rejec
 // upate post
 export const apiUpdatePost = (payload) => new Promise(async (resolve, reject) => {
     try {
-        const response = instance({
+        const response = await instance({
             method: 'put',
             url: `/api/v1/post/update`,
             data: payload
@@ -107,7 +107,7 @@ export const apiUpdatePost = (payload) => new Promise(async (resolve, reject) =>
 // delete post
 export const apiDeletePost = (payload) => new Promise(async (resolve, reject) => {
     try {
-        const response = instance({
+        const response = await instance({
             method: 'delete',
             url: `/api/v1/post/delete`,
             data: payload

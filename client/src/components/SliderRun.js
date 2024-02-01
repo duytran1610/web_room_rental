@@ -28,4 +28,4 @@ const SliderRun = ({images}) => {
     )
 }
 
-export default SliderRun;
+export default memo(SliderRun);

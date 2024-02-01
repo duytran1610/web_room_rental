@@ -13,8 +13,15 @@ let sequelize;
 
 const customizeConfig = {
   host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
   dialect: process.env.DB_DIALECT,
   logging: false
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true,
+  //     rejectUnauthorized: false
+  //   }
+  // }
 }
 
 sequelize = new Sequelize(
