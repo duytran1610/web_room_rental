@@ -71,7 +71,7 @@ const login = (data) => new Promise(async (resolve, reject) => {
                 phone: user.phone
             },
             process.env.SECRET_KEY,
-            {expiresIn: '2m'}
+            {expiresIn: '2d'}
         );
 
         resolve({

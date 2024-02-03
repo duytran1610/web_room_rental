@@ -4,7 +4,7 @@ import { MdLocationPin } from 'react-icons/md';
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';                  // Get Latitude and Longitude from address
 
 // used to show exact position in gg map
-const Location  = ({ text }) => <div>{text}</div>;
+const Location = ({ text }) => <div>{text}</div>;
 
 // default value for gg map
 const defaultProps = {
@@ -16,7 +16,7 @@ const defaultProps = {
 };
 
 // create gg map
-const Map = ({ address }) => {
+const GGMap = ({ address }) => {
     // coordinates of object in gg map
     const [coords, setCoords] = useState(null);
 
@@ -24,7 +24,7 @@ const Map = ({ address }) => {
     useEffect(() => {
         const getCoords = async () => {
             try {
-                if (address) throw new Error({'msg': 'No exact address! Set address default!'});
+                if (address) throw new Error({ 'msg': 'No exact address! Set address default!' });
                 const results = await geocodeByAddress(address);
                 const latLng = await getLatLng(results[0]);
                 setCoords(latLng);
@@ -36,7 +36,7 @@ const Map = ({ address }) => {
                         lng: e.coords.longitude
                     });
                 });
-            }           
+            }
         }
 
         getCoords();
@@ -45,18 +45,18 @@ const Map = ({ address }) => {
     return (
         // Important! Always set the container height explicitly
         <div className='h-[300px] w-full relative'>
-            {address && 
-            <div className='absolute top-2 left-2 z-50 max-w-[200px] bg-white shadow-md p-2 text-xs rounded-md'>
-                {address}
-            </div>
+            {address &&
+                <div className='absolute top-2 left-2 z-50 max-w-[200px] bg-white shadow-md p-2 text-xs rounded-md'>
+                    {address}
+                </div>
             }
             <GoogleMapReact
-                bootstrapURLKeys={{ key: "" }}
+                bootstrapURLKeys={{ key: process.env.REACT_APP_GGMAP_API }}
                 defaultCenter={defaultProps.center}
                 defaultZoom={defaultProps.zoom}
                 center={coords || defaultProps.center}
             >
-                <Location 
+                <Location
                     lat={coords?.lat || 59.955413}
                     lng={coords?.lng || 30.337844}
                     text={<MdLocationPin color='red' size={24} />}
@@ -66,4 +66,4 @@ const Map = ({ address }) => {
     )
 }
 
-export default memo(Map);
+export default memo(GGMap);

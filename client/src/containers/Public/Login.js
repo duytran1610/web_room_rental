@@ -79,7 +79,7 @@ const Login = () => {
         <div className="w-full flex justify-center">
             <div className="bg-white w-[600px] p-[30px] pb-[100px] rounded-md shadow-sm">
                 <h3 className="font-semibold text-2xl">{isRegister ? 'Register' : 'Login'}</h3>
-                <div className="w-full flex flex-col gap-3">
+                <form className="w-full flex flex-col gap-3">
                     {isRegister && <InputForm 
                         setInvalidFields={setInvalidFields} 
                         invalidFields={invalidFields} 
@@ -112,7 +112,7 @@ const Login = () => {
                         fullWidth
                         onClick={handleSubmit}
                     />
-                </div>
+                </form>
                 <div className="mt-7 flex justify-between">
                     {isRegister ? 
                         <small>

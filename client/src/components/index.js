@@ -20,5 +20,6 @@ export { default as Input } from './Input';
 export { default as Loading } from './Loading';
 export { default as UpdatePost } from './UpdatePost';
 export { default as SliderRun } from './SliderRun';
-export { default as Map } from './Map';
+export { default as GGMap } from './GGMap';
+export { default as YMap } from './YMap';
 export { default as BoxInfo } from './BoxInfo';

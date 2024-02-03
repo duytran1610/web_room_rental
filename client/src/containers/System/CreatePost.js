@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Overview, Address, Button, Map } from '../../components';
+import { Overview, Address, Button, YMap } from '../../components';
 import icons from '../../utils/icons';
 import {getCode} from '../../utils/Common/getCodes';
 import { useSelector, useDispatch } from 'react-redux';
@@ -210,7 +210,8 @@ const CreatePost = ({isEdit, setUpdate}) => {
                     />
                 </div>
                 <div className='w-[30%] flex-none pt-12'>
-                    <Map address={payload?.address}/>
+                    {/* <GGMap address={payload?.address}/> */}
+                    <YMap address={payload?.address}/>
                     <div className='mt-8 bg-orange-200 text-orange-900 rounded-md p-4'>
                         <h4 className='text-xl font-medium mb-4'>Lưu ý khi đăng tin</h4>
                         <ul className='text-sm list-disc pl-6 text-justify'>

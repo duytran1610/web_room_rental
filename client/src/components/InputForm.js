@@ -6,7 +6,7 @@ const InputForm = ({label, value, setValue, keyPayload, invalidFields, setInvali
         <div>
             <label htmlFor={keyPayload} className="text-xs">{label}</label>
             <input 
-                id={keyPayload}
+                name={keyPayload}
                 type={type || 'text'}
                 className="outline-none bg-[#e8f0fe] p-2 rounded-md w-full"
                 value={value}

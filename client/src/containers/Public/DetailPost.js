@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { SliderRun, Map, BoxInfo, RelatedPost } from '../../components'
+import { SliderRun, YMap, BoxInfo, RelatedPost } from '../../components'
 import { apiGetPostById } from '../../services';
 import icons from '../../utils/icons';
 import { infoUnderMap, path } from '../../utils/constant';
@@ -140,7 +140,8 @@ const DetailPost = () => {
                         </div>
                         <div className='mt-8'>
                             <h3 className='font-semibold text-lg my-4'>Bản đồ</h3>
-                            {post?.address && <Map address={post.address} /> }         
+                            {/* {post?.address && <GGMap address={post.address} /> }          */}
+                            {post?.address && <YMap address={post.address} />}
                             <span className='text-gray-500 text-sm py-4 text-justify'>{infoUnderMap[0]}</span>     
                             <span className='text-gray-500 text-sm py-4 text-justify italic'>{`${post?.title} - Mã tin: #${post?.attrs?.hashtag}`}</span>     
                             <span className='text-gray-500 text-sm py-4 text-justify'>{infoUnderMap[1]}</span>                 
