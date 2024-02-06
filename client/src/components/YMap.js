@@ -1,15 +1,13 @@
 import React, { memo, useRef, useState, useEffect } from 'react';
-import { YMaps, Map, Placemark} from '@pbe/react-yandex-maps';
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 
-// default value for ymap
-const mapState = {
-    center: [21.0245, 105.84117],
-    zoom: 11,
-};
 
 const YMap = ({ address }) => {
     const [ymaps, setYmaps] = useState(null);
-    const [addressCoord, setAddressCoord] = useState(null);
+    const [mapState, setMapState] = useState({
+        center: [21.0245, 105.84117],
+        zoom: 11,
+    });
 
     // const ymaps = useRef(null);
     const placemarkRef = useRef(null);
@@ -20,8 +18,10 @@ const YMap = ({ address }) => {
             ymaps.geocode(address)
                 .then(res => {
                     let coord = res.geoObjects.get(0).geometry.getCoordinates();
-                    setAddressCoord(coord);
-                    console.log(coord);
+                    setMapState({
+                        ...mapState,
+                        center: coord
+                    });
                 });
         }
     }, [ymaps, address]);
@@ -49,9 +49,14 @@ const YMap = ({ address }) => {
             const firstGeoObject = res.geoObjects.get(0);
             const newAddress = [
                 firstGeoObject.getLocalities().length
+                    // Returns the locality and, optionally, the entity within the locality to which the toponym belongs.
                     ? firstGeoObject.getLocalities()
+                    // Returns the administrative-territorial entities that the object belongs to (federal district, region, district), no more than two.
                     : firstGeoObject.getAdministrativeAreas(),
-                firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                // Returns the communication path (street, highway, driveway, etc.) to which the place name belongs (if applicable).
+                firstGeoObject.getThoroughfare() ||
+                // Returns the name of the building, if there is one (for example, the name of an airport terminal).
+                firstGeoObject.getPremise()
             ]
                 .filter(Boolean)
                 .join(", ");
@@ -102,10 +107,18 @@ const YMap = ({ address }) => {
                     onClick={onMapClick}
                     instanceRef={mapRef}
                     onLoad={(ymapsInstance) => setYmaps(ymapsInstance)}
-                    state={addressCoord || mapState}
+                    state={mapState}
                 >
                     <Placemark
-                        geometry={addressCoord || mapState.center}
+                        geometry={mapState.center}
+                        instanceRef={placemarkRef}
+                        properties={{
+                            iconCaption: "loading.."
+                        }}
+                        options={{
+                            preset: "islands#violetDotIconWithCaption",
+                            draggable: true
+                        }}
                     />
                 </Map>
             </YMaps>
