@@ -1,5 +1,5 @@
-import React, { memo, useState, useEffect } from 'react';
-import { YMaps, Map, Placemark, Button } from '@pbe/react-yandex-maps';
+import React, { memo, useRef, useState, useEffect } from 'react';
+import { YMaps, Map, Placemark} from '@pbe/react-yandex-maps';
 
 // default value for ymap
 const mapState = {
@@ -8,13 +8,27 @@ const mapState = {
 };
 
 const YMap = ({ address }) => {
-    const ymaps = React.useRef(null);
-    const placemarkRef = React.useRef(null);
-    const mapRef = React.useRef(null);
+    const [ymaps, setYmaps] = useState(null);
+    const [addressCoord, setAddressCoord] = useState(null);
+
+    // const ymaps = useRef(null);
+    const placemarkRef = useRef(null);
+    const mapRef = useRef(null);
+
+    useEffect(() => {
+        if (ymaps) {
+            ymaps.geocode(address)
+                .then(res => {
+                    let coord = res.geoObjects.get(0).geometry.getCoordinates();
+                    setAddressCoord(coord);
+                    console.log(coord);
+                });
+        }
+    }, [ymaps, address]);
 
     // create Placemark
     const createPlacemark = (coords) => {
-        return new ymaps.current.Placemark(
+        return new ymaps.Placemark(
             coords,
             {
                 iconCaption: "loading.."
@@ -31,7 +45,7 @@ const YMap = ({ address }) => {
         let regionName = "";
         placemarkRef.current.properties.set("iconCaption", "loading..");
 
-        ymaps.current.geocode(coords).then((res) => {
+        ymaps.geocode(coords).then((res) => {
             const firstGeoObject = res.geoObjects.get(0);
             const newAddress = [
                 firstGeoObject.getLocalities().length
@@ -77,7 +91,7 @@ const YMap = ({ address }) => {
             <YMaps
                 query={{
                     lang: 'en_RU',
-                    apikey: "106e4ebf-abbc-41b9-9230-adfbc64f15d9"
+                    apikey: process.env.REACT_APP_YMAP_API
                 }}>
                 <Map
                     modules={["Polygon", "GeoObject", "geoQuery", "control.ZoomControl", "control.FullscreenControl", "Placemark", "geocode",
@@ -87,9 +101,12 @@ const YMap = ({ address }) => {
                     height="100%"
                     onClick={onMapClick}
                     instanceRef={mapRef}
-                    onLoad={(ymapsInstance) => (ymaps.current = ymapsInstance)}
-                    state={mapState}
+                    onLoad={(ymapsInstance) => setYmaps(ymapsInstance)}
+                    state={addressCoord || mapState}
                 >
+                    <Placemark
+                        geometry={addressCoord || mapState.center}
+                    />
                 </Map>
             </YMaps>
         </div >
